@@ -26,7 +26,7 @@ const rules = reactive({
     {
       required: true,
       validator: (rule, value, callback) => {
-        return uni.$u.test.mobile(value)
+        return uni.$uv.test.mobile(value)
       },
       message: '请输入正确的手机号',
       trigger: ['blur', 'change'],
@@ -81,12 +81,12 @@ defineExpose({
 </script>
 
 <template>
-  <u-popup v-model="show" mode="bottom" height="480px" closeable close-icon-pos="top-left" :border-radius="12">
+  <uv-popup v-model="show" mode="bottom" height="480px" closeable close-icon-pos="top-left" :border-radius="12">
     <view class="content">
       <view class="head text-18px pb-2"> 发布 </view>
-      <u-form ref="uFormRef" :model="form" label-width="200" label-position="top" :label-style="{ fontSize: '16px' }">
-        <u-form-item label="内容" required prop="content">
-          <u-input
+      <uv-form ref="uFormRef" :model="form" label-width="200" label-position="top" :label-style="{ fontSize: '16px' }">
+        <uv-form-item label="内容" required prop="content">
+          <uv-input
             v-model="form.content"
             type="textarea"
             placeholder="请填写内容（不少于20字）"
@@ -96,14 +96,14 @@ defineExpose({
             height="120"
             cursor-spacing="20"
           />
-        </u-form-item>
-        <u-form-item label="联系方式" label-position="left" required prop="phone">
-          <u-input v-model="form.phone" placeholder="请输入联系方式" :border="false" />
-        </u-form-item>
-        <u-form-item label="标签 (可多选)" required prop="demand_ids">
+        </uv-form-item>
+        <uv-form-item label="联系方式" label-position="left" required prop="phone">
+          <uv-input v-model="form.phone" placeholder="请输入联系方式" :border="false" />
+        </uv-form-item>
+        <uv-form-item label="标签 (可多选)" required prop="demand_ids">
           <view class="type-box" style="height: 90px">
             <view class="flex-box flex-wrap">
-              <u-tag
+              <uv-tag
                 v-for="(item, index) in 3"
                 :key="index"
                 closeable
@@ -113,25 +113,25 @@ defineExpose({
                 type="primary"
                 shape="circle"
                 @close="() => {}"
-              ></u-tag>
-              <u-button
+              ></uv-tag>
+              <uv-button
                 :custom-style="{ color: '#666', margin: 0 }"
                 type="info"
                 size="mini"
                 shape="circle"
                 @click="showTypeSel = true"
               >
-                <u-icon name="plus" />添加
-              </u-button>
+                <uv-icon name="plus" />添加
+              </uv-button>
             </view>
           </view>
-        </u-form-item>
-      </u-form>
+        </uv-form-item>
+      </uv-form>
       <view class="confirm-btn">
-        <u-button type="primary" :loading="loading" @click="onConfirm">确定</u-button>
+        <uv-button type="primary" :loading="loading" @click="onConfirm">确定</uv-button>
       </view>
     </view>
-  </u-popup>
+  </uv-popup>
 </template>
 
 <style lang="scss" scoped>

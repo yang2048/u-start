@@ -7,17 +7,14 @@ import type { UserData } from '@/api/user/model'
 import UserApi from '@/api/user'
 import { isLogin, toLogin } from '@/utils/public'
 import { useUserStore } from '@/store/user'
-import { useTabbarStore } from '@/store/tabbar'
 
-const showWechat = ref(false)
-const wx = ref('Aaron-ZZH')
+const showWechat = ref()
+const wx = ref('Aaron-xdev')
 const model: Ref<UserData> = ref({
   favor_count: 0,
   follow_count: 0,
   order_count: 0,
 } as UserData)
-
-const { tabbar } = useTabbarStore()
 
 const userStore = useUserStore()
 const userInfo = computed(() => {
@@ -40,6 +37,10 @@ onPullDownRefresh(() => {
     }, 500)
   }
 })
+
+const open = () => {
+  showWechat.value.open();
+}
 
 const getUserData = async () => {
   model.value = await UserApi.getUserData()
@@ -91,23 +92,7 @@ const tools = reactive([
   {
     name: '功能',
     icon: 'i-iconoir-search-engine',
-  },
-  {
-    name: '功能',
-    icon: 'i-iconoir-iconoir',
-  },
-  {
-    name: '功能',
-    icon: 'i-iconoir-bookmark-book',
-  },
-  {
-    name: '功能',
-    icon: 'i-iconoir-calculator',
-  },
-  {
-    name: '功能',
-    icon: 'i-iconoir-message-text',
-  },
+  }
 ])
 
 const btnStyle = reactive({
@@ -127,9 +112,9 @@ const btnStyle = reactive({
     </view>
     <view class="relative mx-4">
       <view class="user-box">
-        <view class="flex-box mt-5">
-          <view class="flex justify-center items-center w-125 h-125 rd-50% bg-white">
-            <image class="w-110 h-110 rd-50%" src="/static/images/me/avatar.png" />
+        <view class="flex-box mt-20">
+          <view class="flex justify-center items-center rd-50% bg-white">
+            <image class="w-20 h-20 rd-50%" src="/static/images/me/avatar.png" />
           </view>
           <text v-if="userInfo.id" class="c-black ml-3">{{ userInfo.name }}</text>
           <text v-else class="c-black ml-3" @click="to('login')">点击登录</text>
@@ -155,62 +140,62 @@ const btnStyle = reactive({
       </view>
       <view class="vip-box action-box" style="background-color: #faecda">
         <view class="flex-box">
-          <u-icon name="integral" size="30px" color="rgb(152, 112, 51)"></u-icon>
+          <uv-icon name="integral" size="30px" color="rgb(152, 112, 51)"></uv-icon>
           <view class="flex flex-col flex-1 ml-2">
             <view class="color-#987033 font-bold">U-Starter会员</view>
             <view class="text-12px">成为会员享专属权益</view>
           </view>
-          <u-button shape="circle" :hair-line="false" :custom-style="btnStyle">立即开通</u-button>
+          <uv-button shape="circle" :hair-line="false" :custom-style="btnStyle">立即开通</uv-button>
         </view>
       </view>
       <view class="action-box">
-        <u-grid :col="4" :border="false">
-          <u-grid-item v-for="(item, index) in tools" :key="index">
+        <uv-grid :col="4" :border="false">
+          <uv-grid-item v-for="(item, index) in tools" :key="index">
             <view :class="item.icon" style="font-size: 24px" />
             <view class="text-12px mt-1 color-#666">{{ item.name }}</view>
-          </u-grid-item>
-        </u-grid>
+          </uv-grid-item>
+        </uv-grid>
       </view>
+      <!-- <view class="action-box">
+        <uv-cell-group>
+          <uv-cell icon="star-fill" title="我的收藏" :border="false"></uv-cell>
+          <uv-cell icon="shopping-cart-fill" title="我的预约" :border="false"></uv-cell>
+          <uv-cell icon="bell-fill" title="我的消息" @click="to('message')" :border="false"></uv-cell>
+          <uv-cell icon="eye-fill" title="浏览记录" :border="false"></uv-cell>
+        </uv-cell-group>
+      </view> -->
       <view class="action-box">
-        <u-cell-group>
-          <u-cell-item icon="star-fill" title="我的收藏"></u-cell-item>
-          <u-cell-item icon="shopping-cart-fill" title="我的预约"></u-cell-item>
-          <u-cell-item icon="bell-fill" title="我的消息" @click="to('message')"></u-cell-item>
-          <u-cell-item icon="eye-fill" title="浏览记录"></u-cell-item>
-        </u-cell-group>
-      </view>
-      <view class="action-box">
-        <u-cell-group>
-          <!-- todo  -->
-          <!-- <u-cell-item icon="setting" title="个人设置"></u-cell-item> -->
-          <u-cell-item icon="server-man" title="微信客服" @click="showWechat = true"></u-cell-item>
-          <u-cell-item title="关于我们" @click="to('about')">
+      	<uv-cell-group>
+          <uv-cell icon="setting-fill" title="个人设置" isLink></uv-cell>
+          <uv-cell icon="integral-fill" title="版本更新" isLink value="已是新版本"></uv-cell>
+          <uv-cell icon="server-man" title="微信客服" isLink @click="open"></uv-cell>
+          <uv-cell title="关于我们" isLink @click="to('about')">
             <template #icon>
               <view class="i-iconoir-info-empty text-17px mr-1"></view>
             </template>
-          </u-cell-item>
-          <u-cell-item title="退出登录" @click="to('logout')">
+          </uv-cell>
+          <uv-cell title="退出登录" isLink @click="to('logout')">
             <template #icon>
               <view class="i-ant-design-logout-outlined text-17px mr-1"></view>
             </template>
-          </u-cell-item>
-        </u-cell-group>
+          </uv-cell>
+        </uv-cell-group>
       </view>
-      <u-tabbar :list="tabbar" icon-size="24px" :mid-button="true"></u-tabbar>
     </view>
-    <u-modal
+    
+    <uv-modal
       v-model="logoutDlgShow"
       show-cancel-button
       :async-close="true"
       content="确定要退出？"
       @confirm="confirm"
-    ></u-modal>
-    <u-popup v-model="showWechat" mode="center" closeable height="300px" width="260px" :border-radius="12">
+    ></uv-modal>
+    <uv-popup ref="showWechat" mode="center" closeable custom-style="height: 500rpx;width: 500rpx">
       <view class="info-box mt-3">
         <view style="widows: 160px; height: 160px">
-          <u-image width="160px" height="160px" src="/static/images/me/aaron.jpg"></u-image>
+          <uv-image width="160px" height="160px" src="/static/images/me/aaron.jpg"></uv-image>
         </view>
-        <u-button
+        <uv-button
           class="mt-3"
           :custom-style="{
             padding: '0px 40px',
@@ -224,11 +209,11 @@ const btnStyle = reactive({
           size="mini"
           shape="circle"
           @click="onCopy"
-          >复制微信号</u-button
+          >复制微信号</uv-button
         >
-        <view class="text-12px color-#333 mt-1"> 客服微信号: {{ wx.wechat }} </view>
+        <view class="text-12px color-#333 mt-1"> 客服微信号: {{ wx }} </view>
       </view>
-    </u-popup>
+    </uv-popup>
   </view>
 </template>
 <style lang="scss" scoped>

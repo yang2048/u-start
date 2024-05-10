@@ -11,7 +11,7 @@ onLoad((options) => {
 
 <template>
   <view class="container">
-    <u-no-network></u-no-network>
+    <uv-no-network></uv-no-network>
     <view v-if="url">
       <web-view :src="url"></web-view>
     </view>

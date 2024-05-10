@@ -29,10 +29,10 @@ const toggleFavor = async () => {
 
 <template>
   <view class="favor-btn" @click="toggleFavor">
-    <u-icon v-if="favor" name="star-fill" :size="40" color="#ff9900"></u-icon>
-    <u-icon v-else name="star" :size="40" color="#666"></u-icon>
+    <uv-icon v-if="favor" name="star-fill" :size="40" color="#ff9900"></uv-icon>
+    <uv-icon v-else name="star" :size="40" color="#666"></uv-icon>
     <view>{{ favor ? '已收藏' : '收藏' }}</view>
-    <u-toast ref="toastRef" />
+    <uv-toast ref="toastRef" />
   </view>
 </template>
 

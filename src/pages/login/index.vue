@@ -173,7 +173,7 @@ const customStyle = computed(() => {
 
 <template>
   <view class="login">
-    <u-navbar :custom-back="back" :is-back="showBack" :border-bottom="false"></u-navbar>
+    <uv-navbar :custom-back="back" :is-back="showBack" :border-bottom="false"></uv-navbar>
     <image class="login-background" src="../../static/images/common/cover-pattern.png" />
     <view class="login-content">
       <view class="login-form">
@@ -181,37 +181,37 @@ const customStyle = computed(() => {
           <view class="text-22px">您好</view>
           <view class="text-26px font-500">欢迎登录U-Starter</view>
         </view>
-        <u-field v-model="loginForm.phone" placeholder="请填写手机号(11位)" type="number" maxlength="11" focus>
+        <uv-field v-model="loginForm.phone" placeholder="请填写手机号(11位)" type="number" maxlength="11" focus>
           <template #icon>
             <image class="w-41 h-41" src="../../static/images/login/account.png" />
           </template>
-        </u-field>
-        <u-field v-if="loginType === 'smsCode'" v-model="loginForm.code" placeholder="请填写验证码">
+        </uv-field>
+        <uv-field v-if="loginType === 'smsCode'" v-model="loginForm.code" placeholder="请填写验证码">
           <template #icon>
             <image class="w-41 h-41" src="../../static/images/login/code.png" />
           </template>
           <template #right>
-            <u-verification-code ref="codeRef" :seconds="60" keep-running @end="codeEnd" @change="codeChange" />
-            <u-button size="mini" :type="isWaitCode ? 'default' : 'primary'" @click="sendCode">{{ tips }}</u-button>
+            <uv-verification-code ref="codeRef" :seconds="60" keep-running @end="codeEnd" @change="codeChange" />
+            <uv-button size="mini" :type="isWaitCode ? 'default' : 'primary'" @click="sendCode">{{ tips }}</uv-button>
           </template>
-        </u-field>
+        </uv-field>
 
-        <u-field v-else v-model="loginForm.password" placeholder="请填写密码" type="password">
+        <uv-field v-else v-model="loginForm.password" placeholder="请填写密码" type="password">
           <template #icon>
             <image class="w-41 h-41" src="../../static/images/login/code.png" />
           </template>
-        </u-field>
+        </uv-field>
 
         <view class="agreement flex items-center my-2 ml-4 text-12px lh-24px">
-          <u-checkbox-group>
-            <u-checkbox v-model="loginForm.agree" :size="28" :label-size="26"> 我已阅读并同意 </u-checkbox>
+          <uv-checkbox-group>
+            <uv-checkbox v-model="loginForm.agree" :size="28" :label-size="26"> 我已阅读并同意 </uv-checkbox>
             <text class="color-#0070f9" @click="toPage('agreement')">《用户协议》</text>
             和
             <text class="color-#0070f9" @click="toPage('privacy')">《隐私政策》</text>
-          </u-checkbox-group>
+          </uv-checkbox-group>
         </view>
         <view class="login-action">
-          <u-button
+          <uv-button
             class="w-600"
             type="primary"
             :loading="loading"
@@ -219,7 +219,7 @@ const customStyle = computed(() => {
             @click="phoneLoginHandler"
           >
             登录
-          </u-button>
+          </uv-button>
           <!-- <view class="w-600 mt-2 mb-6 text-left block color-blue" @click="onChangeType">
             {{ loginType === 'passwd' ? '手机验证码登录' : '用户名密码登录' }}
           </view> TODO-->
@@ -227,7 +227,7 @@ const customStyle = computed(() => {
       </view>
       <!-- <view class="wx-btn-box">
         <button class="wx-btn" :open-type="openType" @getphonenumber="wxLoginHandler" @click="onWxLogin">
-          <u-icon name="weixin-circle-fill" color="#28bb28" size="36px"></u-icon>
+          <uv-icon name="weixin-circle-fill" color="#28bb28" size="36px"></uv-icon>
         </button>
       </view> -->
     </view>

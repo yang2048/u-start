@@ -49,7 +49,7 @@ const toggleFollow = () => {
 
 <template>
   <view class="follow-btn">
-    <u-button
+    <uv-button
       size="mini"
       :hair-line="false"
       shape="circle"
@@ -58,7 +58,7 @@ const toggleFollow = () => {
       @click="toggleFollow"
     >
       {{ followed ? '已关注' : '关注' }}
-    </u-button>
+    </uv-button>
   </view>
 </template>
 

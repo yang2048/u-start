@@ -3,7 +3,7 @@ import type { WxConfig } from '@/api/common/model'
 import type { WxPaymentInfo } from '@/api/order/model'
 import CommonApi from '@/api/common'
 import { isWeiXin } from '@/utils/public'
-import { config } from '../config'
+import { sysConfig as config } from "@/constants";
 
 import jWeixin from 'weixin-js-sdk' // 微信开放接口
 

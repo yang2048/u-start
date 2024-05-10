@@ -61,7 +61,7 @@ const rules = reactive({
 const onClickComment = () => {
   if (props.list) return
   // if (!isLogin()) {
-  //   uni.$u.toast('请先登录')
+  //   uni.$uv.toast('请先登录')
   //   return
   // }
   show.value = true
@@ -103,7 +103,7 @@ const toPost = () => {
   if (!props.list) {
     return
   }
-  uni.$u.route({
+  uni.$uv.route({
     url: 'pages/post/detail',
     params: {
       id: props.post.id,
@@ -121,18 +121,18 @@ const toPost = () => {
           {{ post.name }}
         </view>
         <view v-if="list">
-          <u-read-more :toggle="true" :show-height="240" close-text="展开" :text-indent="false">
+          <uv-read-more :toggle="true" :show-height="240" close-text="展开" :text-indent="false">
             <rich-text class="text-14px color-#333" :nodes="post.brief"></rich-text>
-          </u-read-more>
+          </uv-read-more>
         </view>
         <view v-else>
-          <u-parse :html="post.content" :domain="config.domain"></u-parse>
+          <uv-parse :html="post.content" :domain="config.domain"></uv-parse>
         </view>
       </view>
       <scroll-view v-if="imgList && imgList.length > 0" scroll-x style="width: 100%; height: 160rpx">
         <view style="width: 100%; height: 100%" class="flex">
           <view v-for="(item, index) in imgList" :key="item" class="mr-1" @click.stop="viewImage(index)">
-            <u-image width="100px" height="80px" :src="item"></u-image>
+            <uv-image width="100px" height="80px" :src="item"></uv-image>
           </view>
         </view>
       </scroll-view>
@@ -165,11 +165,11 @@ const toPost = () => {
         </view>
       </view>
       <view v-if="list" class="flex-box ml-a text-14px color-blue" @click="toPost">
-        详情<u-icon name="arrow-right"></u-icon>
+        详情<uv-icon name="arrow-right"></uv-icon>
       </view>
       <view v-else class="flex-box ml-a text-14px color-blue" @click="onClickComment"> 回复 </view>
     </view>
-    <u-popup
+    <uv-popup
       v-model="show"
       mode="bottom"
       height="240px"
@@ -180,9 +180,9 @@ const toPost = () => {
     >
       <view class="content">
         <view class="head text-18px pb-2"> 回复 </view>
-        <u-form ref="uFormRef" :model="form" label-width="160" label-position="top" :label-style="{ fontSize: '16px' }">
-          <u-form-item label="" required prop="content">
-            <u-input
+        <uv-form ref="uFormRef" :model="form" label-width="160" label-position="top" :label-style="{ fontSize: '16px' }">
+          <uv-form-item label="" required prop="content">
+            <uv-input
               v-model="form.content"
               type="textarea"
               placeholder="请在输入回复（不少于10字）"
@@ -192,13 +192,13 @@ const toPost = () => {
               height="120"
               cursor-spacing="20"
             />
-          </u-form-item>
-        </u-form>
+          </uv-form-item>
+        </uv-form>
         <view class="confirm-btn">
-          <u-button type="primary" :loading="loading" @click="onConfirm">确定</u-button>
+          <uv-button type="primary" :loading="loading" @click="onConfirm">确定</uv-button>
         </view>
       </view>
-    </u-popup>
+    </uv-popup>
   </view>
 </template>
 

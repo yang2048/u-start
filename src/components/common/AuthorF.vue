@@ -5,7 +5,7 @@ const props = defineProps<{ author: AuthorInfo }>()
 const author = toRef(props, 'author')
 
 const toAuthor = () => {
-  uni.$u.route({
+  uni.$uv.route({
     url: 'pages/author/detail',
     params: {
       id: props.author.id,
@@ -16,12 +16,12 @@ const toAuthor = () => {
 
 <template>
   <view class="author-info-box flex-box flex-1 color-#888 text-12px items-center" style="height: 55px">
-    <u-avatar
+    <uv-avatar
       :src="`data:image/*;base64,${author.avatar_256}`"
       :show-level="author.certified"
       size="mini"
       @click="toAuthor"
-    ></u-avatar>
+    ></uv-avatar>
     <view class="p-1 ml-1 flex-1">
       <view class="inline-block" @click="toAuthor">
         <view class="text-14px color-#333">

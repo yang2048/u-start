@@ -1,10 +1,9 @@
 import { createSSRApp } from 'vue'
-import uView from './uni_modules/vk-uview-ui'
-import i18nPlugin from './plugins/i18n'
-import config from './config'
+import uvUI from '@/uni_modules/uv-ui-tools'
+// import config from './constants/config'
 import App from './App.vue'
 import store from './store'
-import 'uno.css'
+import 'virtual:uno.css'
 // import VConsole from 'vconsole'
 
 export function createApp() {
@@ -16,15 +15,8 @@ export function createApp() {
   //   console.log('生产环境')
   // }
 
-  app.use(config)
-  app.use(i18nPlugin, {
-    greetings: {
-      hello: '你好!',
-    },
-    public: '公共',
-  })
-
-  app.use(uView)
+  // app.use(config)
+  app.use(uvUI)
   app.use(store)
   return {
     app,

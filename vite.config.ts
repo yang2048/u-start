@@ -5,13 +5,16 @@ import uni from '@dcloudio/vite-plugin-uni'
 import viteCompression from 'vite-plugin-compression'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import Unocss from 'unocss/vite'
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
+export default defineConfig(async ({ mode }: ConfigEnv):Promise<UserConfig> => {
+  envDir:"env"
   const root = process.cwd()
   const env = loadEnv(mode, root)
   const { VITE_PORT, VITE_PUBLIC_PATH, VITE_API_BASE_URL } = env
+  //动态导入仅支持ESM的模块
+  const UnoCss = await import('unocss/vite').then((i) => i.default)
+  console.log("process.env: ", process.env.HELLO);
   return {
     base: VITE_PUBLIC_PATH,
     plugins: [
@@ -24,15 +27,16 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         // resolvers: [ElementPlusResolver()],
         extensions: ['vue'],
         // 配置文件生成位置
-        dts: 'src/components.d.ts',
+        dts: 'src/typings/components.d.ts',
       }),
       uni(),
+      UnoCss(),
       AutoImport({
         imports: ['vue', '@vueuse/core', 'uni-app'],
-        dts: 'src/auto-imports.d.ts',
+        dirs: ['src/components', 'src/stores', 'src/utils'],
+        dts: 'src/typings/auto-imports.d.ts',
         vueTemplate: true,
       }),
-      Unocss(),
       viteCompression({
         threshold: 10240, // 10K
       }),
@@ -54,6 +58,15 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
           target: 'http://localhost:3000', // 后端服务实际地址
           changeOrigin: true, //开启代理
           rewrite: (path) => path.replace(/^\/api\/v1/, ''),
+        },
+      },
+    },
+    build: {
+      minify: "terser",
+      terserOptions: {
+        compress: {
+          //发布时删除 console
+          // drop_console: true,
         },
       },
     },

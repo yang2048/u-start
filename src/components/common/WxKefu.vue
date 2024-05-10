@@ -33,12 +33,12 @@ const onHide = () => {
   <view>
     <view v-show="!show && !hideKefu" class="wxkefu-container" @click="show = true">
       <view class="mx-2">
-        <u-image width="40px" height="40px" :src="`${config.oss}/common/kefu.jpeg`" shape="circle"></u-image>
+        <uv-image width="40px" height="40px" :src="`${config.oss}/common/kefu.jpeg`" shape="circle"></uv-image>
       </view>
     </view>
-    <u-popup v-model="show" mode="center" closeable height="350px" width="70%" :border-radius="12">
+    <uv-popup v-model="show" mode="center" closeable height="350px" width="70%" :border-radius="12">
       <view class="image-box">
-        <u-image width="50px" height="50px" :src="`${config.oss}/common/kefu.jpeg`" shape="circle"></u-image>
+        <uv-image width="50px" height="50px" :src="`${config.oss}/common/kefu.jpeg`" shape="circle"></uv-image>
       </view>
       <view class="info-box mt-3">
         <view class="text-17px">
@@ -52,7 +52,7 @@ const onHide = () => {
           - 同城/同校交流群<br />
         </view>
         <view class="text-12px color-#888 mt-6"> 微信号: {{ wx }} </view>
-        <u-button
+        <uv-button
           class="mt-3"
           :custom-style="{ padding: '0px 40px', height: '34px', color: '#FFF', background: '#243b82', border: 'none' }"
           color="primary"
@@ -60,13 +60,13 @@ const onHide = () => {
           size="mini"
           shape="circle"
           @click="onConfirm"
-          >复制微信号</u-button
+          >复制微信号</uv-button
         >
         <view class="mt-2">
-          <u-checkbox v-model="hide" :size="28" :label-size="26" @click="onHide"> 不显示 </u-checkbox>
+          <uv-checkbox v-model="hide" :size="28" :label-size="26" @click="onHide"> 不显示 </uv-checkbox>
         </view>
       </view>
-    </u-popup>
+    </uv-popup>
   </view>
 </template>
 

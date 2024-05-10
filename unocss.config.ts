@@ -1,38 +1,68 @@
-import presetWeapp from 'unocss-preset-weapp'
-import { transformerAttributify, transformerClass } from 'unocss-preset-weapp/transformer'
-import { defineConfig } from 'unocss'
-import { transformerDirectives } from 'unocss'
-import presetIcons from '@unocss/preset-icons'
-import presetChinese from 'unocss-preset-chinese'
+import { defineConfig, presetIcons, transformerDirectives, transformerVariantGroup, } from 'unocss'
+import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
+import { presetUni } from '@uni-helper/unocss-preset-uni'
 
 export default defineConfig({
+  content: {
+    pipeline: {
+      exclude: ['node_modules', 'dist', '.git', '.husky', '.vscode', 'public', 'build', 'mock', './stats.html'],
+    },
+  },
   presets: [
-    // docs: https://github.com/MellowCo/unocss-preset-weapp
-    presetWeapp({
-      whRpx: true,
+    presetIcons({
+      scale: 1.2,
+      warn: true,
+      extraProperties: {
+        display: 'inline-block',
+        'vertical-align': 'middle',
+      },
+      collections: {
+        local: FileSystemIconLoader('./src/static/svg'),
+      },
     }),
-    presetChinese(),
-    presetIcons({}),
+    presetUni({
+      remRpx: false,
+      uno: {
+        dark: 'class',
+      },
+    }),
+  ],
+  transformers: [
+    transformerDirectives(), // 启用 @apply 功能
+    transformerVariantGroup(), // 启用 () 分组功能
   ],
   shortcuts: [
     {
+      'center': 'flex justify-center items-center',
       'border-base': 'border border-gray-500_10',
+      'cover-image': 'flex-1 h-300',
+      'cover-text': 'absolute bottom-0 text-16px h-30px lh-30px bg-black bg-op-20 w-100%',
+      'wh-full': 'w-full h-full',
       'flex-center': 'flex justify-center items-center',
       'flex-between': 'flex justify-between items-center',
       'custom-cover': 'relative flex',
-      'cover-image': 'flex-1 h-300',
-      'cover-text': 'absolute bottom-0 text-16px h-30px lh-30px bg-black bg-op-20 w-100%',
+      'flex-col-center': 'flex-center flex-col',
+      'flex-x-center': 'flex justify-center',
+      'flex-y-center': 'flex items-center',
+      'fixed-center': 'fixed left-0 top-0 flex-center wh-full',
+      'nowrap-hidden': 'whitespace-nowrap overflow-hidden',
+      'ellipsis-text': 'nowrap-hidden text-ellipsis',
+      'transition-base': 'transition-all duration-300 ease-in-out',
+      'absolute-lt': 'absolute left-0 top-0',
+      'absolute-lb': 'absolute left-0 bottom-0',
+      'absolute-rt': 'absolute right-0 top-0',
+      'absolute-rb': 'absolute right-0 bottom-0',
+      'absolute-center': 'absolute-lt flex-center wh-full'
     },
   ],
-  transformers: [
-    // https://github.com/unocss/unocss/tree/main/packages/transformer-directives
-    transformerDirectives(),
-    // docs: https://github.com/MellowCo/unocss-preset-weapp/tree/main/src/transformer/transformerAttributify
-    transformerAttributify({
-      nonValuedAttribute: true, // 以支持在小程序中使用 attributify mode, 例如 <button bg="blue-400"></button>
-    }),
-
-    // docs: https://github.com/MellowCo/unocss-preset-weapp/tree/main/src/transformer/transformerClass
-    transformerClass(),
-  ],
+  theme: {
+    colors: {
+      // primary: 'var(--nut-primary-color)',
+      // info: 'var(--nut-info-color)',
+      // warning: 'var(--nut-warning-color)',
+      // danger: 'var(--nut-danger-color)',
+      // success: 'var(--nut-success-color)',
+      // default: 'var(--nut-default-color)',
+    },
+  },
 })

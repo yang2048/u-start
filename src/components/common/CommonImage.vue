@@ -19,7 +19,7 @@ const imageUrl = computed(() => {
 </script>
 
 <template>
-  <u-image :width="width ? width : '100%'" :height="height ? height : '200px'" :src="imageUrl"></u-image>
+  <uv-image :width="width ? width : '100%'" :height="height ? height : '200px'" :src="imageUrl"></uv-image>
 </template>
 
 <style lang="scss" scoped></style>

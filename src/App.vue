@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAppStore } from '@/store/app'
-import { setupPermission } from '@/permission'
+// import { setupPermission } from '@/permission'
 
 const appStore = useAppStore()
 
@@ -9,7 +9,7 @@ onLaunch(() => {
   // #ifndef H5
   appStore.initSystemInfo()
   // #endif
-  setupPermission()
+  // setupPermission()
 })
 
 onShow(() => {
@@ -27,6 +27,5 @@ onHide(() => {
 
 <style lang="scss">
 // 每个页面都会加载
-@import './uni_modules/vk-uview-ui/index.scss';
-@import './static/main.scss';
+@import '@/styles/index.scss';
 </style>

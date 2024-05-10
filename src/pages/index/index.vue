@@ -2,7 +2,7 @@
 export default { name: 'IndexPage' }
 </script>
 <script setup lang="ts">
-// const title = ref(import.meta.env.VITE_APP_TITLE)
+const title = ref(import.meta.env.VITE_APP_TITLE)
 onMounted(() => {
   setTimeout(() => {
     uni.switchTab({ url: '/pages/tabbar/home/index' })
@@ -13,7 +13,7 @@ onMounted(() => {
 <template>
   <view class="flex flex-col items-center justify-center" style="height: 100vh">
     <view class="flex flex-col items-center justify-center">
-      <text class="title">服务平台</text>
+      <text class="title">{{ title }}</text>
     </view>
     <image class="logo" src="/static/logo.png" />
   </view>

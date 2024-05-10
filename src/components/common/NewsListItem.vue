@@ -6,7 +6,7 @@ const config = inject('config') // 注入
 const props = defineProps<{ data: PostList }>()
 
 const toPostDetail = (id: string | number) => {
-  uni.$u.route({
+  uni.$uv.route({
     url: 'pages/post/detail',
     params: {
       id,
@@ -21,19 +21,19 @@ const toPostDetail = (id: string | number) => {
       <view class="title line-3">{{ data.name }}</view>
       <view class="flex flex-row items-center justify-start color-#888 text-12px">
         <view class="user mr-3" style="width: 100px"
-          ><u-icon name="account" class="mr-1" />{{ data.author_id && data.author_id.name }}</view
+          ><uv-icon name="account" class="mr-1" />{{ data.author_id && data.author_id.name }}</view
         >
-        <view><u-icon name="eye" class="mr-1" />{{ data.view_count }}</view>
+        <view><uv-icon name="eye" class="mr-1" />{{ data.view_count }}</view>
       </view>
     </view>
     <view class="img-box">
-      <u-image
+      <uv-image
         width="150px"
         height="100%"
         :src="data.image_url ? config.domain + data.image_url : config.emptyImg"
         border-radius="4px"
-      ></u-image>
-      <u-tag
+      ></uv-image>
+      <uv-tag
         class="img-tag"
         :text="data.tag_ids.length > 0 ? data.tag_ids[0].name : '动态'"
         mode="dark"

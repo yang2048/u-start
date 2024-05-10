@@ -7,12 +7,12 @@ export default function useFavor(modelName: string) {
 
   const toggle = async (id: number) => {
     if (!isLogin()) {
-      uni.$u.toast('请先登录')
+      uni.$uv.toast('请先登录')
       return
     }
 
     if (loading.value) {
-      uni.$u.toast('请先稍后操作')
+      uni.$uv.toast('请先稍后操作')
       return
     }
     setLoading(true)
