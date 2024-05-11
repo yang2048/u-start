@@ -2,6 +2,7 @@
 	"easycom": {
 		"autoscan": true,
 		"custom": {
+			"^um-(.*)": "@/components/um-$1.vue",
 			// "^uv-(.*)": "@climblee/uv-ui/components/uv-$1/uv-$1.vue"
 		}
 	},
@@ -68,6 +69,12 @@
 			"style": {
 				"navigationBarTitleText": "影视",
 				"navigationStyle": "custom"
+			}
+		}
+		{
+			"path": "pages/play/index",
+			"style": {
+				"navigationBarTitleText": "影视"
 			}
 		}
 	],

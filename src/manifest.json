@@ -86,28 +86,11 @@
             "enable" : true
         }
     },
-    "mp-alipay" : {
-        "usingComponents" : true
-    },
-    "mp-baidu" : {
-        "usingComponents" : true
-    },
-    "mp-toutiao" : {
-        "usingComponents" : true,
-        "appid" : "tt792c0f91e613bf8c01"
-    },
-    "uniStatistics" : {
-        "enable" : false,
-        "version" : "2"
-    },
     "vueVersion" : "3",
     "h5" : {
         "router" : {
             "mode" : "history",
             "base" : "/"
-        },
-        "uniStatistics" : {
-            "enable" : true
         }
     }
 }

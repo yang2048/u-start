@@ -90,3 +90,35 @@ page {
   padding: 5px 7px;
   opacity: 0.8;
 }
+// 字体滚动
+.scroll-wrap {
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.scroll-item {
+  animation: scroll 6s infinite;
+  float: left;
+}
+
+@keyframes scroll {
+  0% {
+    margin-left: 0;
+    transform: translateX(0);
+  }
+  10% {
+    margin-left: 0;
+    transform: translateX(0);
+  }
+  90% {
+    margin-left: 100%;
+    transform: translateX(-100%);
+  }
+  100% {
+    margin-left: 100%;
+    transform: translateX(-100%);
+  }
+}

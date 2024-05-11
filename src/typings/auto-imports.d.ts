@@ -6,11 +6,11 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
-  const IDCard: typeof import('../utils/RegExp.js')['IDCard']
-  const Integer: typeof import('../utils/RegExp.js')['Integer']
-  const TEL: typeof import('../utils/RegExp.js')['TEL']
-  const TINumber: typeof import('../utils/RegExp.js')['TINumber']
-  const URL: typeof import('../utils/RegExp.js')['URL']
+  const IDCard: typeof import('../utils/RegExp')['IDCard']
+  const Integer: typeof import('../utils/RegExp')['Integer']
+  const TEL: typeof import('../utils/RegExp')['TEL']
+  const TINumber: typeof import('../utils/RegExp')['TINumber']
+  const URL: typeof import('../utils/RegExp')['URL']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
   const checkBankno: typeof import('../utils/public')['checkBankno']
@@ -38,7 +38,7 @@ declare global {
   const defineComponent: typeof import('vue')['defineComponent']
   const eagerComputed: typeof import('@vueuse/core')['eagerComputed']
   const effectScope: typeof import('vue')['effectScope']
-  const email: typeof import('../utils/RegExp.js')['email']
+  const email: typeof import('../utils/RegExp')['email']
   const extendRef: typeof import('@vueuse/core')['extendRef']
   const formatPrice: typeof import('../utils/public')['formatPrice']
   const getClipboardData: typeof import('../utils/h5-copy')['getClipboardData']
@@ -55,7 +55,7 @@ declare global {
   const h5Copy: typeof import('../utils/h5-copy')['h5Copy']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
   const inject: typeof import('vue')['inject']
-  const integer: typeof import('../utils/RegExp.js')['integer']
+  const integer: typeof import('../utils/RegExp')['integer']
   const isArray: typeof import('../utils/is')['isArray']
   const isBlob: typeof import('../utils/is')['isBlob']
   const isDate: typeof import('../utils/is')['isDate']
@@ -99,8 +99,8 @@ declare global {
   const isWindow: typeof import('../utils/is')['isWindow']
   const makeDestructurable: typeof import('@vueuse/core')['makeDestructurable']
   const markRaw: typeof import('vue')['markRaw']
-  const mobile: typeof import('../utils/RegExp.js')['mobile']
-  const money: typeof import('../utils/RegExp.js')['money']
+  const mobile: typeof import('../utils/RegExp')['mobile']
+  const money: typeof import('../utils/RegExp')['money']
   const nextTick: typeof import('vue')['nextTick']
   const noPassByName: typeof import('../utils/public')['noPassByName']
   const objectToString: typeof import('../utils/is')['objectToString']
@@ -148,7 +148,7 @@ declare global {
   const openLocation: typeof import('../utils/factory')['openLocation']
   const openSetting: typeof import('../utils/factory')['openSetting']
   const parseUrl: typeof import('../utils/public')['parseUrl']
-  const password: typeof import('../utils/RegExp.js')['password']
+  const password: typeof import('../utils/RegExp')['password']
   const pausableWatch: typeof import('@vueuse/core')['pausableWatch']
   const platform: typeof import('../utils/platform')['platform']
   const provide: typeof import('vue')['provide']
@@ -358,7 +358,7 @@ declare global {
   const useWindowFocus: typeof import('@vueuse/core')['useWindowFocus']
   const useWindowScroll: typeof import('@vueuse/core')['useWindowScroll']
   const useWindowSize: typeof import('@vueuse/core')['useWindowSize']
-  const userName: typeof import('../utils/RegExp.js')['userName']
+  const userName: typeof import('../utils/RegExp')['userName']
   const watch: typeof import('vue')['watch']
   const watchArray: typeof import('@vueuse/core')['watchArray']
   const watchAtMost: typeof import('@vueuse/core')['watchAtMost']
@@ -374,7 +374,7 @@ declare global {
   const watchWithFilter: typeof import('@vueuse/core')['watchWithFilter']
   const whenever: typeof import('@vueuse/core')['whenever']
   const whetherNavigate: typeof import('../utils/public')['whetherNavigate']
-  const wxPay: typeof import('../utils/wx-pay.js')['default']
+  const wxPay: typeof import('../utils/wx-pay')['default']
 }
 // for type re-export
 declare global {
@@ -388,11 +388,11 @@ declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly IDCard: UnwrapRef<typeof import('../utils/RegExp.js')['IDCard']>
-    readonly Integer: UnwrapRef<typeof import('../utils/RegExp.js')['Integer']>
-    readonly TEL: UnwrapRef<typeof import('../utils/RegExp.js')['TEL']>
-    readonly TINumber: UnwrapRef<typeof import('../utils/RegExp.js')['TINumber']>
-    readonly URL: UnwrapRef<typeof import('../utils/RegExp.js')['URL']>
+    readonly IDCard: UnwrapRef<typeof import('../utils/RegExp')['IDCard']>
+    readonly Integer: UnwrapRef<typeof import('../utils/RegExp')['Integer']>
+    readonly TEL: UnwrapRef<typeof import('../utils/RegExp')['TEL']>
+    readonly TINumber: UnwrapRef<typeof import('../utils/RegExp')['TINumber']>
+    readonly URL: UnwrapRef<typeof import('../utils/RegExp')['URL']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly checkBankno: UnwrapRef<typeof import('../utils/public')['checkBankno']>
@@ -420,7 +420,7 @@ declare module 'vue' {
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
-    readonly email: UnwrapRef<typeof import('../utils/RegExp.js')['email']>
+    readonly email: UnwrapRef<typeof import('../utils/RegExp')['email']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly formatPrice: UnwrapRef<typeof import('../utils/public')['formatPrice']>
     readonly getClipboardData: UnwrapRef<typeof import('../utils/h5-copy')['getClipboardData']>
@@ -437,7 +437,7 @@ declare module 'vue' {
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
-    readonly integer: UnwrapRef<typeof import('../utils/RegExp.js')['integer']>
+    readonly integer: UnwrapRef<typeof import('../utils/RegExp')['integer']>
     readonly isArray: UnwrapRef<typeof import('../utils/is')['isArray']>
     readonly isBlob: UnwrapRef<typeof import('../utils/is')['isBlob']>
     readonly isDate: UnwrapRef<typeof import('../utils/is')['isDate']>
@@ -481,8 +481,8 @@ declare module 'vue' {
     readonly isWindow: UnwrapRef<typeof import('../utils/is')['isWindow']>
     readonly makeDestructurable: UnwrapRef<typeof import('@vueuse/core')['makeDestructurable']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
-    readonly mobile: UnwrapRef<typeof import('../utils/RegExp.js')['mobile']>
-    readonly money: UnwrapRef<typeof import('../utils/RegExp.js')['money']>
+    readonly mobile: UnwrapRef<typeof import('../utils/RegExp')['mobile']>
+    readonly money: UnwrapRef<typeof import('../utils/RegExp')['money']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly noPassByName: UnwrapRef<typeof import('../utils/public')['noPassByName']>
     readonly objectToString: UnwrapRef<typeof import('../utils/is')['objectToString']>
@@ -530,7 +530,7 @@ declare module 'vue' {
     readonly openLocation: UnwrapRef<typeof import('../utils/factory')['openLocation']>
     readonly openSetting: UnwrapRef<typeof import('../utils/factory')['openSetting']>
     readonly parseUrl: UnwrapRef<typeof import('../utils/public')['parseUrl']>
-    readonly password: UnwrapRef<typeof import('../utils/RegExp.js')['password']>
+    readonly password: UnwrapRef<typeof import('../utils/RegExp')['password']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly platform: UnwrapRef<typeof import('../utils/platform')['platform']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
@@ -740,7 +740,7 @@ declare module 'vue' {
     readonly useWindowFocus: UnwrapRef<typeof import('@vueuse/core')['useWindowFocus']>
     readonly useWindowScroll: UnwrapRef<typeof import('@vueuse/core')['useWindowScroll']>
     readonly useWindowSize: UnwrapRef<typeof import('@vueuse/core')['useWindowSize']>
-    readonly userName: UnwrapRef<typeof import('../utils/RegExp.js')['userName']>
+    readonly userName: UnwrapRef<typeof import('../utils/RegExp')['userName']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchArray: UnwrapRef<typeof import('@vueuse/core')['watchArray']>
     readonly watchAtMost: UnwrapRef<typeof import('@vueuse/core')['watchAtMost']>
@@ -756,18 +756,18 @@ declare module 'vue' {
     readonly watchWithFilter: UnwrapRef<typeof import('@vueuse/core')['watchWithFilter']>
     readonly whenever: UnwrapRef<typeof import('@vueuse/core')['whenever']>
     readonly whetherNavigate: UnwrapRef<typeof import('../utils/public')['whetherNavigate']>
-    readonly wxPay: UnwrapRef<typeof import('../utils/wx-pay.js')['default']>
+    readonly wxPay: UnwrapRef<typeof import('../utils/wx-pay')['default']>
   }
 }
 declare module '@vue/runtime-core' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly IDCard: UnwrapRef<typeof import('../utils/RegExp.js')['IDCard']>
-    readonly Integer: UnwrapRef<typeof import('../utils/RegExp.js')['Integer']>
-    readonly TEL: UnwrapRef<typeof import('../utils/RegExp.js')['TEL']>
-    readonly TINumber: UnwrapRef<typeof import('../utils/RegExp.js')['TINumber']>
-    readonly URL: UnwrapRef<typeof import('../utils/RegExp.js')['URL']>
+    readonly IDCard: UnwrapRef<typeof import('../utils/RegExp')['IDCard']>
+    readonly Integer: UnwrapRef<typeof import('../utils/RegExp')['Integer']>
+    readonly TEL: UnwrapRef<typeof import('../utils/RegExp')['TEL']>
+    readonly TINumber: UnwrapRef<typeof import('../utils/RegExp')['TINumber']>
+    readonly URL: UnwrapRef<typeof import('../utils/RegExp')['URL']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly checkBankno: UnwrapRef<typeof import('../utils/public')['checkBankno']>
@@ -795,7 +795,7 @@ declare module '@vue/runtime-core' {
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
-    readonly email: UnwrapRef<typeof import('../utils/RegExp.js')['email']>
+    readonly email: UnwrapRef<typeof import('../utils/RegExp')['email']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly formatPrice: UnwrapRef<typeof import('../utils/public')['formatPrice']>
     readonly getClipboardData: UnwrapRef<typeof import('../utils/h5-copy')['getClipboardData']>
@@ -812,7 +812,7 @@ declare module '@vue/runtime-core' {
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
-    readonly integer: UnwrapRef<typeof import('../utils/RegExp.js')['integer']>
+    readonly integer: UnwrapRef<typeof import('../utils/RegExp')['integer']>
     readonly isArray: UnwrapRef<typeof import('../utils/is')['isArray']>
     readonly isBlob: UnwrapRef<typeof import('../utils/is')['isBlob']>
     readonly isDate: UnwrapRef<typeof import('../utils/is')['isDate']>
@@ -856,8 +856,8 @@ declare module '@vue/runtime-core' {
     readonly isWindow: UnwrapRef<typeof import('../utils/is')['isWindow']>
     readonly makeDestructurable: UnwrapRef<typeof import('@vueuse/core')['makeDestructurable']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
-    readonly mobile: UnwrapRef<typeof import('../utils/RegExp.js')['mobile']>
-    readonly money: UnwrapRef<typeof import('../utils/RegExp.js')['money']>
+    readonly mobile: UnwrapRef<typeof import('../utils/RegExp')['mobile']>
+    readonly money: UnwrapRef<typeof import('../utils/RegExp')['money']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly noPassByName: UnwrapRef<typeof import('../utils/public')['noPassByName']>
     readonly objectToString: UnwrapRef<typeof import('../utils/is')['objectToString']>
@@ -905,7 +905,7 @@ declare module '@vue/runtime-core' {
     readonly openLocation: UnwrapRef<typeof import('../utils/factory')['openLocation']>
     readonly openSetting: UnwrapRef<typeof import('../utils/factory')['openSetting']>
     readonly parseUrl: UnwrapRef<typeof import('../utils/public')['parseUrl']>
-    readonly password: UnwrapRef<typeof import('../utils/RegExp.js')['password']>
+    readonly password: UnwrapRef<typeof import('../utils/RegExp')['password']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly platform: UnwrapRef<typeof import('../utils/platform')['platform']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
@@ -1115,7 +1115,7 @@ declare module '@vue/runtime-core' {
     readonly useWindowFocus: UnwrapRef<typeof import('@vueuse/core')['useWindowFocus']>
     readonly useWindowScroll: UnwrapRef<typeof import('@vueuse/core')['useWindowScroll']>
     readonly useWindowSize: UnwrapRef<typeof import('@vueuse/core')['useWindowSize']>
-    readonly userName: UnwrapRef<typeof import('../utils/RegExp.js')['userName']>
+    readonly userName: UnwrapRef<typeof import('../utils/RegExp')['userName']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchArray: UnwrapRef<typeof import('@vueuse/core')['watchArray']>
     readonly watchAtMost: UnwrapRef<typeof import('@vueuse/core')['watchAtMost']>
@@ -1131,6 +1131,6 @@ declare module '@vue/runtime-core' {
     readonly watchWithFilter: UnwrapRef<typeof import('@vueuse/core')['watchWithFilter']>
     readonly whenever: UnwrapRef<typeof import('@vueuse/core')['whenever']>
     readonly whetherNavigate: UnwrapRef<typeof import('../utils/public')['whetherNavigate']>
-    readonly wxPay: UnwrapRef<typeof import('../utils/wx-pay.js')['default']>
+    readonly wxPay: UnwrapRef<typeof import('../utils/wx-pay')['default']>
   }
 }

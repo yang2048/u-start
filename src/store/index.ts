@@ -4,4 +4,6 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
+export * from './modules/play';
+
 export default pinia

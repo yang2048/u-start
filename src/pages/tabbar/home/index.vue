@@ -2,7 +2,7 @@
 import usePager from "@/hooks/pager";
 import type { HomeData, SearchParams } from "@/api/common/model";
 import type { PostList } from "@/api/post/model";
-import {sysConfig } from "@/constants";
+// import { config } from "@/constants";
 
 const { list, pager, loadData, loadMore } = usePager<PostList>("demo");
 
@@ -154,7 +154,7 @@ const toPage = (page:string) => {
           </view> -->
       </template>
     </uv-navbar>
-    <view class="px-4">
+    <view class="px-3">
       <view>
         <view class="my-3">
           <uv-swiper

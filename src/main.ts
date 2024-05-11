@@ -1,6 +1,6 @@
 import { createSSRApp } from 'vue'
 import uvUI from '@/uni_modules/uv-ui-tools'
-// import config from './constants/config'
+import config from './constants/config'
 import App from './App.vue'
 import store from './store'
 import 'virtual:uno.css'
@@ -15,7 +15,7 @@ export function createApp() {
   //   console.log('生产环境')
   // }
 
-  // app.use(config)
+  app.use(config)
   app.use(uvUI)
   app.use(store)
   return {

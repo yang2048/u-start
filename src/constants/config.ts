@@ -4,7 +4,7 @@ export default {
   },
 }
 
-export const sysConfig = {
+export const config = {
   name: '应用名称',
   domain: import.meta.env.VITE_API_BASE_URL,
   oss: import.meta.env.VITE_APP_OSS,
