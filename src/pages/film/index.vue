@@ -78,6 +78,7 @@ const toPage = (page: string, item?: any) => {
     <view class="">
       <uv-tabs :list="config.classList"></uv-tabs>
     </view>
+
     <view class="px-3">
       <scroll-view
         enable-flex
@@ -88,9 +89,9 @@ const toPage = (page: string, item?: any) => {
         @scrolltolower="onScrollToLower"
         @refresherrefresh="onRefresherrefresh"
       >
-        <view class="grid grid-cols-3 gap-2 justify-center flex-items-center">
-          <view v-for="(item, index) in vod.list" :key="index">
-            <div class="" @click="toPage('pages/play/index', item)">
+        <view class="grid grid-cols-3 gap-2">
+          <view v-for="(item, index) in vod.list" :key="index" class="justify-center flex-items-center">
+            <div class="rounded-md" @click="toPage('pages/play/index', item)">
               <uv-image
                 :src="item.vod_pic"
                 :showMenuByLongpress="false"

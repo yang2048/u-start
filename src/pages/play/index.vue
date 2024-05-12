@@ -80,19 +80,10 @@ function onLoadedMetaData(e: any) {
         enable-danmu
         enablePlayGesture
         enableAutoRotation
+        showScrollbar
         :src="video_url"
         :initial-time="0"
-        :showCastingButton="true"
-        :showRateBtn="true"
-        :showScreenLockButton="true"
-        :showSnapshotButton="true"
-        :showBackgroundPlaybackButton="true"
-        :showThinProgressBar="true"
-        :showVslideBtnInFullscreen="true"
-        :mobilenetHintType="1"
-        floatingMode="page"
-        :showNoWifiTip="true"
-        :pictureInPictureMode="['push', 'pop']"
+        :playStrategy="2"
         object-fit="contain"
         @ended="onEnded"
         @loadedMetaData="onLoadedMetaData"
@@ -164,7 +155,7 @@ function onLoadedMetaData(e: any) {
             <uv-text
               :text="info.vod_blurb ? info.vod_blurb.trim() : '暂无剧情简介'"
               lines="4"
-              size="15"
+              size="13"
             ></uv-text>
           </p>
         </div>
@@ -174,7 +165,7 @@ function onLoadedMetaData(e: any) {
     <!-- 剧集 -->
     <view class="mt-3">
       <view class="p-3">
-        <button plain type="warn" size="mini">{{info.vod_play_from}}</button>
+        <button plain type="warn" size="mini">{{ info.vod_play_from }}</button>
         <span class="float-right">
           <span class="mr-2 text-center" @click="onReverse()">
             <div
@@ -183,26 +174,21 @@ function onLoadedMetaData(e: any) {
           </span>
         </span>
       </view>
+
       <scroll-view enable-flex scroll-y style="height: 400rpx">
-        <div class="flex flex-wrap justify-start gap-2 flex-items-center p-2" v-for="(item, index) in video_urls" :key="index">
-          <uv-button plain :text="item.split('$')[0]" size="small" shape="circle" ></uv-button>
-        </div>
-      
-        <!-- <uv-row justify="space-between" gutter="10">
-          <uv-col span="6"
-            v-for="(item, index) in video_urls"
-            :key="index"
-            class="pl-2 pt-2"
-          >
-            <nv-button size="small" @click="switchVideo(item)">
-              <div class="scroll-wrap">
-                <div class="scroll-item whitespace-nowrap">
-                  {{ item.split("$")[0] }}
-                </div>
-              </div>
-            </nv-button>
-          </uv-col>
-        </uv-row> -->
+        <view class="px-3">
+          <uv-row justify="start" gutter="10">
+            <view
+              class="contents"
+              v-for="(item, index) in video_urls"
+              :key="index"
+            >
+              <uv-col span="3">
+                <view class="h-6 px-2 rounded bg-#fa0">{{ item.split("$")[0] }}</view>
+              </uv-col>
+            </view>
+          </uv-row>
+        </view>
       </scroll-view>
     </view>
   </view>
