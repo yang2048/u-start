@@ -1,112 +1,71 @@
 <template>
-  <view>
-    <page-head title="scroll-view,区域滚动视图"></page-head>
-    <!-- <view class="uni-padding-wrap uni-common-mt">
-
-
-      <view class="uni-title uni-common-mt">
-        Horizontal Scroll
-        <text>\n横向滚动</text>
-      </view>
-      <view>
-        <scroll-view
-          class="scroll-view_H"
-          scroll-x="true"
-          @scroll="scroll"
-          scroll-left="120"
-        >
-          <view id="demo1" class="scroll-view-item_H uni-bg-red">A</view>
-          <view id="demo2" class="scroll-view-item_H uni-bg-green">B</view>
-          <view id="demo3" class="scroll-view-item_H uni-bg-blue">C</view>
-        </scroll-view>
-      </view>
-      <view class="uni-common-pb"></view>
-    </view> -->
-    <view class="uni-title uni-common-mt">
-        Vertical Scroll
-        <text>\n纵向滚动</text>
-        <view @tap="goTop" class="uni-link uni-center uni-common-mt">
-          点击这里返回顶部
+  <view class="container">
+    <uv-navbar placeholder leftText="返回">
+      <template #center>
+        <view class="ml-3">
+          <uv-search
+            placeholder="搜索"
+            disabled
+            :showAction="false"
+            @click="toPage('pages/search/index')"
+            :customStyle="{ width: '80%' }"
+          ></uv-search>
         </view>
-      </view>
-      <view>
-        <scroll-view
-          :scroll-top="scrollTop"
-          scroll-y="true"
-          class="scroll-Y"
-          @scrolltoupper="upper"
-          @scrolltolower="lower"
-        >
-          <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
-          <view id="demo2" class="scroll-view-item bg-green">B</view>
-          <view id="demo3" class="scroll-view-item bg-blue">C</view>
-          <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
-          <view id="demo2" class="scroll-view-item bg-green">B</view>
-          <view id="demo3" class="scroll-view-item bg-blue">C</view>
-          <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
-          <view id="demo2" class="scroll-view-item bg-green">B</view>
-          <view id="demo3" class="scroll-view-item bg-blue">C</view>
-          <view id="demo2" class="scroll-view-item bg-green">B</view>
-          <view id="demo3" class="scroll-view-item bg-blue">C</view>
-          <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
-          <view id="demo2" class="scroll-view-item bg-green">B</view>
-          <view id="demo3" class="scroll-view-item bg-blue">C</view>
-          <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
-          <view id="demo2" class="scroll-view-item bg-green">B</view>
-          <view id="demo3" class="scroll-view-item bg-blue">C</view>
-          <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
-          <view id="demo2" class="scroll-view-item bg-green">B</view>
-          <view id="demo3" class="scroll-view-item bg-blue">C</view>
-          <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
-          <view id="demo2" class="scroll-view-item bg-green">B</view>
-        </scroll-view>
-      </view>
+      </template>
+    </uv-navbar>
+    <page-head title="scroll-view,区域滚动视图"></page-head>
+
+    <view>
+      <scroll-view
+        :scroll-y="true"
+        class="h-vh"
+        @scrolltolower="lower"
+      >
+        <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
+        <view id="demo2" class="scroll-view-item bg-green">B</view>
+        <view id="demo3" class="scroll-view-item bg-blue">C</view>
+        <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
+        <view id="demo2" class="scroll-view-item bg-green">B</view>
+        <view id="demo3" class="scroll-view-item bg-blue">C</view>
+        <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
+        <view id="demo2" class="scroll-view-item bg-green">B</view>
+        <view id="demo3" class="scroll-view-item bg-blue">C</view>
+        <view id="demo2" class="scroll-view-item bg-green">B</view>
+        <view id="demo3" class="scroll-view-item bg-blue">C</view>
+        <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
+        <view id="demo2" class="scroll-view-item bg-green">B</view>
+        <view id="demo3" class="scroll-view-item bg-blue">C</view>
+        <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
+        <view id="demo2" class="scroll-view-item bg-green">B</view>
+        <view id="demo3" class="scroll-view-item bg-blue">C</view>
+        <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
+        <view id="demo2" class="scroll-view-item bg-green">B</view>
+        <view id="demo3" class="scroll-view-item bg-blue">C</view>
+        <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
+        <view id="demo2" class="scroll-view-item bg-green">B</view>
+      </scroll-view>
+    </view>
   </view>
 </template>
-<script>
-export default {
-  data() {
-    return {
-      scrollTop: 0,
-      old: {
-        scrollTop: 0,
-      },
-    };
-  },
-  methods: {
-    upper: function (e) {
-      console.log('AAA',e);
-    },
-    lower: function (e) {
-      console.log('VVV',e);
-    },
-    scroll: function (e) {
-      console.log(e);
-      this.old.scrollTop = e.detail.scrollTop;
-    },
-    goTop: function (e) {
-      // 解决view层不同步的问题
-      this.scrollTop = this.old.scrollTop;
-      this.$nextTick(function () {
-        this.scrollTop = 0;
-      });
-      uni.showToast({
-        icon: "none",
-        title: "纵向滚动 scrollTop 值已被修改为 0",
-      });
-    },
-  },
+
+<script setup lang="ts">
+import _ from "lodash";
+import { getVodList } from "@/services";
+import { useRequest } from "alova";
+import { usePlayStore } from "@/store";
+import { fetchClassify, fetchList } from "@/utils/cms";
+
+const upper = (e) => {
+  console.log(e);
+};
+const lower = (e) => {
+  console.log(e);
 };
 </script>
 
 <style>
 .scroll-Y {
   height: 100vh;
-}
-
-.scroll-view_H {
-  white-space: nowrap;
-  width: 100%;
 }
 
 .scroll-view-item {
@@ -116,12 +75,4 @@ export default {
   font-size: 36rpx;
 }
 
-.scroll-view-item_H {
-  display: inline-block;
-  width: 100%;
-  height: 300rpx;
-  line-height: 300rpx;
-  text-align: center;
-  font-size: 36rpx;
-}
 </style>

@@ -28,6 +28,7 @@ const siteConfig = ref({
 const filmData = ref({
   list: [],
   rawList: [],
+  pageStatus: "loadmore",
 }) as any;
 const pagination = ref({
   pageIndex: 1,
@@ -123,15 +124,16 @@ const categoriesFilter = (classData: string[]): string[] => {
 };
 
 // 切换分类
-const changeClassEvent = (key: any) => {
-  active.value.class = key;
+const changeClassEvent = (item: any) => {
+  active.value.class = item.type_id;
   classFilter(filter.value.data);
   // filterApiEvent();
   // searchTxt.value = "";
-  // infiniteCompleteTip.value = t("pages.film.infiniteLoading.noMore");
-  // filmData.value = { list: [], rawList: [] };
+  filmData.value = { list: [], rawList: [] };
   // infiniteId.value++;
   pagination.value.pageIndex = 1;
+  console.info('切换分类', item)
+  const resLength = getFilmList();
 };
 
 // 过滤条件-选中第一项
@@ -190,20 +192,24 @@ const searchEvent = async () => {};
 // 切换站点
 const changeSitesEvent = async (key: string) => {};
 
-const onScrollToLower = () => {
-  console.info("onScrollToLower================");
+const onScrollToLower = async (e) => {
+  console.info("onScrollToLower", e);
+  if (filmData.value.pageStatus == "loadmore") {
+    filmData.value.pageStatus = "loading";
+    const resLength = await getFilmList(); // 动态加载数据
+
+    if (resLength === 0 || filmData.value.list[0]?.vod_name === "无数据,防无限请求") {
+      console.info("无数据,防无限请求");
+      filmData.value.pageStatus = "nomore";
+    } else {
+      filmData.value.pageStatus = "loadmore";
+    }
+  }
 };
 
 const loadData = () => {
   console.info("loadData");
 };
-
-const upper = (e) => {
-				console.log(e)
-			}
-  const lower = (e) => {
-    console.log(e)
-  }
 
 //播放
 const toPage = (page: string, item?: any) => {
@@ -234,24 +240,24 @@ const toPage = (page: string, item?: any) => {
       </template>
     </uv-navbar>
 
-    <view class="px-3">
+    <view class="">
       <scroll-view
         scroll-y
-        type="custom"
+        class="h-vh"
         :lowerThreshold="50"
-        @scrolltoupper="upper" @scrolltolower="lower"
+        @scrolltolower="onScrollToLower"
       >
         <sticky-section>
-          <sticky-header class="fixed z-1">
+          <sticky-header class="fixed z-89 bg-#fff">
             <!-- 分类 -->
-            <view class="">
-              <uv-tabs :list="classConfig.data" keyName="type_name"></uv-tabs>
+            <view class="w-screen">
+              <uv-tabs :list="classConfig.data" keyName="type_name" @change="changeClassEvent"></uv-tabs>
             </view>
           </sticky-header>
 
           <!-- 视频列表 -->
           <list-view>
-            <view class="pt-22 pr-1 pl-1 grid grid-cols-3 gap-2">
+            <view class="pt-12 px-3 grid grid-cols-3 gap-2">
               <view
                 class="justify-center flex-items-center"
                 v-for="(item, index) in filmData.list"
@@ -279,15 +285,15 @@ const toPage = (page: string, item?: any) => {
               </view>
             </view>
           </list-view>
+
+          <view v-if="filmData.list > 0 || filmData.pageStatus == 'loading'" class="py-5">
+            <uv-load-more :status="filmData.pageStatus" @loadmore="loadData" />
+          </view>
+          <view v-if="filmData.list == 0 && filmData.pageStatus != 'loading'">
+            <uv-empty mode="list"></uv-empty>
+          </view>
         </sticky-section>
       </scroll-view>
-
-      <!-- <view v-if="filmData.list > 0 || loading" class="my-5">
-        <uv-load-more :status="loading" @loadmore="loadData"/>
-      </view>
-      <view v-if="filmData.total == 0 && !loading">
-        <uv-empty mode="list"></uv-empty>
-      </view> -->
     </view>
   </view>
 </template>

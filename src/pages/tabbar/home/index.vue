@@ -42,9 +42,8 @@ const config = ref({
   noticeList: ["寒雨连江夜入吴", "平明送客楚山孤", "洛阳亲友如相问", "一片冰心在玉壶"],
   bannerList: [
     {
-      url: "https://cdn.uviewui.com/uview/resources/video.mp4",
-      title: "昨夜星辰昨夜风，画楼西畔桂堂东",
-      poster: "https://cdn.uviewui.com/uview/swiper/swiper1.png",
+      url: "https://cdn.uviewui.com/uview/swiper/swiper1.png",
+      title: "身无彩凤双飞翼，心有灵犀一点通",
     },
     {
       url: "https://cdn.uviewui.com/uview/swiper/swiper2.png",
@@ -222,12 +221,12 @@ const toPage = (page:string) => {
     </view>
 
     <view>
-      <CitySelect
+      <!-- <CitySelect
         v-model="model.showCitySelect"
         :only-city="true"
         :default-region="model.city"
         @city-change="onCityChange"
-      />
+      /> -->
     </view>
   </view>
 </template>
