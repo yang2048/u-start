@@ -3,7 +3,6 @@ import { useUserStore } from '@/store/user'
 import useLoading from '@/hooks/loading'
 import UserApi from '@/api/user'
 import { whetherNavigate } from '@/utils/public'
-import { isPhone } from '@/utils/is'
 import storage from '@/utils/storage'
 
 const { loading, setLoading } = useLoading()
@@ -51,7 +50,8 @@ const validateCode = (): boolean => {
 }
 
 const validatePhone = (): boolean => {
-  if (!isPhone(loginForm.phone)) {
+  const ph = loginForm.phone && new RegExp(/^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/).test(loginForm.phone)
+  if (!ph) {
     uni.showToast({ title: '请输入正确的手机号', icon: 'none' })
     return false
   }

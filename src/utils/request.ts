@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import storage from '@/utils/storage'
-import { isObject } from '@/utils/is'
+import _ from 'lodash';
 import { toLogin } from '@/utils/public'
 
 export interface Result<T = any> {
@@ -97,7 +97,7 @@ class Request {
           if (this.defaultConfig.showLoading) {
             uni.hideLoading()
           }
-          const hasSuccess = isObject(result) && Reflect.has(result, 'code') && (code === 200 || code === 201)
+          const hasSuccess = _.isObject(result) && Reflect.has(result, 'code') && (code === 200 || code === 201)
           if (hasSuccess) {
             resolve(data)
           } else {

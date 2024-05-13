@@ -49,6 +49,15 @@ export const formatIndex = (item: string): { index: string; url: string } => {
   return { index, url }
 }
 
+// 格式化倒序集数
+export const formatReverseOrder = (action: 'positive' | 'negative', current: number, total: number) => {
+  // 当前 0 总 37 正序 1 倒序 37
+  // 当前 1 总 37 正序 2 倒序 36
+  if (action === 'positive') return current + 1;
+  else if (action === 'negative') return total - current;
+  return 1;
+};
+
 // EeverseOrder
 export const reverseOrderHelper = (action: 'positive' | 'negative', data: Record<string, any[]>): Record<string, any[]> => {
   // 深拷贝辅助函数

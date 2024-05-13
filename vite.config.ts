@@ -5,16 +5,16 @@ import uni from '@dcloudio/vite-plugin-uni'
 import viteCompression from 'vite-plugin-compression'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
+import { uniuseAutoImports } from '@uni-helper/uni-use';
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }: ConfigEnv):Promise<UserConfig> => {
-  envDir:"env"
-  const root = process.cwd()
-  const env = loadEnv(mode, root)
+  const env = loadEnv(mode, process.cwd(), '')
   const { VITE_PORT, VITE_PUBLIC_PATH, VITE_API_BASE_URL } = env
   //动态导入仅支持ESM的模块
   const UnoCss = await import('unocss/vite').then((i) => i.default)
-  console.log("process.env: ", process.env.HELLO);
+  console.log("process.env: ", env.NODE_ENV);
+
   return {
     base: VITE_PUBLIC_PATH,
     plugins: [
@@ -32,7 +32,7 @@ export default defineConfig(async ({ mode }: ConfigEnv):Promise<UserConfig> => {
       uni(),
       UnoCss(),
       AutoImport({
-        imports: ['vue', '@vueuse/core', 'uni-app'],
+        imports: ['vue', 'uni-app', uniuseAutoImports()],
         dirs: ['src/components', 'src/stores', 'src/utils'],
         dts: 'src/typings/auto-imports.d.ts',
         vueTemplate: true,
@@ -45,9 +45,12 @@ export default defineConfig(async ({ mode }: ConfigEnv):Promise<UserConfig> => {
       alias: [
         {
           find: '@',
-          replacement: path.resolve(root, './src'),
+          replacement: path.resolve(process.cwd(), './src'),
         },
       ],
+    },
+    optimizeDeps: {
+      exclude: ['vue-demi'],
     },
     server: {
       host: true,
@@ -66,7 +69,7 @@ export default defineConfig(async ({ mode }: ConfigEnv):Promise<UserConfig> => {
       terserOptions: {
         compress: {
           //发布时删除 console
-          // drop_console: true,
+          drop_console: process.env.NODE_ENV === 'production' ? true : false,
         },
       },
     },

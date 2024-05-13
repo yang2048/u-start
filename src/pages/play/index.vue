@@ -1,7 +1,16 @@
 <script setup lang="ts">
-import { formatName, formatSeason, reverseOrderHelper } from "@/utils/film";
+import {
+  formatName,
+  formatSeason,
+  reverseOrderHelper,
+  formatReverseOrder,
+} from "@/utils/film";
 import { usePlayStore } from "@/store";
+import _ from "lodash";
 
+const type = computed(() => {
+  return store.getType;
+});
 const store = usePlayStore();
 const data = computed(() => {
   return store.getData;
@@ -25,7 +34,7 @@ const active = reactive({
   filmIndex: "",
   filmCurrent: "",
   profile: false,
-  analyzeId: "",
+  seasonKey: "",
 });
 const season = ref(); // 选集
 
@@ -57,7 +66,8 @@ const reverseOrderEvent = (reverse: boolean) => {
 };
 
 function switchVideo(item: any) {
-  // console.info(item);
+  console.info(item);
+  active.seasonKey = item.name;
   //   Taro.showToast({
   //     title: item.split("$")[0],
   //     icon: "loading",
@@ -111,6 +121,7 @@ function onLoadedMetaData(e: any) {
       immersive
     ></u-navbar> -->
 
+    <!-- 播放器 -->
     <view class="video-name">
       <video
         class="video-play"
@@ -161,19 +172,25 @@ function onLoadedMetaData(e: any) {
 
     <!-- 详细介绍 -->
     <view>
-      <div class="vod-name w-full">
+      <view class="vod-name w-full">
         <div class="scroll-wrap">
           <div class="scroll-item text-base font-bold p-2 font-sans">
             {{ info["vod_name"] }}
             <span class="text-xs font-medium">{{ info.vod_remarks }}</span>
           </div>
         </div>
-      </div>
-      <div class="flex bg-white">
-        <div class="w-1/3 p-1">
+      </view>
+      <view class="flex bg-white">
+        <view class="w-1/3 p-1">
           <image :src="info.vod_pic" alt="Cover" class="rounded-3 w-28 h-36" />
-        </div>
-        <div class="w-2/3 p-1 text-sm">
+        </view>
+        <view class="w-2/3 p-1 text-sm">
+          <div class="spacer">
+            <span v-if="type === 'film'">{{
+              `${info["vod_name"]} ${formatIndex(active.filmIndex).index}`
+            }}</span>
+            <span v-else>{{ info["name"] }}</span>
+          </div>
           <p class="text-gray-600">
             <span class="text-gray-500">类型：</span>{{ info.type_name }} ·
             {{ info.vod_tag }}
@@ -197,28 +214,47 @@ function onLoadedMetaData(e: any) {
               size="13"
             ></uv-text>
           </p>
-        </div>
-      </div>
+        </view>
+      </view>
     </view>
 
     <!-- 剧集 -->
-    <view class="mt-3">
-      <uv-collapse ref="collapse" :value="0" accordion v-for="(value, key, index) in season" :key="index">
-        <uv-collapse-item :title="key" :name="index">
-          <view class="flex flex-wrap">
-            <view class="h-6 m-2" v-for="(item, index) in value" :key="index">
-              <view class="p-2 inline-block rounded-2 bg-#fa0">{{
-                formatName(item)
-              }}</view>
+    <view class="mt-3 py-5 bg-#fff">
+      <uv-tabs
+        :list="Object.keys(season).map((key) => ({ name: key, value: season[key] }))"
+        :activeStyle="{
+          color: '#303133',
+          fontWeight: 'bold',
+          transform: 'scale(1.05)',
+        }"
+        @change="switchVideo"
+      >
+        <template v-slot:right>
+          <view class="px-2">
+            <uv-icon name="arrow-up" size="22" bold></uv-icon>
+          </view>
+        </template>
+      </uv-tabs>
+      <view>
+        <view class="flex flex-wrap">
+          <view
+            class="h-6 mx-1 my-2"
+            v-for="(item, index) in season[active.seasonKey]"
+            :key="index"
+          >
+            <view class="p-2 inline-block rounded-2 bg-#fa0">
+              {{ formatName(item) }}
             </view>
           </view>
-        </uv-collapse-item>
-      </uv-collapse>
+        </view>
+      </view>
     </view>
   </view>
 
-  <view class="my-3 rounded-3 bg-#fff">
+  <!-- 热门推荐 -->
+  <view class="my-3 pb-10 rounded-3 bg-#fff">
     <uni-section title="热门推荐" type="line"></uni-section>
+    <uv-empty mode="data" icon="https://cdn.uviewui.com/uview/empty/data.png"></uv-empty>
   </view>
 </template>
 

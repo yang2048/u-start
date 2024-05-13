@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import _ from 'lodash';
+import _ from "lodash";
 import { getVodList } from "@/services";
 import { useRequest } from "alova";
 import { usePlayStore } from "@/store";
@@ -20,7 +20,7 @@ const siteConfig = ref({
     playUrl: "",
     search: 1,
     status: false,
-    type: 1
+    type: 1,
   },
   search: "all",
   data: [],
@@ -59,11 +59,11 @@ const classConfig = ref({
 onLoad(() => {
   loadInit();
 
-  console.info("siteConfig=>",siteConfig.value);
-  console.info("filmData=>",filmData.value);
-  console.info("pagination=>",pagination.value);
-  console.info("active=>",active.value);
-  console.info("classConfig=>",classConfig.value);
+  console.info("siteConfig=>", siteConfig.value);
+  console.info("filmData=>", filmData.value);
+  console.info("pagination=>", pagination.value);
+  console.info("active=>", active.value);
+  console.info("classConfig=>", classConfig.value);
 });
 
 const loadInit = async () => {
@@ -123,7 +123,7 @@ const categoriesFilter = (classData: string[]): string[] => {
 };
 
 // 切换分类
-const changeClassEvent = (key) => {
+const changeClassEvent = (key: any) => {
   active.value.class = key;
   classFilter(filter.value.data);
   // filterApiEvent();
@@ -134,14 +134,13 @@ const changeClassEvent = (key) => {
   pagination.value.pageIndex = 1;
 };
 
-
 // 过滤条件-选中第一项
-const classFilter = (filters:any) => {
-  const result = {};
+const classFilter = (filters: any) => {
+  const result: any = {};
 
   if (_.has(filters, active.value.class)) {
-    filters[active.value.class].forEach((item:any) => {
-      result[item.key] = item.value[0]?.v ?? '全部';
+    filters[active.value.class].forEach((item: any) => {
+      result[item.key] = item.value[0]?.v ?? "全部";
     });
   }
 
@@ -192,11 +191,19 @@ const searchEvent = async () => {};
 const changeSitesEvent = async (key: string) => {};
 
 const onScrollToLower = () => {
-  console.info("onScrollToLower");
+  console.info("onScrollToLower================");
 };
-const onRefresherrefresh = () => {
-  console.info("onRefresherrefresh");
+
+const loadData = () => {
+  console.info("loadData");
 };
+
+const upper = (e) => {
+				console.log(e)
+			}
+  const lower = (e) => {
+    console.log(e)
+  }
 
 //播放
 const toPage = (page: string, item?: any) => {
@@ -204,7 +211,7 @@ const toPage = (page: string, item?: any) => {
     type: "film",
     data: {
       info: item,
-      // ext: { site: site },
+      ext: { site: active.site },
     },
   });
   uni.$uv.route(page);
@@ -227,51 +234,58 @@ const toPage = (page: string, item?: any) => {
       </template>
     </uv-navbar>
 
-    <view class="">
-      <uv-tabs :list="classConfig.data" keyName="type_name"></uv-tabs>
-    </view>
-
     <view class="px-3">
       <scroll-view
-        enable-flex
-        refresher-enabled
         scroll-y
-        :style="{ height: '100%', width: '100%' }"
-        :lower-threshold="300"
-        @scrolltolower="onScrollToLower"
-        @refresherrefresh="onRefresherrefresh"
+        type="custom"
+        :lowerThreshold="50"
+        @scrolltoupper="upper" @scrolltolower="lower"
       >
-        <view class="grid grid-cols-3 gap-2">
-          <view
-            v-for="(item, index) in filmData.list"
-            :key="index"
-            class="justify-center flex-items-center"
-          >
-            <div class="rounded-md" @click="toPage('pages/play/index', item)">
-              <uv-image
-                :src="item.vod_pic"
-                :showMenuByLongpress="false"
-                width="100%"
-                :height="150"
-                mode="scaleToFill"
-                :radius="5"
-                :observeLazyLoad="true"
-                :fade="true"
-                duration="450"
-              ></uv-image>
-              <div class="scroll-wrap">
-                <div class="scroll-item text-3">
-                  {{ item.vod_name }}
+        <sticky-section>
+          <sticky-header class="fixed z-1">
+            <!-- 分类 -->
+            <view class="">
+              <uv-tabs :list="classConfig.data" keyName="type_name"></uv-tabs>
+            </view>
+          </sticky-header>
+
+          <!-- 视频列表 -->
+          <list-view>
+            <view class="pt-22 pr-1 pl-1 grid grid-cols-3 gap-2">
+              <view
+                class="justify-center flex-items-center"
+                v-for="(item, index) in filmData.list"
+                :key="index"
+                style="background-color: #fff"
+              >
+                <div class="rounded-md" @click="toPage('pages/play/index', item)">
+                  <uv-image
+                    :src="item.vod_pic"
+                    :showMenuByLongpress="false"
+                    width="100%"
+                    :height="150"
+                    mode="scaleToFill"
+                    :radius="5"
+                    :observeLazyLoad="true"
+                    :fade="true"
+                    duration="450"
+                  ></uv-image>
+                  <div class="scroll-wrap">
+                    <div class="scroll-item text-3">
+                      {{ item.vod_name }}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </view>
-        </view>
+              </view>
+            </view>
+          </list-view>
+        </sticky-section>
       </scroll-view>
-      <!-- <view v-if="vod.list > 0 || loading" class="my-5">
-        <uv-load-more :status="loading" />
+
+      <!-- <view v-if="filmData.list > 0 || loading" class="my-5">
+        <uv-load-more :status="loading" @loadmore="loadData"/>
       </view>
-      <view v-if="vod.total == 0 && !loading">
+      <view v-if="filmData.total == 0 && !loading">
         <uv-empty mode="list"></uv-empty>
       </view> -->
     </view>

@@ -107,9 +107,12 @@
 </template>
 
 <script>
-import provinces from "@/utils/address/provinces.json";
-import citys from "@/utils/address/citys.json";
-import areas from "@/utils/address/areas.json";
+// import provinces from "@/utils/address/provinces.json";
+// import citys from "@/utils/address/citys.json";
+// import areas from "@/utils/address/areas.json";
+const provinces = [];
+const citys = [];
+const areas = [];
 /**
  * city-select 省市区级联选择器
  * @property {String Number} z-index 弹出时的z-index值（默认1075）

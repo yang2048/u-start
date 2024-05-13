@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 // 小程序不支持！！
-import { useMediaControls } from '@vueuse/core'
+import { useMediaControls } from '@uni-helper/uni-use'
 
 export const useVideoPlayer = defineStore('video', () => {
   const videoElement = ref<HTMLVideoElement>()
