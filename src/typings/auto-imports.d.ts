@@ -40,7 +40,12 @@ declare global {
   const effectScope: typeof import('vue')['effectScope']
   const email: typeof import('../utils/RegExp')['email']
   const extendRef: typeof import('@vueuse/core')['extendRef']
+  const fetchClassify: typeof import('../utils/cms')['fetchClassify']
+  const fetchList: typeof import('../utils/cms')['fetchList']
+  const formatIndex: typeof import('../utils/film')['formatIndex']
+  const formatName: typeof import('../utils/film')['formatName']
   const formatPrice: typeof import('../utils/public')['formatPrice']
+  const formatSeason: typeof import('../utils/film')['formatSeason']
   const getClipboardData: typeof import('../utils/h5-copy')['getClipboardData']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
@@ -172,6 +177,7 @@ declare global {
   const resolveRef: typeof import('@vueuse/core')['resolveRef']
   const resolveUnref: typeof import('@vueuse/core')['resolveUnref']
   const restoreUrl: typeof import('../utils/public')['restoreUrl']
+  const reverseOrderHelper: typeof import('../utils/film')['reverseOrderHelper']
   const secrecyMobile: typeof import('../utils/public')['secrecyMobile']
   const setToken: typeof import('../utils/auth')['setToken']
   const shallowReactive: typeof import('vue')['shallowReactive']
@@ -388,11 +394,6 @@ declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly IDCard: UnwrapRef<typeof import('../utils/RegExp')['IDCard']>
-    readonly Integer: UnwrapRef<typeof import('../utils/RegExp')['Integer']>
-    readonly TEL: UnwrapRef<typeof import('../utils/RegExp')['TEL']>
-    readonly TINumber: UnwrapRef<typeof import('../utils/RegExp')['TINumber']>
-    readonly URL: UnwrapRef<typeof import('../utils/RegExp')['URL']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly checkBankno: UnwrapRef<typeof import('../utils/public')['checkBankno']>
@@ -420,9 +421,13 @@ declare module 'vue' {
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
-    readonly email: UnwrapRef<typeof import('../utils/RegExp')['email']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
+    readonly fetchClassify: UnwrapRef<typeof import('../utils/cms')['fetchClassify']>
+    readonly fetchList: UnwrapRef<typeof import('../utils/cms')['fetchList']>
+    readonly formatIndex: UnwrapRef<typeof import('../utils/film')['formatIndex']>
+    readonly formatName: UnwrapRef<typeof import('../utils/film')['formatName']>
     readonly formatPrice: UnwrapRef<typeof import('../utils/public')['formatPrice']>
+    readonly formatSeason: UnwrapRef<typeof import('../utils/film')['formatSeason']>
     readonly getClipboardData: UnwrapRef<typeof import('../utils/h5-copy')['getClipboardData']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
@@ -437,7 +442,6 @@ declare module 'vue' {
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
-    readonly integer: UnwrapRef<typeof import('../utils/RegExp')['integer']>
     readonly isArray: UnwrapRef<typeof import('../utils/is')['isArray']>
     readonly isBlob: UnwrapRef<typeof import('../utils/is')['isBlob']>
     readonly isDate: UnwrapRef<typeof import('../utils/is')['isDate']>
@@ -481,8 +485,6 @@ declare module 'vue' {
     readonly isWindow: UnwrapRef<typeof import('../utils/is')['isWindow']>
     readonly makeDestructurable: UnwrapRef<typeof import('@vueuse/core')['makeDestructurable']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
-    readonly mobile: UnwrapRef<typeof import('../utils/RegExp')['mobile']>
-    readonly money: UnwrapRef<typeof import('../utils/RegExp')['money']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly noPassByName: UnwrapRef<typeof import('../utils/public')['noPassByName']>
     readonly objectToString: UnwrapRef<typeof import('../utils/is')['objectToString']>
@@ -530,7 +532,6 @@ declare module 'vue' {
     readonly openLocation: UnwrapRef<typeof import('../utils/factory')['openLocation']>
     readonly openSetting: UnwrapRef<typeof import('../utils/factory')['openSetting']>
     readonly parseUrl: UnwrapRef<typeof import('../utils/public')['parseUrl']>
-    readonly password: UnwrapRef<typeof import('../utils/RegExp')['password']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly platform: UnwrapRef<typeof import('../utils/platform')['platform']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
@@ -554,6 +555,7 @@ declare module 'vue' {
     readonly resolveRef: UnwrapRef<typeof import('@vueuse/core')['resolveRef']>
     readonly resolveUnref: UnwrapRef<typeof import('@vueuse/core')['resolveUnref']>
     readonly restoreUrl: UnwrapRef<typeof import('../utils/public')['restoreUrl']>
+    readonly reverseOrderHelper: UnwrapRef<typeof import('../utils/film')['reverseOrderHelper']>
     readonly secrecyMobile: UnwrapRef<typeof import('../utils/public')['secrecyMobile']>
     readonly setToken: UnwrapRef<typeof import('../utils/auth')['setToken']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
@@ -740,7 +742,6 @@ declare module 'vue' {
     readonly useWindowFocus: UnwrapRef<typeof import('@vueuse/core')['useWindowFocus']>
     readonly useWindowScroll: UnwrapRef<typeof import('@vueuse/core')['useWindowScroll']>
     readonly useWindowSize: UnwrapRef<typeof import('@vueuse/core')['useWindowSize']>
-    readonly userName: UnwrapRef<typeof import('../utils/RegExp')['userName']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchArray: UnwrapRef<typeof import('@vueuse/core')['watchArray']>
     readonly watchAtMost: UnwrapRef<typeof import('@vueuse/core')['watchAtMost']>
@@ -763,11 +764,6 @@ declare module '@vue/runtime-core' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly IDCard: UnwrapRef<typeof import('../utils/RegExp')['IDCard']>
-    readonly Integer: UnwrapRef<typeof import('../utils/RegExp')['Integer']>
-    readonly TEL: UnwrapRef<typeof import('../utils/RegExp')['TEL']>
-    readonly TINumber: UnwrapRef<typeof import('../utils/RegExp')['TINumber']>
-    readonly URL: UnwrapRef<typeof import('../utils/RegExp')['URL']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly checkBankno: UnwrapRef<typeof import('../utils/public')['checkBankno']>
@@ -795,9 +791,13 @@ declare module '@vue/runtime-core' {
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
-    readonly email: UnwrapRef<typeof import('../utils/RegExp')['email']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
+    readonly fetchClassify: UnwrapRef<typeof import('../utils/cms')['fetchClassify']>
+    readonly fetchList: UnwrapRef<typeof import('../utils/cms')['fetchList']>
+    readonly formatIndex: UnwrapRef<typeof import('../utils/film')['formatIndex']>
+    readonly formatName: UnwrapRef<typeof import('../utils/film')['formatName']>
     readonly formatPrice: UnwrapRef<typeof import('../utils/public')['formatPrice']>
+    readonly formatSeason: UnwrapRef<typeof import('../utils/film')['formatSeason']>
     readonly getClipboardData: UnwrapRef<typeof import('../utils/h5-copy')['getClipboardData']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
@@ -812,7 +812,6 @@ declare module '@vue/runtime-core' {
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
-    readonly integer: UnwrapRef<typeof import('../utils/RegExp')['integer']>
     readonly isArray: UnwrapRef<typeof import('../utils/is')['isArray']>
     readonly isBlob: UnwrapRef<typeof import('../utils/is')['isBlob']>
     readonly isDate: UnwrapRef<typeof import('../utils/is')['isDate']>
@@ -856,8 +855,6 @@ declare module '@vue/runtime-core' {
     readonly isWindow: UnwrapRef<typeof import('../utils/is')['isWindow']>
     readonly makeDestructurable: UnwrapRef<typeof import('@vueuse/core')['makeDestructurable']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
-    readonly mobile: UnwrapRef<typeof import('../utils/RegExp')['mobile']>
-    readonly money: UnwrapRef<typeof import('../utils/RegExp')['money']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly noPassByName: UnwrapRef<typeof import('../utils/public')['noPassByName']>
     readonly objectToString: UnwrapRef<typeof import('../utils/is')['objectToString']>
@@ -905,7 +902,6 @@ declare module '@vue/runtime-core' {
     readonly openLocation: UnwrapRef<typeof import('../utils/factory')['openLocation']>
     readonly openSetting: UnwrapRef<typeof import('../utils/factory')['openSetting']>
     readonly parseUrl: UnwrapRef<typeof import('../utils/public')['parseUrl']>
-    readonly password: UnwrapRef<typeof import('../utils/RegExp')['password']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly platform: UnwrapRef<typeof import('../utils/platform')['platform']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
@@ -929,6 +925,7 @@ declare module '@vue/runtime-core' {
     readonly resolveRef: UnwrapRef<typeof import('@vueuse/core')['resolveRef']>
     readonly resolveUnref: UnwrapRef<typeof import('@vueuse/core')['resolveUnref']>
     readonly restoreUrl: UnwrapRef<typeof import('../utils/public')['restoreUrl']>
+    readonly reverseOrderHelper: UnwrapRef<typeof import('../utils/film')['reverseOrderHelper']>
     readonly secrecyMobile: UnwrapRef<typeof import('../utils/public')['secrecyMobile']>
     readonly setToken: UnwrapRef<typeof import('../utils/auth')['setToken']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
@@ -1115,7 +1112,6 @@ declare module '@vue/runtime-core' {
     readonly useWindowFocus: UnwrapRef<typeof import('@vueuse/core')['useWindowFocus']>
     readonly useWindowScroll: UnwrapRef<typeof import('@vueuse/core')['useWindowScroll']>
     readonly useWindowSize: UnwrapRef<typeof import('@vueuse/core')['useWindowSize']>
-    readonly userName: UnwrapRef<typeof import('../utils/RegExp')['userName']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchArray: UnwrapRef<typeof import('@vueuse/core')['watchArray']>
     readonly watchAtMost: UnwrapRef<typeof import('@vueuse/core')['watchAtMost']>

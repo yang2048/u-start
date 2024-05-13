@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PostList } from '@/api/post/model'
 
-const config = inject('config') // 注入
+const config:any = inject('config') // 注入
 
 const props = defineProps<{ data: PostList }>()
 
@@ -20,10 +20,7 @@ const toPostDetail = (id: string | number) => {
     <view class="info-box">
       <view class="title line-3">{{ data.name }}</view>
       <view class="flex flex-row items-center justify-start color-#888 text-12px">
-        <view class="user mr-3" style="width: 100px"
-          ><uv-icon name="account" class="mr-1" />{{ data.author_id && data.author_id.name }}</view
-        >
-        <view><uv-icon name="eye" class="mr-1" />{{ data.view_count }}</view>
+ 
       </view>
     </view>
     <view class="img-box">

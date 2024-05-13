@@ -217,7 +217,7 @@ const toPage = (page:string) => {
         <uv-load-more :status="pager.status" @loadmore="loadData" />
       </view>
       <view v-if="list.length == 0 && pager.status != 'loading'">
-        <uv-empty mode="list" :icon="sysConfig.emptyImg"></uv-empty>
+        <uv-empty mode="list"></uv-empty>
       </view>
     </view>
 

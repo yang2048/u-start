@@ -12,19 +12,19 @@ const to = (url: string) => {
 <template>
   <view>
     <view class="mr-2 mx-4">
-      <view style="height: 96rpx" class="u-flex u-row-between padding-sm item" @click="to('/pages/me/introduction')">
+      <view style="height: 96rpx" class="u-flex u-row-between padding-sm item" @click="to('/package/me/introduction')">
         <view style="color: #0d0d0d">平台介绍</view>
         <view>
           <uv-icon name="arrow-right" color="#A3A3A3" size="28"></uv-icon>
         </view>
       </view>
-      <view style="height: 96rpx" class="u-flex u-row-between padding-sm item" @click="to('/pages/me/agreement')">
+      <view style="height: 96rpx" class="u-flex u-row-between padding-sm item" @click="to('/package/me/agreement')">
         <view style="color: #0d0d0d">用户协议</view>
         <view>
           <uv-icon name="arrow-right" color="#A3A3A3" size="28"></uv-icon>
         </view>
       </view>
-      <view style="height: 96rpx" class="u-flex u-row-between padding-sm item" @click="to('/pages/me/privacy')">
+      <view style="height: 96rpx" class="u-flex u-row-between padding-sm item" @click="to('/package/me/privacy')">
         <view style="color: #0d0d0d">隐私政策</view>
         <view>
           <uv-icon name="arrow-right" color="#A3A3A3" size="28"></uv-icon>

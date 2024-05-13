@@ -1,8 +1,5 @@
-<script lang="ts">
-export default { name: 'MePage' }
-</script>
+
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import type { UserData } from '@/api/user/model'
 import UserApi from '@/api/user'
 import { isLogin, toLogin } from '@/utils/public'
@@ -59,8 +56,8 @@ const to = (page: string) => {
   } else if (page === 'logout') {
     logoutDlgShow.value = true
   } else {
-    let url = `/pages/me/${page}`
-    uni.$u.route(url)
+    let url = `/package/me/${page}`
+    uni.$uv.route(url)
   }
 }
 
@@ -156,18 +153,10 @@ const btnStyle = reactive({
           </uv-grid-item>
         </uv-grid>
       </view>
-      <!-- <view class="action-box">
-        <uv-cell-group>
-          <uv-cell icon="star-fill" title="我的收藏" :border="false"></uv-cell>
-          <uv-cell icon="shopping-cart-fill" title="我的预约" :border="false"></uv-cell>
-          <uv-cell icon="bell-fill" title="我的消息" @click="to('message')" :border="false"></uv-cell>
-          <uv-cell icon="eye-fill" title="浏览记录" :border="false"></uv-cell>
-        </uv-cell-group>
-      </view> -->
+
       <view class="action-box">
       	<uv-cell-group>
           <uv-cell icon="setting-fill" title="个人设置" isLink></uv-cell>
-          <uv-cell icon="integral-fill" title="版本更新" isLink value="已是新版本"></uv-cell>
           <uv-cell icon="server-man" title="微信客服" isLink @click="open"></uv-cell>
           <uv-cell title="关于我们" isLink @click="to('about')">
             <template #icon>

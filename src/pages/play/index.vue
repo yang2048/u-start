@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatName, formatSeason, reverseOrderHelper } from "@/utils/film";
 import { usePlayStore } from "@/store";
 
 const store = usePlayStore();
@@ -16,6 +17,44 @@ const video_urls = ref(info.value.vod_play_url.split("#"));
 const video_url = ref(video_urls.value[0].split("$")[1]);
 const direction = ref(90);
 const rateShow = ref(false);
+
+const active = reactive({
+  iptvNav: "epg",
+  driveNav: "season",
+  flimSource: "",
+  filmIndex: "",
+  filmCurrent: "",
+  profile: false,
+  analyzeId: "",
+});
+const season = ref(); // 选集
+
+onLoad(() => {
+  const { site } = ext.value;
+  getDetailInfo();
+});
+
+// 获取播放源及剧集
+const getDetailInfo = async (): Promise<void> => {
+  const formattedSeason = await formatSeason(info.value);
+
+  active.flimSource = active.flimSource || Object.keys(formattedSeason)[0];
+  active.filmIndex = active.filmIndex || formattedSeason[active.flimSource][0];
+
+  info.value.fullList = formattedSeason;
+  season.value = formattedSeason;
+  console.info(info, season.value);
+};
+
+// 选集排序
+const reverseOrderEvent = (reverse: boolean) => {
+  // isVisible.reverseOrder = !isVisible.reverseOrder;
+  if (reverse) {
+    season.value = reverseOrderHelper("positive", info.value.fullList);
+  } else {
+    season.value = reverseOrderHelper("negative", season.value);
+  }
+};
 
 function switchVideo(item: any) {
   // console.info(item);
@@ -80,19 +119,10 @@ function onLoadedMetaData(e: any) {
         enable-danmu
         enablePlayGesture
         enableAutoRotation
+        showScrollbar
         :src="video_url"
         :initial-time="0"
-        :showCastingButton="true"
-        :showRateBtn="true"
-        :showScreenLockButton="true"
-        :showSnapshotButton="true"
-        :showBackgroundPlaybackButton="true"
-        :showThinProgressBar="true"
-        :showVslideBtnInFullscreen="true"
-        :mobilenetHintType="1"
-        floatingMode="page"
-        :showNoWifiTip="true"
-        :pictureInPictureMode="['push', 'pop']"
+        :playStrategy="2"
         object-fit="contain"
         @ended="onEnded"
         @loadedMetaData="onLoadedMetaData"
@@ -134,7 +164,7 @@ function onLoadedMetaData(e: any) {
       <div class="vod-name w-full">
         <div class="scroll-wrap">
           <div class="scroll-item text-base font-bold p-2 font-sans">
-            {{ info.vod_name }}
+            {{ info["vod_name"] }}
             <span class="text-xs font-medium">{{ info.vod_remarks }}</span>
           </div>
         </div>
@@ -164,7 +194,7 @@ function onLoadedMetaData(e: any) {
             <uv-text
               :text="info.vod_blurb ? info.vod_blurb.trim() : '暂无剧情简介'"
               lines="4"
-              size="15"
+              size="13"
             ></uv-text>
           </p>
         </div>
@@ -173,38 +203,22 @@ function onLoadedMetaData(e: any) {
 
     <!-- 剧集 -->
     <view class="mt-3">
-      <view class="p-3">
-        <button plain type="warn" size="mini">{{info.vod_play_from}}</button>
-        <span class="float-right">
-          <span class="mr-2 text-center" @click="onReverse()">
-            <div
-              class="text-size-xl text-gray-600 i-icon-park-outline-reverse-operation-in"
-            />
-          </span>
-        </span>
-      </view>
-      <scroll-view enable-flex scroll-y style="height: 400rpx">
-        <div class="flex flex-wrap justify-start gap-2 flex-items-center p-2" v-for="(item, index) in video_urls" :key="index">
-          <uv-button plain :text="item.split('$')[0]" size="small" shape="circle" ></uv-button>
-        </div>
-      
-        <!-- <uv-row justify="space-between" gutter="10">
-          <uv-col span="6"
-            v-for="(item, index) in video_urls"
-            :key="index"
-            class="pl-2 pt-2"
-          >
-            <nv-button size="small" @click="switchVideo(item)">
-              <div class="scroll-wrap">
-                <div class="scroll-item whitespace-nowrap">
-                  {{ item.split("$")[0] }}
-                </div>
-              </div>
-            </nv-button>
-          </uv-col>
-        </uv-row> -->
-      </scroll-view>
+      <uv-collapse ref="collapse" :value="0" accordion v-for="(value, key, index) in season" :key="index">
+        <uv-collapse-item :title="key" :name="index">
+          <view class="flex flex-wrap">
+            <view class="h-6 m-2" v-for="(item, index) in value" :key="index">
+              <view class="p-2 inline-block rounded-2 bg-#fa0">{{
+                formatName(item)
+              }}</view>
+            </view>
+          </view>
+        </uv-collapse-item>
+      </uv-collapse>
     </view>
+  </view>
+
+  <view class="my-3 rounded-3 bg-#fff">
+    <uni-section title="热门推荐" type="line"></uni-section>
   </view>
 </template>
 
