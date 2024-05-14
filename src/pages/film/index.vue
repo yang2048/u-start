@@ -94,7 +94,7 @@ const getClassList = async (site: any) => {
     const classDataFormat = categoriesFilter(classData);
     classConfig.value.data = classDataFormat;
 
-    const classItem = classDataFormat[0];
+    const classItem: any = classDataFormat[0];
     active.value.class = classItem["type_id"];
   } catch (err) {
     console.log(err);
@@ -132,7 +132,7 @@ const changeClassEvent = (item: any) => {
   filmData.value = { list: [], rawList: [] };
   // infiniteId.value++;
   pagination.value.pageIndex = 1;
-  console.info('切换分类', item)
+  console.info("切换分类", item);
   const resLength = getFilmList();
 };
 
@@ -151,6 +151,9 @@ const classFilter = (filters: any) => {
 
 // 获取资源
 const getFilmList = async () => {
+  uni.showLoading({
+    title: "加载中",
+  });
   const defaultSite = siteConfig.value.default;
   const pg = pagination.value.pageIndex;
   const t = active.value.class;
@@ -181,6 +184,7 @@ const getFilmList = async () => {
     console.error(err);
     length = 0;
   } finally {
+    uni.hideLoading();
     console.log(`[film] load data length: ${length}`);
     return length;
   }
@@ -251,7 +255,11 @@ const toPage = (page: string, item?: any) => {
           <sticky-header class="fixed z-89 bg-#fff">
             <!-- 分类 -->
             <view class="w-screen">
-              <uv-tabs :list="classConfig.data" keyName="type_name" @change="changeClassEvent"></uv-tabs>
+              <uv-tabs
+                :list="classConfig.data"
+                keyName="type_name"
+                @change="changeClassEvent"
+              ></uv-tabs>
             </view>
           </sticky-header>
 
@@ -289,8 +297,8 @@ const toPage = (page: string, item?: any) => {
           <view v-if="filmData.list > 0 || filmData.pageStatus == 'loading'" class="py-5">
             <uv-load-more :status="filmData.pageStatus" @loadmore="loadData" />
           </view>
-          <view v-if="filmData.list == 0 && filmData.pageStatus != 'loading'">
-            <uv-empty mode="list"></uv-empty>
+          <view v-if="filmData.list == 0 && filmData.pageStatus != 'loading'" class="py-10">
+            <uv-empty mode="list" icon="http://cdn.uviewui.com/uview/empty/list.png"></uv-empty>
           </view>
         </sticky-section>
       </scroll-view>

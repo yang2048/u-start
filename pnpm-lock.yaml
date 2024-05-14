@@ -106,6 +106,9 @@ devDependencies:
   '@iconify/utils':
     specifier: ^2.1.23
     version: 2.1.23
+  '@types/crypto-js':
+    specifier: ^4.2.2
+    version: 4.2.2
   '@types/lodash':
     specifier: ^4.17.1
     version: 4.17.1
@@ -3419,6 +3422,10 @@ packages:
     resolution: {integrity: sha512-WXCyOcRtH37HAUkpXhUduaxdm82b4GSlyTqajXviN4EfiuPgNYR109xMCKvpl6zPIpua0DGlMEDCq+g8EdoheQ==}
     dependencies:
       '@babel/types': 7.24.5
+    dev: true
+
+  /@types/crypto-js@4.2.2:
+    resolution: {integrity: sha512-sDOLlVbHhXpAUAL0YHDUUwDZf3iN4Bwi4W6a0W0b+QcAezUbRtH4FVb+9J4h+XFPW7l/gQ9F8qC7P+Ec4k8QVQ==}
     dev: true
 
   /@types/estree@1.0.5:

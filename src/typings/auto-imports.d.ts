@@ -457,21 +457,8 @@ declare module 'vue' {
     readonly h5Copy: UnwrapRef<typeof import('../utils/h5-copy')['h5Copy']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
-    readonly isDevelopment: UnwrapRef<typeof import('../utils/platform')['isDevelopment']>
-    readonly isH5: UnwrapRef<typeof import('../utils/platform')['isH5']>
     readonly isLogin: UnwrapRef<typeof import('../utils/public')['isLogin']>
-    readonly isMp360: UnwrapRef<typeof import('../utils/platform')['isMp360']>
-    readonly isMp: UnwrapRef<typeof import('../utils/platform')['isMp']>
-    readonly isMpAlipay: UnwrapRef<typeof import('../utils/platform')['isMpAlipay']>
-    readonly isMpBaidu: UnwrapRef<typeof import('../utils/platform')['isMpBaidu']>
-    readonly isMpQq: UnwrapRef<typeof import('../utils/platform')['isMpQq']>
-    readonly isMpToutiao: UnwrapRef<typeof import('../utils/platform')['isMpToutiao']>
-    readonly isMpWeixin: UnwrapRef<typeof import('../utils/platform')['isMpWeixin']>
-    readonly isProduction: UnwrapRef<typeof import('../utils/platform')['isProduction']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
-    readonly isQuickappWebview: UnwrapRef<typeof import('../utils/platform')['isQuickappWebview']>
-    readonly isQuickappWebviewHuawei: UnwrapRef<typeof import('../utils/platform')['isQuickappWebviewHuawei']>
-    readonly isQuickappWebviewUnion: UnwrapRef<typeof import('../utils/platform')['isQuickappWebviewUnion']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
@@ -519,7 +506,6 @@ declare module 'vue' {
     readonly openLocation: UnwrapRef<typeof import('../utils/factory')['openLocation']>
     readonly openSetting: UnwrapRef<typeof import('../utils/factory')['openSetting']>
     readonly parseUrl: UnwrapRef<typeof import('../utils/public')['parseUrl']>
-    readonly platform: UnwrapRef<typeof import('../utils/platform')['platform']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly randomString: UnwrapRef<typeof import('../utils/public')['randomString']>
     readonly reactive: UnwrapRef<typeof import('vue')['reactive']>
@@ -592,7 +578,6 @@ declare module 'vue' {
     readonly watchPostEffect: UnwrapRef<typeof import('vue')['watchPostEffect']>
     readonly watchSyncEffect: UnwrapRef<typeof import('vue')['watchSyncEffect']>
     readonly whetherNavigate: UnwrapRef<typeof import('../utils/public')['whetherNavigate']>
-    readonly wxPay: UnwrapRef<typeof import('../utils/wx-pay')['default']>
   }
 }
 declare module '@vue/runtime-core' {
@@ -629,21 +614,8 @@ declare module '@vue/runtime-core' {
     readonly h5Copy: UnwrapRef<typeof import('../utils/h5-copy')['h5Copy']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
-    readonly isDevelopment: UnwrapRef<typeof import('../utils/platform')['isDevelopment']>
-    readonly isH5: UnwrapRef<typeof import('../utils/platform')['isH5']>
     readonly isLogin: UnwrapRef<typeof import('../utils/public')['isLogin']>
-    readonly isMp360: UnwrapRef<typeof import('../utils/platform')['isMp360']>
-    readonly isMp: UnwrapRef<typeof import('../utils/platform')['isMp']>
-    readonly isMpAlipay: UnwrapRef<typeof import('../utils/platform')['isMpAlipay']>
-    readonly isMpBaidu: UnwrapRef<typeof import('../utils/platform')['isMpBaidu']>
-    readonly isMpQq: UnwrapRef<typeof import('../utils/platform')['isMpQq']>
-    readonly isMpToutiao: UnwrapRef<typeof import('../utils/platform')['isMpToutiao']>
-    readonly isMpWeixin: UnwrapRef<typeof import('../utils/platform')['isMpWeixin']>
-    readonly isProduction: UnwrapRef<typeof import('../utils/platform')['isProduction']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
-    readonly isQuickappWebview: UnwrapRef<typeof import('../utils/platform')['isQuickappWebview']>
-    readonly isQuickappWebviewHuawei: UnwrapRef<typeof import('../utils/platform')['isQuickappWebviewHuawei']>
-    readonly isQuickappWebviewUnion: UnwrapRef<typeof import('../utils/platform')['isQuickappWebviewUnion']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
@@ -691,7 +663,6 @@ declare module '@vue/runtime-core' {
     readonly openLocation: UnwrapRef<typeof import('../utils/factory')['openLocation']>
     readonly openSetting: UnwrapRef<typeof import('../utils/factory')['openSetting']>
     readonly parseUrl: UnwrapRef<typeof import('../utils/public')['parseUrl']>
-    readonly platform: UnwrapRef<typeof import('../utils/platform')['platform']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly randomString: UnwrapRef<typeof import('../utils/public')['randomString']>
     readonly reactive: UnwrapRef<typeof import('vue')['reactive']>
@@ -764,6 +735,5 @@ declare module '@vue/runtime-core' {
     readonly watchPostEffect: UnwrapRef<typeof import('vue')['watchPostEffect']>
     readonly watchSyncEffect: UnwrapRef<typeof import('vue')['watchSyncEffect']>
     readonly whetherNavigate: UnwrapRef<typeof import('../utils/public')['whetherNavigate']>
-    readonly wxPay: UnwrapRef<typeof import('../utils/wx-pay')['default']>
   }
 }

@@ -10,10 +10,11 @@ import { uniuseAutoImports } from '@uni-helper/uni-use';
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }: ConfigEnv):Promise<UserConfig> => {
   const env = loadEnv(mode, process.cwd(), '')
-  const { VITE_PORT, VITE_PUBLIC_PATH, VITE_API_BASE_URL } = env
+  const { VITE_PORT, VITE_PUBLIC_PATH, NODE_ENV, VITE_API_BASE_URL } = env
   //动态导入仅支持ESM的模块
   const UnoCss = await import('unocss/vite').then((i) => i.default)
-  console.log("process.env: ", env.NODE_ENV);
+
+  console.log("process.env: ", env.MODE);
 
   return {
     base: VITE_PUBLIC_PATH,

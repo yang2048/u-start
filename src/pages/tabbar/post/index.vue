@@ -13,66 +13,50 @@
         </view>
       </template>
     </uv-navbar>
-    <page-head title="scroll-view,区域滚动视图"></page-head>
 
     <view>
-      <scroll-view
-        :scroll-y="true"
-        class="h-vh"
-        @scrolltolower="lower"
-      >
-        <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
-        <view id="demo2" class="scroll-view-item bg-green">B</view>
-        <view id="demo3" class="scroll-view-item bg-blue">C</view>
-        <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
-        <view id="demo2" class="scroll-view-item bg-green">B</view>
-        <view id="demo3" class="scroll-view-item bg-blue">C</view>
-        <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
-        <view id="demo2" class="scroll-view-item bg-green">B</view>
-        <view id="demo3" class="scroll-view-item bg-blue">C</view>
-        <view id="demo2" class="scroll-view-item bg-green">B</view>
-        <view id="demo3" class="scroll-view-item bg-blue">C</view>
-        <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
-        <view id="demo2" class="scroll-view-item bg-green">B</view>
-        <view id="demo3" class="scroll-view-item bg-blue">C</view>
-        <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
-        <view id="demo2" class="scroll-view-item bg-green">B</view>
-        <view id="demo3" class="scroll-view-item bg-blue">C</view>
-        <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
-        <view id="demo2" class="scroll-view-item bg-green">B</view>
-        <view id="demo3" class="scroll-view-item bg-blue">C</view>
-        <view id="demo1" class="scroll-view-item bg-#fa0">A</view>
-        <view id="demo2" class="scroll-view-item bg-green">B</view>
-      </scroll-view>
+      <uv-list v-for="(item, index) in tbl_site">
+        <uv-list-item
+          :title="item.name"
+          :note="`资源数：${item.resource? item.resource : 0}`"
+          rightText=""
+          clickable
+          show-arrow
+        >
+          <template #header>
+            <view class="w-5 px-2">
+              <div
+                :class="[
+                  item.status
+                    ? 'i-mdi-cloud-alert-outline'
+                    : 'i-mdi-cloud-check-outline',
+                  item.status
+                    ? 'c-green'
+                    : 'c-amber',
+                    'text-5'
+                ]"
+              ></div>
+              <!-- <div v-if="item.isActive" class="i-mdi-checkbox-marked-circle-outline c-blue"></div> -->
+            </view>
+          </template>
+        </uv-list-item>
+      </uv-list>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
 import _ from "lodash";
-import { getVodList } from "@/services";
-import { useRequest } from "alova";
 import { usePlayStore } from "@/store";
 import { fetchClassify, fetchList } from "@/utils/cms";
+import { tbl_site } from "@/constants/config0514.json";
 
-const upper = (e) => {
+const lower = (e: any) => {
   console.log(e);
 };
-const lower = (e) => {
+const switchChange = (e: any) => {
   console.log(e);
 };
 </script>
 
-<style>
-.scroll-Y {
-  height: 100vh;
-}
-
-.scroll-view-item {
-  height: 300rpx;
-  line-height: 300rpx;
-  text-align: center;
-  font-size: 36rpx;
-}
-
-</style>
+<style></style>

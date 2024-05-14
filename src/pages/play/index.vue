@@ -52,7 +52,8 @@ const getDetailInfo = async (): Promise<void> => {
 
   info.value.fullList = formattedSeason;
   season.value = formattedSeason;
-  console.info(info, season.value);
+  active.seasonKey = Object.keys(season.value)[0];
+  console.info("选集", season.value);
 };
 
 // 选集排序
@@ -65,17 +66,24 @@ const reverseOrderEvent = (reverse: boolean) => {
   }
 };
 
+// 切换源
 function switchVideo(item: any) {
   console.info(item);
   active.seasonKey = item.name;
-  //   Taro.showToast({
-  //     title: item.split("$")[0],
-  //     icon: "loading",
-  //     mask: true,
-  //     duration: 800,
-  //   });
-  video_url.value = item.split("$")[1];
 }
+
+// 切换选集
+const changeEvent = async (item: any) => {
+  active.filmIndex = item;
+  video_url.value = item.split("$")[1];
+  console.info("切换选集", item);
+  uni.showToast({
+    title: `切换选集 ${item.split("$")[0]}`,
+    icon: "loading",
+    mask: true,
+    duration: 1000,
+  });
+};
 
 function onReverse() {
   video_urls.value.reverse();
@@ -129,7 +137,6 @@ function onLoadedMetaData(e: any) {
         id="video-1"
         enable-danmu
         enablePlayGesture
-        enableAutoRotation
         showScrollbar
         :src="video_url"
         :initial-time="0"
@@ -228,6 +235,7 @@ function onLoadedMetaData(e: any) {
           transform: 'scale(1.05)',
         }"
         @change="switchVideo"
+        v-if="season"
       >
         <template v-slot:right>
           <view class="px-2">
@@ -242,11 +250,17 @@ function onLoadedMetaData(e: any) {
             v-for="(item, index) in season[active.seasonKey]"
             :key="index"
           >
-            <view class="p-2 inline-block rounded-2 bg-#fa0">
+            <view class="p-2 inline-block rounded-2 bg-primary" @click="changeEvent(item)">
               {{ formatName(item) }}
             </view>
           </view>
         </view>
+      </view>
+      <view v-if="!season">
+        <uv-empty
+          mode="data"
+          icon="http://cdn.uviewui.com/uview/empty/data.png"
+        ></uv-empty>
       </view>
     </view>
   </view>

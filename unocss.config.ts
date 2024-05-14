@@ -57,12 +57,11 @@ export default defineConfig({
   ],
   theme: {
     colors: {
-      // primary: 'var(--nut-primary-color)',
-      // info: 'var(--nut-info-color)',
-      // warning: 'var(--nut-warning-color)',
-      // danger: 'var(--nut-danger-color)',
-      // success: 'var(--nut-success-color)',
-      // default: 'var(--nut-default-color)',
+      primary: 'var(--uv-primary)',
+      info: 'var(--uv-info)',
+      warning: 'var(--uv-warning)',
+      error: 'var(--uv-error)',
+      success: 'var(--uv-success)',
     },
   },
 })

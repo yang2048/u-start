@@ -34,7 +34,8 @@ export const alovaInstance = createAlova({
       return json
     },
     onError: (err, method) => {
-      alert(err.message)
+      console.error(err.message)
+      uni.showToast({ title: '请求异常', icon: 'error' })
     },
     // onComplete: async (method) => {
       // 处理请求完成逻辑 关闭请求 loading 状态

@@ -7,7 +7,6 @@
     "Uniapp",
     "TypeScript"
   ],
-  "type": "commonjs",
   "scripts": {
     "dev:app": "uni -p app",
     "dev:app-android": "uni -p app-android",
@@ -79,6 +78,7 @@
     "@dcloudio/vite-plugin-uni": "3.0.0-alpha-4010520240507001",
     "@iconify/json": "^2.2.208",
     "@iconify/utils": "^2.1.23",
+    "@types/crypto-js": "^4.2.2",
     "@types/lodash": "^4.17.1",
     "@types/node": "^20.12.11",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
