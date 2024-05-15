@@ -56,12 +56,16 @@ const loadInit = async () => {
   // const data = await fetchSiteActive();
   const defaultSite = siteConfig.value.default;
   // 加载分类
-  await getClassList(defaultSite);
+  getClassList(defaultSite);
 
   const resLength = await getFilmList(); // 动态加载数据
 
   if (resLength === 0 || filmData.value.list[0]?.vod_name === "无数据,防无限请求") {
     console.info("无数据,防无限请求");
+    uni.showToast({
+      title: `没有更多数据`,
+      icon: "error",
+    });
   }
 };
 
@@ -135,9 +139,6 @@ const classFilter = (filters: any) => {
 
 // 获取资源
 const getFilmList = async () => {
-  uni.showLoading({
-    title: "加载中",
-  });
   const defaultSite = siteConfig.value.default;
   const pg = pagination.value.pageIndex;
   const t = active.value.class;
@@ -164,11 +165,12 @@ const getFilmList = async () => {
     filmData.value.rawList = [...filmData.value.rawList, ...res];
     pagination.value.pageIndex++;
     length = newFilms.length;
+    filmData.value.pageStatus = "loadmore";
   } catch (err) {
     console.error(err);
     length = 0;
+    filmData.value.pageStatus = "nomore";
   } finally {
-    uni.hideLoading();
     console.log(`[film] load data length: ${length}`);
     return length;
   }
@@ -181,17 +183,26 @@ const searchEvent = async () => {};
 const changeSitesEvent = async (key: string) => {};
 
 const onScrollToLower = async (e) => {
-  console.info("onScrollToLower", e);
-  if (filmData.value.pageStatus == "loadmore") {
-    filmData.value.pageStatus = "loading";
-    const resLength = await getFilmList(); // 动态加载数据
+  try {
+    console.error("下一页" + filmData.value.pageStatus);
+    if (filmData.value.pageStatus == "loadmore") {
+      filmData.value.pageStatus = "loading";
+      const resLength = await getFilmList(); // 动态加载数据
+      uni.showToast({
+        title: `第 ${pagination.value.pageIndex} 页`,
+        icon: "success",
+        mask: true,
+      });
 
-    if (resLength === 0 || filmData.value.list[0]?.vod_name === "无数据,防无限请求") {
-      console.info("无数据,防无限请求");
-      filmData.value.pageStatus = "nomore";
-    } else {
-      filmData.value.pageStatus = "loadmore";
+      if (resLength === 0) {
+        filmData.value.pageStatus = "nomore";
+      }
     }
+  } catch (err) {
+    console.error(err);
+    filmData.value.pageStatus = "nomore";
+  } finally {
+    uni.hideLoading();
   }
 };
 
@@ -248,7 +259,7 @@ const toPage = (page: string, item?: any) => {
       <scroll-view
         scroll-y
         class="h-vh"
-        :lowerThreshold="50"
+        :lowerThreshold="1"
         @scrolltolower="onScrollToLower"
       >
         <sticky-section>
@@ -294,7 +305,7 @@ const toPage = (page: string, item?: any) => {
             </view>
           </list-view>
 
-          <view v-if="filmData.list > 0 || filmData.pageStatus == 'loading'" class="py-5">
+          <view v-if="filmData.list > 0 || filmData.pageStatus == 'loading'" class="pt-3 pb-8">
             <uv-load-more :status="filmData.pageStatus" @loadmore="loadData" />
           </view>
           <view

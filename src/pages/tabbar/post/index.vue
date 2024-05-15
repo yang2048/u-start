@@ -13,19 +13,20 @@
         </view>
       </template>
     </uv-navbar>
-
-    <view>
-      <uv-list v-for="(item, index) in _.sortBy(tbl_site, ['isActive'])">
+        
+    <view class="m-3 rounded-3 px-5 bg-#fff">
+      <uv-list v-for="(item, index) in _.sortBy(tbl_site, ['isActive'])" :key="index">
         <uv-list-item
           :title="item.name"
           :note="`${item.group} -> 资源数：${item.resource? item.resource : 0}`"
           rightText=""
           clickable
           show-arrow
+          border
           @click="openEdit(item)"
         >
           <template #header>
-            <view class="w-5 px-2">
+            <view class="w-8">
               <div
                 :class="[
                   item.isActive
@@ -46,15 +47,18 @@
   </view>
 
   <view>
-    <uv-popup ref="editModel" mode="center" :close-on-click-overlay="false" closeable custom-style="min-height: 200rpx;max-width: 80%">
+    <uv-popup ref="editModel" mode="center" custom-style="min-height: 200rpx;max-width: 80%">
 			<view class="p-5">
-				<view>里面是很比较多或复杂的内容...</view>
-				<view>里面是很比较多或复杂的内容...</view>
-				<view>里面是很比较多或复杂的内容...</view>
-				<view>里面是很比较多或复杂的内容...</view>
-				<view>里面是很比较多或复杂的内容...</view>
-        <view>{{siteDetail}}</view>
-        <view><button @click="onDefault">默认</button></view>
+				<view>识别码：{{siteDetail.key}}</view>
+				<view>名 称：{{siteDetail.name}}</view>
+				<view>分 组：{{siteDetail.group}}</view>
+        <view>类 型：{{siteDetail.type}}</view>
+        <view>状 态：{{siteDetail.status}}</view>
+        <view>激 活：{{siteDetail.isActive}}</view>
+        <view class="flex justify-evenly ">
+          <uv-button type="primary" text="设为默认" @tap="onDefault"></uv-button>
+          <uv-button type="warning" text="禁用站点" @click="onDefault"></uv-button>
+        </view>
 			</view>
 		</uv-popup>
   </view>
@@ -75,11 +79,18 @@ const openEdit = (item: any) => {
   siteDetail.value = item
 }
 
-const onDefault = (item: any) => {
+const onDefault = () => {
+  console.info(siteDetail)
   storePlayer.updateConfig({
     site: {
-      default: item,
+      default: siteDetail.value,
     },
+  });
+  editModel.value.close();
+  uni.showToast({
+    title: `切换源 ${siteDetail.value.name}`,
+    icon: "success",
+    duration: 1000,
   });
 }
 
