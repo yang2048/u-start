@@ -14,7 +14,7 @@ export default defineConfig(async ({ mode }: ConfigEnv):Promise<UserConfig> => {
   //动态导入仅支持ESM的模块
   const UnoCss = await import('unocss/vite').then((i) => i.default)
 
-  console.log("process.env: ", env.MODE);
+  console.log("process.env: ", env.NODE_ENV);
 
   return {
     base: VITE_PUBLIC_PATH,

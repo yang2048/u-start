@@ -250,7 +250,7 @@ function onLoadedMetaData(e: any) {
             v-for="(item, index) in season[active.seasonKey]"
             :key="index"
           >
-            <view class="p-2 inline-block rounded-2 bg-primary" @click="changeEvent(item)">
+            <view class="p-2 inline-block rounded-3 bg-amber" @click="changeEvent(item)">
               {{ formatName(item) }}
             </view>
           </view>

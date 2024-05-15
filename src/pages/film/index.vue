@@ -1,30 +1,10 @@
 <script setup lang="ts">
 import _ from "lodash";
-import { getVodList } from "@/services";
-import { useRequest } from "alova";
 import { usePlayStore } from "@/store";
 import { fetchClassify, fetchList } from "@/utils/cms";
 
 const storePlayer = usePlayStore();
 
-const siteConfig = ref({
-  default: {
-    categories: "",
-    ext: "",
-    api: "https://www.39kan.com/api.php/provide/vod/",
-    group: "切片",
-    id: "1",
-    isActive: true,
-    key: "39kan",
-    name: "39影视",
-    playUrl: "",
-    search: 1,
-    status: false,
-    type: 1,
-  },
-  search: "all",
-  data: [],
-}) as any;
 const filmData = ref({
   list: [],
   rawList: [],
@@ -56,6 +36,10 @@ const active = ref({
 const classConfig = ref({
   data: [{ type_id: 0, type_name: "最新" }],
 }) as any;
+
+const siteConfig = computed(() => {
+  return storePlayer.getSite;
+});
 
 onLoad(() => {
   loadInit();
@@ -107,14 +91,14 @@ const categoriesFilter = (classData: string[]): string[] => {
   if (!categories || categories.trim() === "") return classData;
 
   const categoryList = categories.split(",").map((item: any) => item.trim());
-  const classDataList = classData.map((item) => item["type_name"]);
+  const classDataList = classData.map((item: any) => item["type_name"]);
   const categoriesInOrder: string[] = [];
 
   for (const category of categoryList) {
     const isFind = classDataList.indexOf(category);
     if (isFind === -1) continue;
 
-    const foundCategory = classData.find((item) => item["type_name"] === category);
+    const foundCategory = classData.find((item: any) => item["type_name"] === category);
     if (foundCategory) {
       categoriesInOrder.push(foundCategory);
     }
@@ -218,7 +202,6 @@ const loadData = () => {
 //播放
 const toPage = (page: string, item?: any) => {
   storePlayer.updateConfig({
-    type: "film",
     data: {
       info: item,
       ext: { site: active.site },
@@ -230,7 +213,24 @@ const toPage = (page: string, item?: any) => {
 
 <template>
   <view class="container">
-    <uv-navbar placeholder leftText="返回">
+    <uv-navbar placeholder>
+      <template #left>
+        <view class="uv-nav-slot">
+          <navigator open-type="navigateBack">
+            <uv-icon name="arrow-left" size="20"></uv-icon>
+          </navigator>
+
+          <uv-line
+            direction="column"
+            :hairline="false"
+            length="16"
+            margin="0 8px"
+          ></uv-line>
+          <navigator url="/pages/tabbar/home/index" open-type="switchTab">
+            <uv-icon name="home" size="20"></uv-icon>
+          </navigator>
+        </view>
+      </template>
       <template #center>
         <view class="ml-3">
           <uv-search
@@ -297,8 +297,14 @@ const toPage = (page: string, item?: any) => {
           <view v-if="filmData.list > 0 || filmData.pageStatus == 'loading'" class="py-5">
             <uv-load-more :status="filmData.pageStatus" @loadmore="loadData" />
           </view>
-          <view v-if="filmData.list == 0 && filmData.pageStatus != 'loading'" class="py-10">
-            <uv-empty mode="list" icon="http://cdn.uviewui.com/uview/empty/list.png"></uv-empty>
+          <view
+            v-if="filmData.list == 0 && filmData.pageStatus != 'loading'"
+            class="py-10"
+          >
+            <uv-empty
+              mode="list"
+              icon="http://cdn.uviewui.com/uview/empty/list.png"
+            ></uv-empty>
           </view>
         </sticky-section>
       </scroll-view>

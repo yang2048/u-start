@@ -2,7 +2,7 @@
 	"easycom": {
 		"autoscan": true,
 		"custom": {
-			"^um-(.*)": "@/components/um-$1.vue",
+			// "^um-(.*)": "@/components/um-$1.vue",
 			// "^uv-(.*)": "@climblee/uv-ui/components/uv-$1/uv-$1.vue"
 		}
 	},
@@ -70,11 +70,17 @@
 				"navigationBarTitleText": "影视",
 				"navigationStyle": "custom"
 			}
-		}
+		},
 		{
 			"path": "pages/play/index",
 			"style": {
 				"navigationBarTitleText": "影视"
+			}
+		},
+		{
+			"path": "pages/search/index",
+			"style": {
+				"navigationBarTitleText": "影视搜索"
 			}
 		}
 	],

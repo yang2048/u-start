@@ -21,6 +21,7 @@ declare module 'vue' {
     PostListItem: typeof import('./../components/common/PostListItem.vue')['default']
     PullList: typeof import('./../components/common/PullList.vue')['default']
     ScrollList: typeof import('./../components/common/ScrollList.vue')['default']
+    UmNavbar: typeof import('./../components/um-navbar/index.vue')['default']
     WxKefu: typeof import('./../components/common/WxKefu.vue')['default']
   }
 }

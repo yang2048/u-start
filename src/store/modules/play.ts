@@ -3,11 +3,6 @@ import { defineStore } from 'pinia'
 const state = {
   type: 'film',
   setting: {
-    // playerMode: {
-    //   // type: 'xgplayer',
-    //   type: 'dplayer',
-    //   external: '',
-    // },
     snifferMode: {
       type: 'pie',
       url: '',
@@ -23,6 +18,24 @@ const state = {
       content: '',
     },
   },
+  site: {
+    default: {
+      categories: "",
+      ext: "",
+      api: "https://www.39kan.com/api.php/provide/vod/",
+      group: "切片",
+      id: "1",
+      isActive: true,
+      key: "39kan",
+      name: "39影视",
+      playUrl: "",
+      search: 1,
+      status: false,
+      type: 1,
+    },
+    search: "all",
+    data: [],
+  },
   data: {
     info: {},
     ext: {},
@@ -36,6 +49,9 @@ export const usePlayStore = defineStore('play', {
     getType: (state) => {
       return state.type
     },
+    getSite: (state) => {
+      return state.site
+    },
     getData: (state) => {
       return state.data
     },
@@ -48,6 +64,9 @@ export const usePlayStore = defineStore('play', {
       for (const key in payload) {
         if (key === 'type') {
           this.type = payload.type;
+        }
+        if (key === 'site') {
+          this.site = payload.site;
         }
         if (key === 'data') {
           this.data = payload.data;
