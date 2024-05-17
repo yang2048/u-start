@@ -62,11 +62,14 @@
         "appid" : "wx1b60f5a5056c1a0f",
         "setting" : {
             "urlCheck" : false,
-            "es6" : false,
+            "es6" : true,
             "postcss" : false,
             "minified" : true,
-            "skylineRenderEnable" : true,
-            "condition" : false
+            "newFeature": true,
+            // "skylineRenderEnable" : true,
+            "condition" : false,
+            "enhance": true,
+            "compileWorklet": true
         },
         "optimization" : {
             "subPackages" : true
@@ -74,16 +77,13 @@
         "usingComponents" : true,
         "lazyCodeLoading" : "requiredComponents",
         "rendererOptions" : {
-            "skyline" : {
-                "defaultDisplayBlock" : true
-            }
         },
-        // style: "v2",
-        // renderer: "skyline",
-        // componentFramework: "glass-easel"
+        "style": "v2",
+        // "renderer": "skyline",
+        // "componentFramework": "glass-easel",
         "permission" : {},
         "uniStatistics" : {
-            "enable" : true
+            "enable" : false
         }
     },
     "vueVersion" : "3",

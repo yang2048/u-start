@@ -8,7 +8,7 @@ import type { SearchParams } from '@/api/common/model'
 import { useUserStore } from '@/store/user'
 import usePager from '@/hooks/pager'
 const config = inject('config') // 注入
-const emptyImg = '/static/images/common/avatar.jpg'
+const emptyImg = '/static/images/me/avatar.jpg'
 
 const userStore = useUserStore()
 const { id: user_id } = storeToRefs(userStore)

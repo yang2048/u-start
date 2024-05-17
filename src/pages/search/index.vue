@@ -5,7 +5,7 @@ const keyword = ref('')
 <template>
   <view>
     <view class="p-5 bg-#fff">
-    <uv-search placeholder="请输入搜索内容" v-model="keyword"></uv-search>
+    <uv-search placeholder="请输入搜索内容" v-model="keyword" clearabled focus animation></uv-search>
     </view>
     <!-- 热门搜索 -->
     <view class="my-3 pb-8 rounded-3 bg-#fff">

@@ -68,13 +68,21 @@
 			"path": "pages/film/index",
 			"style": {
 				"navigationBarTitleText": "影视",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				// "renderer": "skyline",
+				// "componentFramework": "glass-easel"
 			}
 		},
 		{
 			"path": "pages/play/index",
 			"style": {
 				"navigationBarTitleText": "影视"
+			}
+		},
+		{
+			"path": "pages/iptv/index",
+			"style": {
+				"navigationBarTitleText": "电视直播"
 			}
 		},
 		{

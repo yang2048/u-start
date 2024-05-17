@@ -5,6 +5,10 @@ import { useAppStore } from '@/store/app'
 const appStore = useAppStore()
 
 onLaunch(() => {
+  uni.setEnableDebug({
+      enableDebug: true,
+  })
+
   console.log('App Launch')
   // #ifndef H5
   appStore.initSystemInfo()

@@ -8,6 +8,8 @@ import {
 import { usePlayStore } from "@/store";
 import _ from "lodash";
 
+let videoContext: UniApp.VideoContext;
+
 const type = computed(() => {
   return store.getType;
 });
@@ -24,7 +26,7 @@ console.info(info.value);
 
 const video_urls = ref(info.value.vod_play_url.split("#"));
 const video_url = ref(video_urls.value[0].split("$")[1]);
-const direction = ref(90);
+const screenFit = ref("contain");
 const rateShow = ref(false);
 
 const active = reactive({
@@ -37,8 +39,10 @@ const active = reactive({
   seasonKey: "",
 });
 const season = ref(); // 选集
+const fullScreen = ref(false);
 
 onLoad(() => {
+  videoContext = uni.createVideoContext("video-1");
   const { site } = ext.value;
   getDetailInfo();
 });
@@ -89,33 +93,49 @@ function onReverse() {
   video_urls.value.reverse();
 }
 
-function onControlsToggle(e: any) {
-  // console.log("onControlsToggle=>", detail.show);
+const onFullScreen = (e: any) => {
+  fullScreen.value = e.detail.fullScreen;
+};
+
+const onControlsToggle = (e: any) => {
+  console.log("onControlsToggle=>", e.detail.show);
   rateShow.value = e.detail.show;
-}
+};
 
 function onEnded() {
-  console.log("onEnded=>自动下一集");
+  console.log("onEnded =>自动下一集");
+  uni.showToast({
+    title: `自动下一集`,
+    icon: "success",
+  });
 }
 
 function switchRate(e: any) {
-  console.log("switchRate=> ", e);
-  //   let videoContext = Taro.createVideoContext("video-1");
-  //   videoContext.playbackRate(e);
-  //   Taro.showToast({
-  //     title: `倍速 x${e}`,
-  //     icon: "success",
-  //   });
+  console.log("switchRate => ", e);
+  videoContext.playbackRate(e);
+  uni.showToast({
+    title: `倍速 ${e}`,
+    icon: "success",
+  });
 }
 
-function onLoadedMetaData(e: any) {
-  const videoRatio = e.detail.width / e.detail.height;
-  // 判断长宽比确定全屏方向
-  if (videoRatio < 1) {
-    direction.value = 0;
-  }
-  // console.log("onLoadedMetaData=>", videoRatio, direction.value);
-}
+const switchDirection = (e: any) => {
+  console.log("switchDirection => ", e);
+  videoContext.requestFullScreen({ direction: e });
+  uni.showToast({
+    title: `旋转 ${e}`,
+    icon: "success",
+  });
+};
+
+const switchFit = (e: any) => {
+  console.log("switchFit => ", e);
+  screenFit.value = e;
+  uni.showToast({
+    title: `画面尺寸 ${e}`,
+    icon: "success",
+  });
+};
 </script>
 
 <template>
@@ -137,39 +157,55 @@ function onLoadedMetaData(e: any) {
         id="video-1"
         enable-danmu
         enablePlayGesture
-        showScrollbar
+        show-snapshot-button
+        show-casting-button
+        picture-in-picture-show-progress
+        show-screen-lock-button
+        show-background-playback-button
+        :object-fit="screenFit"
         :src="video_url"
         :initial-time="0"
         :playStrategy="2"
-        object-fit="contain"
         @ended="onEnded"
-        @loadedMetaData="onLoadedMetaData"
-        @controlsToggle="onControlsToggle"
+        @fullscreenchange="onFullScreen"
+        @controlstoggle="onControlsToggle"
       >
-        <cover-view class="" v-if="rateShow">
-          <cover-view class="video-control">
-            <view class="flex font-size-13 m-2">
+        <cover-view class="absolute top-0 left-1/4 w-1/2" v-show="rateShow && fullScreen">
+          <cover-view class="text-4 c-#fff bg-#0009">
+            <view class="flex m-2">
               <span>倍速播放:</span>
               <view
                 v-for="(item, index) in [0.5, 0.8, 1.0, 1.25, 1.5, 2.0]"
                 :key="index"
                 :data-rate="item"
                 @tap="switchRate(item)"
-                :class="['ml-2']"
+                :class="['ml-5']"
               >
                 x{{ item }}
               </view>
             </view>
-            <view class="flex font-size-13 m-2">
+            <view class="flex m-2">
               <span>旋转屏幕:</span>
               <view
                 v-for="(item, index) in [-90, 0, 90]"
                 :key="index"
                 :data-rate="item"
-                @tap="switchRate(item)"
-                :class="['ml-2']"
+                @tap="switchDirection(item)"
+                :class="['ml-5']"
               >
                 {{ item }}°
+              </view>
+            </view>
+            <view class="flex m-2">
+              <span>画面尺寸:</span>
+              <view
+                v-for="(item, index) in ['contain', 'fill', 'cover']"
+                :key="index"
+                :data-rate="item"
+                @tap="switchFit(item)"
+                :class="['ml-5']"
+              >
+                {{ item == "contain" ? "包含" : item == "fill" ? "填充" : "覆盖" }}
               </view>
             </view>
           </cover-view>
@@ -183,21 +219,25 @@ function onLoadedMetaData(e: any) {
         <div class="scroll-wrap">
           <div class="scroll-item text-base font-bold p-2 font-sans">
             {{ info["vod_name"] }}
-            <span class="text-xs font-medium">{{ info.vod_remarks }}</span>
+            <span class="text-xs font-medium">{{
+              `${formatIndex(active.filmIndex).index}`
+            }}</span>
           </div>
         </div>
       </view>
       <view class="flex bg-white">
         <view class="w-1/3 p-1">
-          <image :src="info.vod_pic" alt="Cover" class="rounded-3 w-28 h-36" />
+          <image
+            :src="info.vod_pic"
+            show-menu-by-longpress
+            alt="Cover"
+            class="rounded-3 w-28 h-36"
+          />
         </view>
         <view class="w-2/3 p-1 text-sm">
-          <div class="spacer">
-            <span v-if="type === 'film'">{{
-              `${info["vod_name"]} ${formatIndex(active.filmIndex).index}`
-            }}</span>
-            <span v-else>{{ info["name"] }}</span>
-          </div>
+          <p class="text-gray-600">
+            <span class="text-gray-500">动态：</span>{{ info.vod_remarks }}
+          </p>
           <p class="text-gray-600">
             <span class="text-gray-500">类型：</span>{{ info.type_name }} ·
             {{ info.vod_tag }}

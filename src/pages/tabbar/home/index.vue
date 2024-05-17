@@ -66,7 +66,7 @@ const config = ref({
       name: 'iptv',
       title: "电视直播",
       icon: "i-iconoir-apple-imac-2021",
-      link: "/pages/news/index",
+      link: "/pages/iptv/index",
     },
     {
       name: 'spider',
@@ -194,21 +194,6 @@ const toPage = (page:string) => {
 
         <view class="my-3 rounded-3 bg-#fff">
           <uni-section title="热门新闻" @click="toPage('pages/film/index')" type="line"></uni-section>
-          <view class="">
-            <uv-tabs
-              :list="tabs"
-              :scrollable="false"
-              :activeStyle="{
-                color: '#303133',
-                fontWeight: 'bold',
-                transform: 'scale(1.05)',
-              }"
-              @change="change"
-            ></uv-tabs>
-          </view>
-          <view v-for="(item, index) in list" :key="index" class="news-item-box">
-            <NewsListItem :data="item" />
-          </view>
         </view>
       </view>
 

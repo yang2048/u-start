@@ -152,6 +152,7 @@ const getFilmList = async () => {
     }`
   );
 
+  filmData.value.pageStatus = "loading";
   let length = 0;
   try {
     const res = await fetchList(
@@ -165,7 +166,12 @@ const getFilmList = async () => {
     filmData.value.rawList = [...filmData.value.rawList, ...res];
     pagination.value.pageIndex++;
     length = newFilms.length;
-    filmData.value.pageStatus = "loadmore";
+
+    if (length === 0) {
+      filmData.value.pageStatus = "nomore";
+    } else {
+      filmData.value.pageStatus = "loadmore";
+    }
   } catch (err) {
     console.error(err);
     length = 0;
@@ -176,31 +182,22 @@ const getFilmList = async () => {
   }
 };
 
-// 搜索
-const searchEvent = async () => {};
-
 // 切换站点
 const changeSitesEvent = async (key: string) => {};
 
-const onScrollToLower = async (e) => {
+const onScrollToLower = async () => {
   try {
-    console.error("下一页" + filmData.value.pageStatus);
     if (filmData.value.pageStatus == "loadmore") {
-      filmData.value.pageStatus = "loading";
       const resLength = await getFilmList(); // 动态加载数据
       uni.showToast({
         title: `第 ${pagination.value.pageIndex} 页`,
         icon: "success",
         mask: true,
       });
-
-      if (resLength === 0) {
-        filmData.value.pageStatus = "nomore";
-      }
     }
+    console.error("下一页" + filmData.value.pageStatus);
   } catch (err) {
     console.error(err);
-    filmData.value.pageStatus = "nomore";
   } finally {
     uni.hideLoading();
   }
@@ -220,17 +217,26 @@ const toPage = (page: string, item?: any) => {
   });
   uni.$uv.route(page);
 };
+
+const trigger = (e:any) => {
+  if (e.item.text == '换源') {
+    uni.$uv.route({url: "/pages/tabbar/post/index", type:"tab"});
+  }
+  if (e.item.text == '记录') {
+    uni.$uv.route("/pages/search/index");
+  }
+}
 </script>
 
 <template>
+  <u-no-network></u-no-network>
   <view class="container">
     <uv-navbar placeholder>
       <template #left>
         <view class="uv-nav-slot">
           <navigator open-type="navigateBack">
-            <uv-icon name="arrow-left" size="20"></uv-icon>
+            <uv-icon name="arrow-left" size="22"></uv-icon>
           </navigator>
-
           <uv-line
             direction="column"
             :hairline="false"
@@ -238,7 +244,7 @@ const toPage = (page: string, item?: any) => {
             margin="0 8px"
           ></uv-line>
           <navigator url="/pages/tabbar/home/index" open-type="switchTab">
-            <uv-icon name="home" size="20"></uv-icon>
+            <uv-icon name="home" size="22"></uv-icon>
           </navigator>
         </view>
       </template>
@@ -249,17 +255,19 @@ const toPage = (page: string, item?: any) => {
             disabled
             :showAction="false"
             @click="toPage('pages/search/index')"
-            :customStyle="{ width: '80%' }"
-          ></uv-search>
+            :customStyle="{ width: '75%' }"
+          >
+          </uv-search>
         </view>
       </template>
     </uv-navbar>
 
     <view class="">
       <scroll-view
-        scroll-y
+        scrollY
+        enableFlex
         class="h-vh"
-        :lowerThreshold="1"
+        :lowerThreshold="5"
         @scrolltolower="onScrollToLower"
       >
         <sticky-section>
@@ -305,21 +313,49 @@ const toPage = (page: string, item?: any) => {
             </view>
           </list-view>
 
-          <view v-if="filmData.list > 0 || filmData.pageStatus == 'loading'" class="pt-3 pb-8">
+          <view
+            v-if="filmData.list > 0 || filmData.pageStatus == 'loading'"
+            class="pt-3 pb-8"
+          >
             <uv-load-more :status="filmData.pageStatus" @loadmore="loadData" />
           </view>
           <view
-            v-if="filmData.list == 0 && filmData.pageStatus != 'loading'"
+            v-if="filmData.list == 0 && filmData.pageStatus == 'nomore'"
             class="py-10"
           >
             <uv-empty
               mode="list"
               icon="http://cdn.uviewui.com/uview/empty/list.png"
             ></uv-empty>
+            <navigator url="/pages/tabbar/post/index" open-type="switchTab">
+              <button type="default">更换数据源</button>
+            </navigator>
           </view>
         </sticky-section>
       </scroll-view>
     </view>
+
+    <next-drag-fab
+            ref="nextDragFabRef"
+            :isDock="true"
+            :content="[
+            {
+                text: '记录',
+                active: false,
+                iconPath: 'https://www.yisuxiao.com/static/server/common/tab/tab1-0.png', 
+                selectedIconPath: 'https://www.yisuxiao.com/static/server/common/tab/tab1-1.png'},
+            {
+                text: '换源',
+                active: false,
+                iconPath: 'https://www.yisuxiao.com/static/server/common/tab/tab2-0.png', 
+                selectedIconPath: 'https://www.yisuxiao.com/static/server/common/tab/tab2-1.png'},
+            ]"
+            horizontal="right"
+            vertical="bottom"
+            direction="horizontal"
+            defpositon="rb"
+            @trigger="trigger"
+        />
   </view>
 </template>
 

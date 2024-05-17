@@ -6,7 +6,7 @@ import { isLogin, toLogin } from '@/utils/public'
 import { useUserStore } from '@/store/user'
 
 const showWechat = ref()
-const wx = ref('Aaron-xdev')
+const wx = ref('yyovo123')
 const model: Ref<UserData> = ref({
   favor_count: 0,
   follow_count: 0,
@@ -40,7 +40,7 @@ const open = () => {
 }
 
 const getUserData = async () => {
-  model.value = await UserApi.getUserData()
+  // model.value = await UserApi.getUserData()
   uni.stopPullDownRefresh()
 }
 
@@ -104,8 +104,8 @@ const btnStyle = reactive({
 
 <template>
   <view class="user-container">
-    <view class="absolute w100vh">
-      <image class="w100vh" src="/static/images/me/wd190.png" />
+    <view class="absolute">
+      <div class="w100vh h-vh bg-gradient-to-bl from-#FFF1EB to-#ACE0F9"></div>
     </view>
     <view class="relative mx-4">
       <view class="user-box">
@@ -113,8 +113,8 @@ const btnStyle = reactive({
           <view class="flex justify-center items-center rd-50% bg-white">
             <image class="w-20 h-20 rd-50%" src="/static/images/me/avatar.png" />
           </view>
-          <text v-if="userInfo.id" class="c-black ml-3">{{ userInfo.name }}</text>
-          <text v-else class="c-black ml-3" @click="to('login')">点击登录</text>
+          <!-- <text v-if="userInfo.id" class="c-black ml-3">{{ userInfo.name }}</text>
+          <text v-else class="c-black ml-3" @click="to('login')">点击登录</text> -->
         </view>
       </view>
       <view class="user-info-box mb-4">
@@ -182,7 +182,7 @@ const btnStyle = reactive({
     <uv-popup ref="showWechat" mode="center" closeable custom-style="height: 500rpx;width: 500rpx">
       <view class="info-box mt-3">
         <view style="widows: 160px; height: 160px">
-          <uv-image width="160px" height="160px" src="/static/images/me/aaron.jpg"></uv-image>
+          <uv-image width="160px" height="160px" src="https://cdn.jsdelivr.net/gh/yang2048/picx-images-hosting@master/img/omCUv5cAgS78kerYyuXJNEZaheAY.jpg"></uv-image>
         </view>
         <uv-button
           class="mt-3"
