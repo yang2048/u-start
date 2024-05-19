@@ -42,16 +42,16 @@ const config = ref({
   noticeList: ["寒雨连江夜入吴", "平明送客楚山孤", "洛阳亲友如相问", "一片冰心在玉壶"],
   bannerList: [
     {
-      url: "https://cdn.uviewui.com/uview/swiper/swiper1.png",
-      title: "身无彩凤双飞翼，心有灵犀一点通",
+      url: "https://yyovo.maikajie.com/upload/1bn.png",
+      title: "免费领卡，畅享大额流量",
     },
     {
-      url: "https://cdn.uviewui.com/uview/swiper/swiper2.png",
-      title: "身无彩凤双飞翼，心有灵犀一点通",
+      url: "https://yyovo.maikajie.com/upload/2bn.png",
+      title: "包邮到家，服务到家",
     },
     {
-      url: "https://cdn.uviewui.com/uview/swiper/swiper3.png",
-      title: "谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳",
+      url: "https://jsd.cdn.zzko.cn/gh/yang2048/picx-images-hosting@master/images/industry-3087393_1280.8vmpmozdig.webp",
+      title: "互联万物，智慧生活",
     },
   ],
   gridList: [
@@ -134,8 +134,7 @@ const toPage = (page:string) => {
     <uv-navbar safeAreaInsetTop fixed placeholder>
       <template #left>
         <view class="flex center" @click="model.showCitySelect = true">
-          <view class="text-16px">{{ model.city[1] }}</view>
-          <uv-icon name="arrow-down" size="28" color="#666" class="mx-1"></uv-icon>
+          YYOVO
         </view>
       </template>
       <template #center>
@@ -145,7 +144,7 @@ const toPage = (page:string) => {
             disabled
             :showAction="false"
             @click="toPage('pages/film/index')"
-            :customStyle="{ width: '75%' }"
+            :customStyle="{ width: '80%' }"
           ></uv-search>
         </view>
         <!-- <view class="flex relative mr-2" @click="toMessageList">
@@ -162,7 +161,10 @@ const toPage = (page:string) => {
             height="180"
             previousMargin="30"
             nextMargin="30"
+            mode="scaleToFill"
+            indicator
             circular
+            showTitle
             radius="5"
           ></uv-swiper>
         </view>
@@ -193,7 +195,7 @@ const toPage = (page:string) => {
         </view>
 
         <view class="my-3 rounded-3 bg-#fff">
-          <uni-section title="热门新闻" @click="toPage('pages/film/index')" type="line"></uni-section>
+          <uni-section title="上架中" @click="toPage('pages/film/index')" type="line"></uni-section>
         </view>
       </view>
 

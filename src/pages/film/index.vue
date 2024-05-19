@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import _ from "lodash";
 import { usePlayStore } from "@/store";
-import { fetchClassify, fetchList } from "@/utils/cms";
+import { fetchClassify, fetchList, fetchSearch } from "@/utils/cms";
 
 const storePlayer = usePlayStore();
 
@@ -32,34 +32,113 @@ const active = ref({
   nav: null,
   class: 0,
 }) as any;
-
 const classConfig = ref({
-  data: [{ type_id: 0, type_name: "最新" }],
+  data: [],
 }) as any;
+const searchTxt = ref(""); // 搜索框
+const searchCurrentSite = ref(); // 搜索当前源
 
 const siteConfig = computed(() => {
   return storePlayer.getSite;
 });
 
-onLoad(() => {
-  loadInit();
+onLoad((options: any) => {
+  //搜索参数
+  searchTxt.value = options.wd;
+  if (searchTxt.value) {
+    searchCurrentSite.value = siteConfig.value.default;
+    loadSearch();
+  } else {
+    loadInit();
+  }
 
-  console.info("siteConfig=>", siteConfig.value);
-  console.info("filmData=>", filmData.value);
-  console.info("pagination=>", pagination.value);
-  console.info("active=>", active.value);
-  console.info("classConfig=>", classConfig.value);
+  // console.info("siteConfig=>", siteConfig.value);
+  // console.info("filmData=>", filmData.value);
+  // console.info("pagination=>", pagination.value);
+  // console.info("active=>", active.value);
+  // console.info("classConfig=>", classConfig.value);
+
+  // console.log(`[film] search keyword:${searchTxt.value}`);
 });
 
+//加载搜索数据
+const loadSearch = async () => {
+  try {
+    //获取站点信息
+    const searchSite = storePlayer.getSearchSite;
+    const currentSite = searchCurrentSite.value;
+
+    let size = 0;
+    filmData.value.pageStatus = "loading";
+    if (!currentSite) {
+      console.log("[film][search] No search site found.");
+      size = 0;
+      return;
+    }
+
+    const index = searchSite.indexOf(currentSite);
+    const isLastSite = index + 1 >= searchSite.length;
+
+    if (index + 1 > searchSite.length) return 0; // 没有更多站点
+
+    searchCurrentSite.value = isLastSite ? null : searchSite[index + 1];
+
+    const resultSearch = await fetchSearch(currentSite, searchTxt.value);
+    if (!resultSearch || resultSearch.length === 0) {
+      console.log("[film][search] Empty search results.");
+      size = 1;
+      return;
+    }
+
+    let resultDetail = resultSearch;
+    if (resultSearch.length > 0 && !_.has(resultSearch[0], "vod_pic")) {
+      if ([0, 1].includes(currentSite.type)) {
+        const ids = resultSearch.map((item: any) => item.vod_id);
+        resultDetail = await fetchDetail(currentSite, ids.join(","));
+      } else {
+        const updatePic = async (item: any) => {
+          try {
+            const result = await fetchDetail(currentSite, item.vod_id);
+            return result[0];
+          } catch (error) {
+            return false;
+          }
+        };
+        const res = await Promise.all(resultSearch.map((item: any) => updatePic(item)));
+        resultDetail = res.filter(Boolean);
+      }
+    }
+
+    const filmList = resultDetail.map((item: any) => ({
+      ...item,
+      relateSite: currentSite,
+    }));
+
+    const newFilms = _.differenceWith(filmList, filmData.value.list, _.isEqual); // 去重
+    filmData.value.list.push(...newFilms);
+
+    size = isLastSite ? 0 : newFilms.length;
+  } catch (err) {
+    console.error(err);
+    uni.showToast({
+      title: `请重试`,
+      icon: "error",
+    });
+  } finally {
+    filmData.value.pageStatus = "loadmore";
+  }
+};
+
+//加载默认站点数据
 const loadInit = async () => {
   //获取站点信息
-  // const data = await fetchSiteActive();
   const defaultSite = siteConfig.value.default;
+
   // 加载分类
   getClassList(defaultSite);
 
-  const resLength = await getFilmList(); // 动态加载数据
-
+  // 动态加载数据
+  const resLength = await getFilmList();
   if (resLength === 0 || filmData.value.list[0]?.vod_name === "无数据,防无限请求") {
     console.info("无数据,防无限请求");
     uni.showToast({
@@ -80,7 +159,7 @@ const getClassList = async (site: any) => {
     filter.value.data = filters;
 
     const classDataFormat = categoriesFilter(classData);
-    classConfig.value.data = classDataFormat;
+    classConfig.value.data = [...classDataFormat];
 
     const classItem: any = classDataFormat[0];
     active.value.class = classItem["type_id"];
@@ -182,20 +261,17 @@ const getFilmList = async () => {
   }
 };
 
-// 切换站点
-const changeSitesEvent = async (key: string) => {};
-
+//上滑翻页
 const onScrollToLower = async () => {
   try {
     if (filmData.value.pageStatus == "loadmore") {
-      const resLength = await getFilmList(); // 动态加载数据
-      uni.showToast({
-        title: `第 ${pagination.value.pageIndex} 页`,
-        icon: "success",
-        mask: true,
-      });
+      // 动态加载数据
+      if (searchTxt.value) {
+        loadSearch();
+      } else {
+        getFilmList();
+      }
     }
-    console.error("下一页" + filmData.value.pageStatus);
   } catch (err) {
     console.error(err);
   } finally {
@@ -218,14 +294,15 @@ const toPage = (page: string, item?: any) => {
   uni.$uv.route(page);
 };
 
-const trigger = (e:any) => {
-  if (e.item.text == '换源') {
-    uni.$uv.route({url: "/pages/tabbar/post/index", type:"tab"});
+//浮动按钮
+const trigger = (e: any) => {
+  if (e.item.text == "换源") {
+    uni.$uv.route({ url: "/pages/tabbar/post/index", type: "tab" });
   }
-  if (e.item.text == '记录') {
+  if (e.item.text == "记录") {
     uni.$uv.route("/pages/search/index");
   }
-}
+};
 </script>
 
 <template>
@@ -235,7 +312,7 @@ const trigger = (e:any) => {
       <template #left>
         <view class="uv-nav-slot">
           <navigator open-type="navigateBack">
-            <uv-icon name="arrow-left" size="22"></uv-icon>
+            <uv-icon name="arrow-left" :size="20"></uv-icon>
           </navigator>
           <uv-line
             direction="column"
@@ -244,18 +321,18 @@ const trigger = (e:any) => {
             margin="0 8px"
           ></uv-line>
           <navigator url="/pages/tabbar/home/index" open-type="switchTab">
-            <uv-icon name="home" size="22"></uv-icon>
+            <uv-icon name="home-fill" :size="20"></uv-icon>
           </navigator>
         </view>
       </template>
       <template #center>
         <view class="ml-3">
           <uv-search
-            placeholder="搜索"
+            :placeholder="searchTxt ? searchTxt : '搜索'"
             disabled
             :showAction="false"
             @click="toPage('pages/search/index')"
-            :customStyle="{ width: '75%' }"
+            :customStyle="{ width: '80%' }"
           >
           </uv-search>
         </view>
@@ -271,7 +348,7 @@ const trigger = (e:any) => {
         @scrolltolower="onScrollToLower"
       >
         <sticky-section>
-          <sticky-header class="fixed z-89 bg-#fff">
+          <sticky-header class="fixed z-89 bg-#fff" v-if="classConfig.data.length > 0">
             <!-- 分类 -->
             <view class="w-screen">
               <uv-tabs
@@ -289,24 +366,35 @@ const trigger = (e:any) => {
                 class="justify-center flex-items-center"
                 v-for="(item, index) in filmData.list"
                 :key="index"
-                style="background-color: #fff"
               >
-                <div class="rounded-md" @click="toPage('pages/play/index', item)">
+                <div class="rounded-2 relative" @click="toPage('pages/play/index', item)">
+                  <view
+                    class="absolute z-9 left-0 top-0 rounded-t-2 text-2.8 max-w-60% bg-#ff8a c-#402d03 truncate p-0.5"
+                    v-if="item.vod_remarks || item.vod_remark"
+                  >
+                    {{ item.vod_remarks || item.vod_remark }}
+                  </view>
+                  <view
+                    class="absolute z-9 bottom-0 rounded-b-2 text-2.8 w-full bg-#0008 c-#fee center"
+                    v-if="item.relateSite"
+                  >
+                    {{ item.relateSite.name }}
+                  </view>
                   <uv-image
                     :src="item.vod_pic"
                     :showMenuByLongpress="false"
                     width="100%"
                     :height="150"
                     mode="scaleToFill"
-                    :radius="5"
+                    :radius="8"
                     :observeLazyLoad="true"
                     :fade="true"
                     duration="450"
                   ></uv-image>
-                  <div class="scroll-wrap">
-                    <div class="scroll-item text-3">
-                      {{ item.vod_name }}
-                    </div>
+                </div>
+                <div class="scroll-wrap">
+                  <div class="scroll-item text-3.5 font-bold">
+                    {{ item.vod_name }}
                   </div>
                 </div>
               </view>
@@ -336,26 +424,30 @@ const trigger = (e:any) => {
     </view>
 
     <next-drag-fab
-            ref="nextDragFabRef"
-            :isDock="true"
-            :content="[
-            {
-                text: '记录',
-                active: false,
-                iconPath: 'https://www.yisuxiao.com/static/server/common/tab/tab1-0.png', 
-                selectedIconPath: 'https://www.yisuxiao.com/static/server/common/tab/tab1-1.png'},
-            {
-                text: '换源',
-                active: false,
-                iconPath: 'https://www.yisuxiao.com/static/server/common/tab/tab2-0.png', 
-                selectedIconPath: 'https://www.yisuxiao.com/static/server/common/tab/tab2-1.png'},
-            ]"
-            horizontal="right"
-            vertical="bottom"
-            direction="horizontal"
-            defpositon="rb"
-            @trigger="trigger"
-        />
+      ref="nextDragFabRef"
+      :isDock="true"
+      :content="[
+        {
+          text: '记录',
+          active: false,
+          iconPath: 'https://www.yisuxiao.com/static/server/common/tab/tab1-0.png',
+          selectedIconPath:
+            'https://www.yisuxiao.com/static/server/common/tab/tab1-1.png',
+        },
+        {
+          text: '换源',
+          active: false,
+          iconPath: 'https://www.yisuxiao.com/static/server/common/tab/tab2-0.png',
+          selectedIconPath:
+            'https://www.yisuxiao.com/static/server/common/tab/tab2-1.png',
+        },
+      ]"
+      horizontal="right"
+      vertical="bottom"
+      direction="horizontal"
+      defpositon="rb"
+      @trigger="trigger"
+    />
   </view>
 </template>
 

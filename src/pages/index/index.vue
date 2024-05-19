@@ -6,7 +6,7 @@ const title = ref(import.meta.env.VITE_APP_TITLE)
 onMounted(() => {
   setTimeout(() => {
     uni.switchTab({ url: '/pages/tabbar/home/index' })
-  }, 1500)
+  }, 1000)
 })
 </script>
 

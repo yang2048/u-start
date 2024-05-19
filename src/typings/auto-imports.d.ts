@@ -7,6 +7,7 @@ export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const checkBankno: typeof import('../utils/public')['checkBankno']
+  const checkValid: typeof import('../utils/cms')['checkValid']
   const clearStrComma: typeof import('../utils/public')['clearStrComma']
   const computed: typeof import('vue')['computed']
   const countTimeDown: typeof import('../utils/public')['countTimeDown']
@@ -17,7 +18,10 @@ declare global {
   const defineComponent: typeof import('vue')['defineComponent']
   const effectScope: typeof import('vue')['effectScope']
   const fetchClassify: typeof import('../utils/cms')['fetchClassify']
+  const fetchDetail: typeof import('../utils/cms')['fetchDetail']
+  const fetchFullHot: typeof import('../utils/cms')['fetchFullHot']
   const fetchList: typeof import('../utils/cms')['fetchList']
+  const fetchSearch: typeof import('../utils/cms')['fetchSearch']
   const formatIndex: typeof import('../utils/film')['formatIndex']
   const formatName: typeof import('../utils/film')['formatName']
   const formatPrice: typeof import('../utils/public')['formatPrice']
@@ -171,6 +175,7 @@ declare module 'vue' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly checkBankno: UnwrapRef<typeof import('../utils/public')['checkBankno']>
+    readonly checkValid: UnwrapRef<typeof import('../utils/cms')['checkValid']>
     readonly clearStrComma: UnwrapRef<typeof import('../utils/public')['clearStrComma']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly countTimeDown: UnwrapRef<typeof import('../utils/public')['countTimeDown']>
@@ -181,7 +186,10 @@ declare module 'vue' {
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly fetchClassify: UnwrapRef<typeof import('../utils/cms')['fetchClassify']>
+    readonly fetchDetail: UnwrapRef<typeof import('../utils/cms')['fetchDetail']>
+    readonly fetchFullHot: UnwrapRef<typeof import('../utils/cms')['fetchFullHot']>
     readonly fetchList: UnwrapRef<typeof import('../utils/cms')['fetchList']>
+    readonly fetchSearch: UnwrapRef<typeof import('../utils/cms')['fetchSearch']>
     readonly formatIndex: UnwrapRef<typeof import('../utils/film')['formatIndex']>
     readonly formatName: UnwrapRef<typeof import('../utils/film')['formatName']>
     readonly formatPrice: UnwrapRef<typeof import('../utils/public')['formatPrice']>
@@ -328,6 +336,7 @@ declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly checkBankno: UnwrapRef<typeof import('../utils/public')['checkBankno']>
+    readonly checkValid: UnwrapRef<typeof import('../utils/cms')['checkValid']>
     readonly clearStrComma: UnwrapRef<typeof import('../utils/public')['clearStrComma']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly countTimeDown: UnwrapRef<typeof import('../utils/public')['countTimeDown']>
@@ -338,7 +347,10 @@ declare module '@vue/runtime-core' {
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly fetchClassify: UnwrapRef<typeof import('../utils/cms')['fetchClassify']>
+    readonly fetchDetail: UnwrapRef<typeof import('../utils/cms')['fetchDetail']>
+    readonly fetchFullHot: UnwrapRef<typeof import('../utils/cms')['fetchFullHot']>
     readonly fetchList: UnwrapRef<typeof import('../utils/cms')['fetchList']>
+    readonly fetchSearch: UnwrapRef<typeof import('../utils/cms')['fetchSearch']>
     readonly formatIndex: UnwrapRef<typeof import('../utils/film')['formatIndex']>
     readonly formatName: UnwrapRef<typeof import('../utils/film')['formatName']>
     readonly formatPrice: UnwrapRef<typeof import('../utils/public')['formatPrice']>

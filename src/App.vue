@@ -5,9 +5,11 @@ import { useAppStore } from '@/store/app'
 const appStore = useAppStore()
 
 onLaunch(() => {
+	// #ifdef MP-WEIXIN
   uni.setEnableDebug({
-      enableDebug: true,
+    enableDebug: true,
   })
+	// #endif
 
   console.log('App Launch')
   // #ifndef H5

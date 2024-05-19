@@ -17,7 +17,7 @@ const store = usePlayStore();
 const data = computed(() => {
   return store.getData;
 });
-const set = computed(() => {
+const setting = computed(() => {
   return store.getSetting;
 });
 const info = ref(data.value.info) as any;
@@ -172,9 +172,9 @@ const switchFit = (e: any) => {
       >
         <cover-view class="absolute top-0 left-1/4 w-1/2" v-show="rateShow && fullScreen">
           <cover-view class="text-4 c-#fff bg-#0009">
-            <view class="flex m-2">
-              <span>倍速播放:</span>
-              <view
+            <cover-view class="flex m-2">
+              <cover-view>倍速播放:</cover-view>
+              <cover-view
                 v-for="(item, index) in [0.5, 0.8, 1.0, 1.25, 1.5, 2.0]"
                 :key="index"
                 :data-rate="item"
@@ -182,11 +182,11 @@ const switchFit = (e: any) => {
                 :class="['ml-5']"
               >
                 x{{ item }}
-              </view>
-            </view>
-            <view class="flex m-2">
-              <span>旋转屏幕:</span>
-              <view
+              </cover-view>
+            </cover-view>
+            <cover-view class="flex m-2">
+              <cover-view>旋转屏幕:</cover-view>
+              <cover-view
                 v-for="(item, index) in [-90, 0, 90]"
                 :key="index"
                 :data-rate="item"
@@ -194,11 +194,11 @@ const switchFit = (e: any) => {
                 :class="['ml-5']"
               >
                 {{ item }}°
-              </view>
-            </view>
-            <view class="flex m-2">
-              <span>画面尺寸:</span>
-              <view
+              </cover-view>
+            </cover-view>
+            <cover-view class="flex m-2">
+              <cover-view>画面尺寸:</cover-view>
+              <cover-view
                 v-for="(item, index) in ['contain', 'fill', 'cover']"
                 :key="index"
                 :data-rate="item"
@@ -206,8 +206,8 @@ const switchFit = (e: any) => {
                 :class="['ml-5']"
               >
                 {{ item == "contain" ? "包含" : item == "fill" ? "填充" : "覆盖" }}
-              </view>
-            </view>
+              </cover-view>
+            </cover-view>
           </cover-view>
         </cover-view>
       </video>

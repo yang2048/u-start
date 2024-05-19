@@ -1,40 +1,28 @@
 import { defineStore } from 'pinia'
+import { tbl_site, tbl_iptv, tbl_analyze } from '@/constants/config0519.json'
 
 const state = {
   type: 'film',
-  setting: {
-    snifferMode: {
-      type: 'pie',
-      url: '',
-    },
-    skipStartEnd: true,
-    barrage: {
-      url: '',
-      key: '',
-      support: [],
-      start: '',
-      mode: '',
-      color: '',
-      content: '',
-    },
-  },
+  setting: {},
   site: {
     default: {
-      categories: "",
-      ext: "",
-      api: "https://cj.vodimg.top/api.php/provide/vod/",
-      group: "切片",
-      id: "33",
+      categories: '',
+      ext: '',
+      api: 'https://cj.vodimg.top/api.php/provide/vod/',
+      group: '切片',
+      id: '33',
       isActive: true,
-      key: "vodimg",
-      name: "影图资源",
-      playUrl: "",
+      key: 'vodimg',
+      name: '影图资源',
+      playUrl: '',
       search: 1,
       status: true,
       type: 1,
     },
-    search: "all",
-    data: [],
+    search: 'all',
+    data: tbl_site,
+    iptv: tbl_iptv,
+    analyze: tbl_analyze,
   },
   data: {
     info: {},
@@ -58,24 +46,30 @@ export const usePlayStore = defineStore('play', {
     getSetting: (state) => {
       return state.setting
     },
+    getSearchGroup: (state) => {
+      return state.site.data.filter((item) => item['group'] == state.site.default.group)
+    },
+    getSearchSite: (state) => {
+      return state.site.data.filter((item) => item['search'] === 1)
+    },
   },
   actions: {
     updateConfig(payload: any) {
       for (const key in payload) {
         if (key === 'type') {
-          this.type = payload.type;
+          this.type = payload.type
         }
         if (key === 'site') {
-          this.site = payload.site;
+          this.site = payload.site
         }
         if (key === 'data') {
-          this.data = payload.data;
+          this.data = payload.data
         }
         if (key === 'setting') {
           this.setting = {
             ...this.setting, // 保留原有的 setting 属性
             ...payload.setting, // 更新传入的 setting 属性
-          };
+          }
         }
       }
     },

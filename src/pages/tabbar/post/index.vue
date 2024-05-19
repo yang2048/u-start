@@ -26,7 +26,7 @@
       ></uv-tabs>
     </view>
     <view class="m-3 rounded-3 px-5 bg-#fff" v-if="current == 0">
-      <uv-list v-for="(item, index) in _.sortBy(tbl_site, ['isActive'])" :key="index">
+      <uv-list v-for="(item, index) in _.sortBy(tbl_site, ['status', 'group', 'isActive']).reverse()" :key="index">
         <uv-list-item
           :title="item.name"
           :note="`${item.group} -> 资源数：${item.resource ? item.resource : 0}`"
@@ -40,10 +40,10 @@
             <view class="w-8">
               <div
                 :class="[
-                  item.isActive
+                  item.status
                     ? 'i-mdi-cloud-check-outline'
                     : 'i-mdi-cloud-alert-outline',
-                  item.isActive ? 'c-green' : 'c-amber',
+                  item.status ? 'c-green' : 'c-amber',
                   'text-5',
                 ]"
               ></div>
@@ -80,7 +80,7 @@
 <script setup lang="ts">
 import _ from "lodash";
 import { usePlayStore } from "@/store";
-import {tbl_site} from "@/constants/config0514.json";
+import {tbl_site} from "@/constants/config0519.json";
 
 const storePlayer = usePlayStore();
 

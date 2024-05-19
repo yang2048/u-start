@@ -3,7 +3,6 @@ import Base64 from 'crypto-js/enc-base64';
 import Utf8 from 'crypto-js/enc-utf8';
 import { request } from '@/services/request'
 
-
 /**
  * 获取资源分类 和 所有资源的总数, 分页等信息
  * @param {*} site 资源配置
@@ -22,9 +21,18 @@ export const fetchClassify = async (site:any) => {
     } else if (site.type === 4) {
       url = buildUrl(site.api, `/types`)
     } else if (site.type === 5) {
-      // url = buildUrl(site.api, `&t=1&ac=videolist`);
+      url = buildUrl(site.api, `&t=1&ac=videolist`);
     } else if (site.type === 6) {
       url = buildUrl(site.api, `&extend=${site.ext}&filter=true`)
+    } else if (site.type === 7) {
+      // const content: any = await t3Work({ type: 'home' });
+      const res = {
+        page: 1,
+        pagecount: 9999,
+        limit: 20,
+        total: 9999
+      };
+      return res;
     } else if (site.type === 8) {
       url = buildUrl(site.api, `/home`)
     }
@@ -40,11 +48,12 @@ export const fetchClassify = async (site:any) => {
     if (site.type === 0 ) {
       console.warn('TODO: type0需处理xml ')
     }
-    const json:any = response
-    // const json = site.type !== 0 ? parser.parse(response) : response
+
+    const json = site.type === 0 ? {rss: null} : response;
 
     const jsondata = json.rss || json
 
+    //过滤
     const cmsFilterData = [
       {
         key: 'area',
@@ -199,7 +208,7 @@ export const fetchClassify = async (site:any) => {
       // }
       filters = jsondata?.filters === undefined ? [] : jsondata.filters
       Object.keys(filters).forEach((key) => {
-        filters[key].forEach((item) => {
+        filters[key].forEach((item:any) => {
           if (!item.name) {
             item.name = item.key
           }
@@ -220,6 +229,35 @@ export const fetchClassify = async (site:any) => {
   }
 }
 
+/**
+ * 检查资源
+ * @param {*} site 资源配置
+ * @returns boolean
+ */
+export const checkValid = async (site:any) => {
+  try {
+    const data:any = await fetchClassify(site);
+    return {
+      status: !_.isEmpty(data.classData),
+      resource: data.total,
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      status: false,
+      resource: 0,
+    };
+  }
+};
+
+/**
+ * 获取资源列表
+ * @param site 
+ * @param pg 
+ * @param t 
+ * @param f 
+ * @returns 
+ */
 export const fetchList = async (site:any, pg = 1, t:number, f = {}) => {
   try {
     let url, postData;
@@ -239,6 +277,12 @@ export const fetchList = async (site:any, pg = 1, t:number, f = {}) => {
         const encodedStr = Base64.stringify(Utf8.parse(JSON.stringify(f)));
         url = buildUrl(url, `&ext=${encodedStr}`);
       }
+    } else if (site.type === 7) {
+      // const res: any = await t3Work({
+      //   type: 'category',
+      //   data: { tid: t, pg, filter: _.size(f) ? true : false, extend: _.size(f) ? f : {} },
+      // });
+      return [];
     } else if (site.type === 8) {
       url = buildUrl(site.api, `/category`);
       postData = {
@@ -264,8 +308,7 @@ export const fetchList = async (site:any, pg = 1, t:number, f = {}) => {
     if (site.type === 0 ) {
       console.warn('TODO: type0需处理xml ')
     }
-    const json:any = response
-    // const json = site.type === 0 ? JSON.parse(response) : response;
+    const json = site.type === 0 ? JSON.parse('response') : response;
 
     const jsondata = json.rss || json;
     let videoList = jsondata.list || jsondata.data || [];
@@ -284,7 +327,7 @@ export const fetchList = async (site:any, pg = 1, t:number, f = {}) => {
 };
 
 /**
- * 获取资源列表
+ * 资源列表转换
  * @param {*} site 资源配置
  * @param {number} [pg=1] 翻页 page
  * @param {*} t 分类 type
@@ -321,6 +364,92 @@ const convertVideoList = (videoItems:any) => {
   );
 };
 
+/**
+ * 搜索资源转换
+ * @param {*} site 资源配置
+ * @param {*} wd 搜索关键字
+ * @returns
+ */
+const convertSearchList = (searchItem:any) => {
+  const result = searchItem.map((item:any) => {
+    const {
+      id: vod_id,
+      tid: type_id,
+      type: type_name,
+      note: vod_remark,
+      name: vod_name,
+      last: vod_time,
+      dt: vod_play_from,
+    } = item;
+    return {
+      vod_id,
+      type_id,
+      type_name,
+      vod_remark,
+      vod_name,
+      vod_time,
+      vod_play_from,
+    };
+  });
+
+  return result;
+};
+
+/**
+ * 获取资源详情转换
+ * @param {*} site 资源配置
+ * @param {*} id 资源唯一标识符 id
+ * @returns
+ */
+const convertDetailList = (detailItems:any) => {
+  const vodPlayFrom = (dldd:any) => {
+    if (_.isArray(dldd)) {
+      return dldd.map((item) => item._flag).join('$$$');
+    } else {
+      return dldd._flag;
+    }
+  };
+  const vodPlayUrl = (dldd:any) => {
+    if (_.isArray(dldd)) {
+      return dldd.map((item) => item._t).join('$$$');
+    } else {
+      return dldd._t;
+    }
+  };
+
+  return detailItems.map(
+    ({
+      id: vod_id,
+      tid: type_id,
+      type: type_name,
+      pic: vod_pic,
+      note: vod_remark,
+      name: vod_name,
+      des: vod_content,
+      year: vod_year,
+      area: vod_area,
+      director: vod_director,
+      actor: vod_actor,
+      dl: { dd: dldd },
+    }) => ({
+      vod_id,
+      type_id,
+      type_name,
+      vod_pic,
+      vod_remark,
+      vod_name,
+      vod_blurb: removeHTMLTagsAndSpaces(vod_content),
+      vod_year,
+      vod_area,
+      vod_content,
+      vod_director,
+      vod_actor,
+      vod_play_from: vodPlayFrom(dldd),
+      vod_play_url: vodPlayUrl(dldd),
+    }),
+  );
+};
+
 const removeHTMLTagsAndSpaces = (str:string) => {
   // 去除HTML标签
   const strippedString = str.replace(/(<([^>]+)>)/gi, '')
@@ -352,6 +481,198 @@ const removeTrailingSlash = (url:string) => {
   }
   return url;
 };
+
+const reptileApiFormat = (item:any, key:string) => {
+  try {
+    const itemJson = JSON.parse(item);
+    const marryRes = itemJson[key];
+    if (marryRes) {
+      const formatRes = marryRes.replace(/&&&/g, "'");
+      return formatRes;
+    }
+  } catch (error) {
+    console.error('Error occurred while parsing JSON:', error);
+    return '';
+  }
+};
+
+const reptileXpathFormat = (item:any, pat:any) => {
+  try {
+    // const doc = new DOMParser().parseFromString(item);
+    // const res: any = xpath.select(pat, doc);
+    const res: any = null;
+    if (res && res.length > 0) {
+      return res.map((item: any) => item.textContent);
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error('Error occurred while parsing or selecting XPath:', error);
+    return [];
+  }
+};
+
+/**
+ * 查询热门词
+ * @param date 日期
+ * @param type 1全部 2aqy 3tx 4yk 5mg
+ */
+export const fetchFullHot = async (date: string, type: number) => {
+  let response = await request.Get('https://www.ky.live/api/fullhot', {
+    params: {
+      vt: 2,
+      sd: date,
+      plt: type
+    }
+  })
+}
+
+/**
+ * 获取搜索结果
+ * @param site 
+ * @param wd 
+ */
+export const fetchSearch = async (site:any, wd:string) => {
+  if (site.type === 7) {
+    // const res: any = await t3Work({ type: 'search', data: { wd, quick: false, pg: 1 } });
+    const res: any = {}
+    return res.data?.list;
+  }
+
+  let url, postData;
+  if (site.type === 3) url = buildUrl(site.api, `/search?text=${encodeURIComponent(wd)}`);
+  else if (site.type === 5) url = `${reptileApiFormat(site.api, 'websearchurl')}${encodeURIComponent(wd)}`;
+  else if (site.type === 6) url = buildUrl(site.api, `?wd=${encodeURIComponent(wd)}&extend=${site.ext}`);
+  else if (site.type === 8) {
+    url = buildUrl(site.api, `/search`);
+    postData = {
+      wd,
+      pg: 1,
+    };
+  } else url = buildUrl(site.api, `?wd=${encodeURIComponent(wd)}`);
+
+  let response;
+  if (site.type !== 8) {
+    response = await request.Get(url)
+  } else {
+    response = await request.Post(url, postData)
+  }
+
+  //TODO xml
+  const json:any = site.type === 0 ? response : response;
+
+  //爬虫解析
+  if (site.type === 5) {
+    const searchnamePat = reptileApiFormat(site.api, 'searchname');
+    const searchnameRes = reptileXpathFormat(json, searchnamePat);
+    const searchidPat = reptileApiFormat(site.api, 'searchid');
+    const searchidRes = reptileXpathFormat(json, searchidPat);
+    const searchpicPat = reptileApiFormat(site.api, 'searchpic');
+    const searchpicRes = reptileXpathFormat(json, searchpicPat);
+    const searchstarrPat = reptileApiFormat(site.api, 'searchstarr');
+    const searchstarrRes = reptileXpathFormat(json, searchstarrPat);
+
+    let zippedData = _.zip(searchnameRes, searchidRes, searchpicRes, searchstarrRes);
+    let list = zippedData.map((item) => {
+      return {
+        vod_name: item[0],
+        vod_id: item[1],
+        vod_pic: item[2],
+        vod_remarks: item[3],
+      };
+    });
+    return list;
+  }
+
+  const jsondata = json?.rss ?? json;
+  if (!jsondata) return null;
+
+  let videoList = jsondata.data || jsondata.list || [];
+  if (site.type === 0) {
+    videoList = jsondata.list.video;
+    if (!_.isArray(videoList)) videoList = [videoList];
+    videoList = convertSearchList(videoList);
+  } else if (site.type === 4) {
+    videoList = jsondata.data.list;
+  }
+  if (videoList.length === 0) return null;
+
+  return videoList;
+}
+
+/**
+ * 查询搜索结果详情
+ * @param site 
+ * @param id 
+ */
+export const fetchDetail = async (site:any, id:string)  => {
+  let url, postData;
+  if (site.type === 3) {
+    url = buildUrl(site.api, `/video_detail?id=${id}`);
+  } else if (site.type === 4) {
+    url = buildUrl(site.api, `/detail?vod_id=${id}`);
+  } else if (site.type === 5) {
+    url = id.startsWith('http') ? id : `${reptileApiFormat(site.api, 'searchUrl')}${id}`;
+  } else if (site.type === 6) {
+    url = buildUrl(site.api, `?ac=detail&ids=${id}&extend=${site.ext}`);
+  } else if (site.type === 7) {
+    // const res: any = await t3Work({ type: 'detail', data: `${id}` });
+    return [];
+  } else if (site.type === 8) {
+    url = buildUrl(site.api, `/detail`);
+    postData = {
+      id,
+    };
+  } else {
+    url = buildUrl(site.api, `?ac=detail&ids=${id}`);
+  }
+
+  let response;
+  if (site.type !== 8) {
+    response = await request.Get(url)
+  } else {
+    response = await request.Post(url, postData)
+  }
+//xml
+  const json:any = site.type === 0 ? response : response;
+
+  if (site.type === 5) {
+    const detaillistPat = reptileApiFormat(site.api, 'detaillist');
+    const detaillistRes = reptileXpathFormat(json, detaillistPat);
+    const detailxlPat = reptileApiFormat(site.api, 'detailxl');
+    const detailxlRes = reptileXpathFormat(json, detailxlPat);
+    const detailjsPat = reptileApiFormat(site.api, 'detailjs');
+    const detailjsRes = reptileXpathFormat(json, detailjsPat);
+    const detailjsurlPat = reptileApiFormat(site.api, 'detailjsurl');
+    const detailjsurlRes = reptileXpathFormat(json, detailjsurlPat);
+
+    const vod_from = detailxlRes.join('$$$');
+    let zippedData = _.zip(detaillistRes, detailjsurlRes);
+    console.log(detaillistRes, detailjsurlRes);
+    console.log(vod_from);
+    let list = {
+      vod_from,
+      vod_url: [],
+    };
+    return list;
+  }
+
+  const jsondata = json?.rss ?? json;
+  let videoList = jsondata.data || jsondata.list || [];
+  // 坑: 单条结果是dict 多条结果list
+  if (site.type === 0) {
+    videoList = jsondata.list.video;
+    if (!_.isArray(videoList)) videoList = [videoList];
+    videoList = convertDetailList(videoList);
+  } else if (site.type === 3) {
+    videoList = jsondata.data;
+    if (!_.isArray(videoList)) videoList = [videoList];
+  } else if (site.type === 4) {
+    videoList = jsondata.data.list;
+  }
+
+  return videoList ? videoList : [];
+}
 
 const CLASS_FILTER_CONFIG = [
   {
@@ -391,3 +712,15 @@ const CLASS_FILTER_CONFIG = [
     desc: '排序',
   },
 ];
+
+const typeEum = [
+  {id: 0, text: 'cms[xml]'},
+  {id: 1, text: 'cms[json]'},
+  {id: 2, text: 'drpy[js0]'},
+  {id: 3, text: 'app[v3]'},
+  {id: 4, text: 'app[v1]'},
+  {id: 5, text: '爬虫'},
+  {id: 6, text: 'hipy[t4]'},
+  {id: 7, text: 'js[t3]'},
+  {id: 8, text: 'catvod[nodejs]'},
+]
