@@ -59,6 +59,9 @@ dependencies:
   alova:
     specifier: ^2.20.3
     version: 2.20.3
+  forgiving-xml-parser:
+    specifier: ^1.4.2
+    version: 1.4.2
   lodash:
     specifier: ^4.17.21
     version: 4.17.21
@@ -6238,6 +6241,10 @@ packages:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
     dependencies:
       is-callable: 1.2.7
+    dev: false
+
+  /forgiving-xml-parser@1.4.2:
+    resolution: {integrity: sha512-SWympg6xqVGW5SaYBN24et6Jwxhgn8UckxTu6HV4gi9nY3hi7k7/bTQfcvlQynWcCKym4h4UqHY7YAsea9+oQA==}
     dev: false
 
   /form-data@3.0.1:

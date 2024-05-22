@@ -7,6 +7,7 @@ export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const checkBankno: typeof import('../utils/public')['checkBankno']
+  const checkChannel: typeof import('../utils/cms')['checkChannel']
   const checkValid: typeof import('../utils/cms')['checkValid']
   const clearStrComma: typeof import('../utils/public')['clearStrComma']
   const computed: typeof import('vue')['computed']
@@ -88,6 +89,7 @@ declare global {
   const onUpdated: typeof import('vue')['onUpdated']
   const openLocation: typeof import('../utils/factory')['openLocation']
   const openSetting: typeof import('../utils/factory')['openSetting']
+  const parseChannel: typeof import('../utils/cms')['parseChannel']
   const parseUrl: typeof import('../utils/public')['parseUrl']
   const provide: typeof import('vue')['provide']
   const randomString: typeof import('../utils/public')['randomString']
@@ -175,6 +177,7 @@ declare module 'vue' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly checkBankno: UnwrapRef<typeof import('../utils/public')['checkBankno']>
+    readonly checkChannel: UnwrapRef<typeof import('../utils/cms')['checkChannel']>
     readonly checkValid: UnwrapRef<typeof import('../utils/cms')['checkValid']>
     readonly clearStrComma: UnwrapRef<typeof import('../utils/public')['clearStrComma']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
@@ -256,6 +259,7 @@ declare module 'vue' {
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly openLocation: UnwrapRef<typeof import('../utils/factory')['openLocation']>
     readonly openSetting: UnwrapRef<typeof import('../utils/factory')['openSetting']>
+    readonly parseChannel: UnwrapRef<typeof import('../utils/cms')['parseChannel']>
     readonly parseUrl: UnwrapRef<typeof import('../utils/public')['parseUrl']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly randomString: UnwrapRef<typeof import('../utils/public')['randomString']>
@@ -336,6 +340,7 @@ declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly checkBankno: UnwrapRef<typeof import('../utils/public')['checkBankno']>
+    readonly checkChannel: UnwrapRef<typeof import('../utils/cms')['checkChannel']>
     readonly checkValid: UnwrapRef<typeof import('../utils/cms')['checkValid']>
     readonly clearStrComma: UnwrapRef<typeof import('../utils/public')['clearStrComma']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
@@ -417,6 +422,7 @@ declare module '@vue/runtime-core' {
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly openLocation: UnwrapRef<typeof import('../utils/factory')['openLocation']>
     readonly openSetting: UnwrapRef<typeof import('../utils/factory')['openSetting']>
+    readonly parseChannel: UnwrapRef<typeof import('../utils/cms')['parseChannel']>
     readonly parseUrl: UnwrapRef<typeof import('../utils/public')['parseUrl']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly randomString: UnwrapRef<typeof import('../utils/public')['randomString']>

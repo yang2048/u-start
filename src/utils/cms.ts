@@ -2,6 +2,8 @@ import _ from 'lodash';
 import Base64 from 'crypto-js/enc-base64';
 import Utf8 from 'crypto-js/enc-utf8';
 import { request } from '@/services/request'
+import {parse, serialize} from 'forgiving-xml-parser';
+
 
 /**
  * 获取资源分类 和 所有资源的总数, 分页等信息
@@ -39,17 +41,18 @@ export const fetchClassify = async (site:any) => {
 
     let response
     if (site.type !== 8) {
-      response = await request.Get(url!)
+      // response = await uni.$uv.http.get(url)
+      response = await request.Get(url!, {
+        // enableHttp2: true,
+        // sslVerify: true,
+        // withCredentials: true,
+        // headers: {'Access-Control-Allow-Origin': '*'}
+      })
     } else {
       response = await request.Post(url!)
     }
 
-    //0需处理xml parser.parse(response)
-    if (site.type === 0 ) {
-      console.warn('TODO: type0需处理xml ')
-    }
-
-    const json = site.type === 0 ? {rss: null} : response;
+    const json:any = site.type === 0 ? parse(response) : response;
 
     const jsondata = json.rss || json
 
@@ -304,11 +307,7 @@ export const fetchList = async (site:any, pg = 1, t:number, f = {}) => {
       response = await request.Post(url, postData)
     }
 
-    //0需处理xml parser.parse(response)
-    if (site.type === 0 ) {
-      console.warn('TODO: type0需处理xml ')
-    }
-    const json = site.type === 0 ? JSON.parse('response') : response;
+    const json = site.type === 0 ? parse(response) : response;
 
     const jsondata = json.rss || json;
     let videoList = jsondata.list || jsondata.data || [];
@@ -525,6 +524,7 @@ export const fetchFullHot = async (date: string, type: number) => {
       plt: type
     }
   })
+  return response;
 }
 
 /**
@@ -558,8 +558,7 @@ export const fetchSearch = async (site:any, wd:string) => {
     response = await request.Post(url, postData)
   }
 
-  //TODO xml
-  const json:any = site.type === 0 ? response : response;
+  const json = site.type === 0 ? parse(response) : response;
 
   //爬虫解析
   if (site.type === 5) {
@@ -633,8 +632,8 @@ export const fetchDetail = async (site:any, id:string)  => {
   } else {
     response = await request.Post(url, postData)
   }
-//xml
-  const json:any = site.type === 0 ? response : response;
+
+  const json = site.type === 0 ? parse(response) : response;
 
   if (site.type === 5) {
     const detaillistPat = reptileApiFormat(site.api, 'detaillist');
@@ -673,6 +672,104 @@ export const fetchDetail = async (site:any, id:string)  => {
 
   return videoList ? videoList : [];
 }
+
+export const parseChannel = async (type: 'local' | 'remote' | 'url', path: string) => {
+  try {
+    let fileContent:any;
+    if (type === 'local') {
+      console.info('不支持本地')
+    } else if (type === 'remote') {
+      const response = await request.Get(path)
+      fileContent = response;
+    } else {
+      fileContent = path;
+    }
+    if (fileContent) {
+      fileContent = fileContent.trim();
+      let channelContent;
+
+      if (fileContent.startsWith('#EXTM3U')) {
+        channelContent = m3u(fileContent);
+      } else {
+        channelContent = txt(fileContent);
+      }
+
+      for (let i = 0; i < channelContent.length; i++) {
+        const dataItem = channelContent[i];
+        if (_.has(dataItem, 'id')) {
+          // 使用 _.isString() 检查 dataItem.id 是否为字符串类型
+          if (!_.isString(dataItem.id)) {
+            channelContent[i].id = `${channelContent[i].id.id}`;
+          }
+        } else {
+          channelContent[i].id = Math.floor(Math.random() * 9999999999).toString(32);
+        }
+      }
+
+      return channelContent;
+    }
+    return [];
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const checkChannel = async (url: string) => {
+  try {
+    const startTime: Date = new Date(); // 记录开始请求的时间
+    await await request.Get(url)
+    const endTime: Date = new Date(); // 记录接收到响应的时间
+    const delay: number = endTime.getTime() - startTime.getTime(); // 计算延迟
+    return delay;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
+const m3u = (text: string) => {
+  const GROUP = /.*group-title="(.?|.+?)".*/i;
+  const LOGO = /.*tvg-logo="(.?|.+?)".*/i;
+  const NAME = /.*,(.+?)(?:$|\n|\s)/i;
+
+  const docs:any = [];
+  let doc: { name?: any; logo?: any; group?: any; url?: any };
+  const splitList = text.split('\n');
+  splitList.forEach((line: string) => {
+    if (line.startsWith('#EXTINF:')) {
+      doc = {}; // 切断指针的联系
+      doc.name = line.match(NAME) ? line.match(NAME)[1] : '';
+      doc.logo = line.match(LOGO) ? line.match(LOGO)[1] : '';
+      doc.group = line.match(GROUP) ? line.match(GROUP)[1] : '';
+    } else if (line.indexOf('://') > -1) {
+      if (line.startsWith('#EXT-X-SUB-URL')) return; // #EXT-X-SUB-URL https://ghproxy.com/https://raw.githubusercontent.com/Kimentanm/aptv/master/m3u/iptv.m3u
+      if (line.startsWith('#EXTM3U')) return; // #EXTM3U url-tvg="http://epg.51zmt.top:8000/e.xml,https://epg.112114.xyz/pp.xml
+      doc.url = line;
+      docs.push(doc);
+    }
+  });
+  return docs;
+};
+
+const txt = (text: string) => {
+  const docs:any = [];
+  let group: any;
+  const splitList = text.split('\n');
+  splitList.forEach((line: string) => {
+    const split = line.split(',');
+    if (split.length < 2) return;
+    if (line.indexOf('#genre#') > -1) [group] = split;
+    if (split[1].indexOf('://') > -1) {
+      const doc = {
+        name: split[0],
+        url: split[1],
+        group,
+      };
+      docs.push(doc);
+    }
+  });
+  return docs;
+};
 
 const CLASS_FILTER_CONFIG = [
   {

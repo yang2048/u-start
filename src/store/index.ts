@@ -5,5 +5,6 @@ const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
 export * from './modules/play';
+export * from './modules/custom';
 
 export default pinia

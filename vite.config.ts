@@ -14,7 +14,7 @@ export default defineConfig(async ({ mode }: ConfigEnv):Promise<UserConfig> => {
   //动态导入仅支持ESM的模块
   const UnoCss = await import('unocss/vite').then((i) => i.default)
 
-  console.log("process.env: ", env.NODE_ENV);
+  console.log("process.env: ", env.NODE_ENV, VITE_PORT);
 
   return {
     base: VITE_PUBLIC_PATH,
@@ -56,12 +56,18 @@ export default defineConfig(async ({ mode }: ConfigEnv):Promise<UserConfig> => {
     server: {
       host: true,
       port: Number(VITE_PORT),
+      cors: true,
       proxy: {
         // 本地开发环境通过代理实现跨域，生产环境使用 nginx 转发
-        '^/api/v1': {
+        '^/api/': {
           target: 'http://localhost:3000', // 后端服务实际地址
           changeOrigin: true, //开启代理
           rewrite: (path) => path.replace(/^\/api\/v1/, ''),
+        },
+        '^/fallback/.*': {
+          target: 'https://jsonplaceholder.typicode.com/todos/',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/fallback/, ''),
         },
       },
     },
@@ -72,6 +78,9 @@ export default defineConfig(async ({ mode }: ConfigEnv):Promise<UserConfig> => {
           //发布时删除 console
           drop_console: process.env.NODE_ENV === 'production' ? true : false,
         },
+      },
+      rollupOptions: {
+        external: ['grammex'],
       },
     },
   }

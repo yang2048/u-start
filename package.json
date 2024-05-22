@@ -61,6 +61,7 @@
     "@uni-helper/unocss-preset-uni": "^0.2.8",
     "@vueuse/shared": "^9.13.0",
     "alova": "^2.20.3",
+    "forgiving-xml-parser": "^1.4.2",
     "lodash": "^4.17.21",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",

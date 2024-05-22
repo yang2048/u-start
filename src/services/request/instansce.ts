@@ -1,19 +1,23 @@
 import { createAlova } from 'alova'
 import VueHook from 'alova/vue';
+import GlobalFetch from 'alova/GlobalFetch';
 import AdapterUniapp from '@alova/adapter-uniapp'
 import mockAdapter from './mockAdapter'
 
 export const alovaInstance = createAlova({
-  // baseURL: 'https://api.alovajs.org',
+  // baseURL:'/fallback',
   timeout: 5000,
   // statesHook: VueHook,
+  // requestAdapter: GlobalFetch(),
   ...AdapterUniapp({
     // 通过环境变量控制是否使用模拟请求适配器
     mockRequest: process.env.NODE_ENV === 'development' ? mockAdapter : undefined,
   }),
   beforeRequest(method) {
+    console.warn('请求config=>', method)
     // 假设我们需要添加token到请求头
-    method.config.headers.token = 'token'
+    method.config.headers.token = 'token123'
+    // method.config.headers['Access-Control-Allow-Origin'] = '*'
   },
   responded: {
     // 请求成功的拦截器

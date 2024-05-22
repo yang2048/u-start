@@ -43,6 +43,9 @@ export const usePlayStore = defineStore('play', {
     getData: (state) => {
       return state.data
     },
+    getIptv: (state) => {
+      return state.site.iptv
+    },
     getSetting: (state) => {
       return state.setting
     },

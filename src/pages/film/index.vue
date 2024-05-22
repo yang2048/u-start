@@ -51,13 +51,6 @@ onLoad((options: any) => {
   } else {
     loadInit();
   }
-
-  // console.info("siteConfig=>", siteConfig.value);
-  // console.info("filmData=>", filmData.value);
-  // console.info("pagination=>", pagination.value);
-  // console.info("active=>", active.value);
-  // console.info("classConfig=>", classConfig.value);
-
   // console.log(`[film] search keyword:${searchTxt.value}`);
 });
 
@@ -269,6 +262,7 @@ const onScrollToLower = async () => {
       if (searchTxt.value) {
         loadSearch();
       } else {
+        // filmData.value.pageStatus = "loading";
         getFilmList();
       }
     }
@@ -344,68 +338,66 @@ const trigger = (e: any) => {
         scrollY
         enableFlex
         class="h-vh"
-        :lowerThreshold="5"
+        :lowerThreshold="50"
         @scrolltolower="onScrollToLower"
       >
-        <sticky-section>
-          <sticky-header class="fixed z-89 bg-#fff" v-if="classConfig.data.length > 0">
-            <!-- 分类 -->
-            <view class="w-screen">
-              <uv-tabs
-                :list="classConfig.data"
-                keyName="type_name"
-                @change="changeClassEvent"
-              ></uv-tabs>
-            </view>
-          </sticky-header>
-
+      <div>
+        <div class="sticky top-0 z-19 bg-#fff" v-if="classConfig.data.length > 0">
+          <!-- 分类 -->
+          <view class="w-screen">
+            <uv-tabs
+              :list="classConfig.data"
+              keyName="type_name"
+              @change="changeClassEvent"
+            ></uv-tabs>
+          </view>
+        </div>
+        <div>
           <!-- 视频列表 -->
-          <list-view>
-            <view class="pt-12 px-3 grid grid-cols-3 gap-2">
-              <view
-                class="justify-center flex-items-center"
-                v-for="(item, index) in filmData.list"
-                :key="index"
-              >
-                <div class="rounded-2 relative" @click="toPage('pages/play/index', item)">
-                  <view
-                    class="absolute z-9 left-0 top-0 rounded-t-2 text-2.8 max-w-60% bg-#ff8a c-#402d03 truncate p-0.5"
-                    v-if="item.vod_remarks || item.vod_remark"
-                  >
-                    {{ item.vod_remarks || item.vod_remark }}
-                  </view>
-                  <view
-                    class="absolute z-9 bottom-0 rounded-b-2 text-2.8 w-full bg-#0008 c-#fee center"
-                    v-if="item.relateSite"
-                  >
-                    {{ item.relateSite.name }}
-                  </view>
-                  <uv-image
-                    :src="item.vod_pic"
-                    :showMenuByLongpress="false"
-                    width="100%"
-                    :height="150"
-                    mode="scaleToFill"
-                    :radius="8"
-                    :observeLazyLoad="true"
-                    :fade="true"
-                    duration="450"
-                  ></uv-image>
+          <view class="pt-3 px-3 grid grid-cols-3 gap-2">
+            <view
+              class="justify-center flex-items-center"
+              v-for="(item, index) in filmData.list"
+              :key="index"
+            >
+              <div class="rounded-2 relative" @click="toPage('pages/play/index', item)">
+                <view
+                  class="absolute z-9 left-0 top-0 rounded-t-2 text-2.8 max-w-60% bg-#ff8a c-#402d03 truncate p-0.5"
+                  v-if="item.vod_remarks || item.vod_remark"
+                >
+                  {{ item.vod_remarks || item.vod_remark }}
+                </view>
+                <view
+                  class="absolute z-9 bottom-0 rounded-b-2 text-2.8 w-full bg-#0008 c-#fee center"
+                  v-if="item.relateSite"
+                >
+                  {{ item.relateSite.name }}
+                </view>
+                <uv-image
+                  :src="item.vod_pic"
+                  :showMenuByLongpress="false"
+                  width="100%"
+                  :height="150"
+                  mode="scaleToFill"
+                  :radius="8"
+                  :observeLazyLoad="true"
+                  :fade="true"
+                  duration="450"
+                ></uv-image>
+              </div>
+              <div class="scroll-wrap">
+                <div class="scroll-item text-3.5 font-bold">
+                  {{ item.vod_name }}
                 </div>
-                <div class="scroll-wrap">
-                  <div class="scroll-item text-3.5 font-bold">
-                    {{ item.vod_name }}
-                  </div>
-                </div>
-              </view>
+              </div>
             </view>
-          </list-view>
+          </view>
 
           <view
-            v-if="filmData.list > 0 || filmData.pageStatus == 'loading'"
-            class="pt-3 pb-8"
+            v-show="filmData.list > 0 || filmData.pageStatus == 'loading'"
+            class="pt-1 pb-8"
           >
-            <uv-load-more :status="filmData.pageStatus" @loadmore="loadData" />
+            <uv-load-more :status="filmData.pageStatus" />
           </view>
           <view
             v-if="filmData.list == 0 && filmData.pageStatus == 'nomore'"
@@ -419,7 +411,8 @@ const trigger = (e: any) => {
               <button type="default">更换数据源</button>
             </navigator>
           </view>
-        </sticky-section>
+        </div>
+        </div>
       </scroll-view>
     </view>
 

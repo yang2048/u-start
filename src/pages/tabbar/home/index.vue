@@ -50,38 +50,39 @@ const config = ref({
       title: "包邮到家，服务到家",
     },
     {
-      url: "https://jsd.cdn.zzko.cn/gh/yang2048/picx-images-hosting@master/images/industry-3087393_1280.8vmpmozdig.webp",
+      url:
+        "https://jsd.cdn.zzko.cn/gh/yang2048/picx-images-hosting@master/images/industry-3087393_1280.8vmpmozdig.webp",
       title: "互联万物，智慧生活",
     },
   ],
   gridList: [
     {
-      name: 'film',
+      name: "film",
       title: "在线影视",
       icon: "i-solar-chat-round-video-broken",
       link: "/pages/film/index",
       badge: "NEW",
     },
     {
-      name: 'iptv',
+      name: "iptv",
       title: "电视直播",
       icon: "i-iconoir-apple-imac-2021",
       link: "/pages/iptv/index",
     },
     {
-      name: 'spider',
+      name: "spider",
       title: "解析",
       icon: "i-mdi-cube-scan",
       link: "/pages/mine/memo",
     },
     {
-      name: 'pan',
+      name: "pan",
       title: "云盘",
       icon: "i-mdi-cast-audio-variant",
       link: "/pages/mine/message",
     },
   ],
-})
+});
 
 onLoad((options) => {
   // model.id = options.id
@@ -124,18 +125,16 @@ const onCityChange = (result: any) => {
   model.city = [result.province.name, result.city.name, result.area.name];
 };
 
-const toPage = (page:string) => {
+const toPage = (page: string) => {
   uni.$uv.route(page);
 };
 </script>
 
 <template>
-  <view class="container">
+  <view class="md:container mx-auto">
     <uv-navbar safeAreaInsetTop fixed placeholder>
       <template #left>
-        <view class="flex center" @click="model.showCitySelect = true">
-          YYOVO
-        </view>
+        <view class="flex center" @click="model.showCitySelect = true"> YYOVO </view>
       </template>
       <template #center>
         <view class="ml-3">
@@ -170,17 +169,32 @@ const toPage = (page:string) => {
         </view>
 
         <view class="my-3">
-          <uv-notice-bar :text="config.noticeList" direction="column"></uv-notice-bar>
+          <uv-notice-bar
+            :text="config.noticeList"
+            direction="column"
+            :customStyle="{ color: '#000' }"
+            bgColor="#fff"
+            color="#000"
+          ></uv-notice-bar>
         </view>
 
         <view class="my-3 rounded-3 bg-#fff py-3">
           <uv-grid :col="4" :border="false">
-          <uv-grid-item v-for="(item, index) in config.gridList" :key="index" @click="toPage(item.link)">
-            <view :class="[item.icon, 'text-40px', 'color-coolgray-700']"></view>
-            <uv-badge :value="item.badge" :absolute="true" :offset="[0, 0]" customStyle="margin-left: 4px;" />
-            <text class="text-#333 text-13px">{{item.title}}</text>
-          </uv-grid-item>
-        </uv-grid>
+            <uv-grid-item
+              v-for="(item, index) in config.gridList"
+              :key="index"
+              @click="toPage(item.link)"
+            >
+              <view :class="[item.icon, 'text-40px', 'color-coolgray-700']"></view>
+              <uv-badge
+                :value="item.badge"
+                :absolute="true"
+                :offset="[0, 0]"
+                customStyle="margin-left: 4px;"
+              />
+              <text class="text-#333 text-13px">{{ item.title }}</text>
+            </uv-grid-item>
+          </uv-grid>
         </view>
 
         <view class="my-3 flex">
@@ -195,7 +209,11 @@ const toPage = (page:string) => {
         </view>
 
         <view class="my-3 rounded-3 bg-#fff">
-          <uni-section title="上架中" @click="toPage('pages/film/index')" type="line"></uni-section>
+          <uni-section
+            title="上架中"
+            @click="toPage('pages/film/index')"
+            type="line"
+          ></uni-section>
         </view>
       </view>
 
@@ -219,36 +237,28 @@ const toPage = (page:string) => {
 </template>
 
 <style lang="scss" scoped>
-.container {
-  // .right-item {
-  //   position: relative;
-  //   color: #ffffff;
-  //   display: flex;
-  // }
+.main-btn {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  height: 60px;
+  width: 49.9%;
+  color: #555; // #243b82;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 1px 3px -1px rgba(140, 190, 238, 0.2);
+  background-image: linear-gradient(
+    45deg,
+    rgba(0, 255, 255, 0.15) 25%,
+    rgba(49, 87, 182, 0.15) 50%,
+    rgba(174, 109, 109, 0.15) 75%
+  );
+  background-size: 100%;
+}
 
-  .main-btn {
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 4px;
-    height: 60px;
-    width: 49.9%;
-    color: #555; // #243b82;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0px 1px 3px -1px rgba(140, 190, 238, 0.2);
-    background-image: linear-gradient(
-      45deg,
-      rgba(0, 255, 255, 0.15) 25%,
-      rgba(49, 87, 182, 0.15) 50%,
-      rgba(174, 109, 109, 0.15) 75%
-    );
-    background-size: 100%;
-  }
-
-  ::v-deep .u-grid-item-box {
-    padding: 6px 16px !important;
-  }
+::v-deep .u-grid-item-box {
+  padding: 6px 16px !important;
 }
 </style>
