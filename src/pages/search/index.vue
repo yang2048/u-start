@@ -71,7 +71,7 @@ const getFullHot = async () => {
   try {
     const res = await fetchFullHot(hotParam.value.date, hotParam.value.type);
     hotList.value = res.data;
-    console.info(hotList.value);
+    // console.info(hotList.value);
   } catch (err) {
     console.log(err);
   }
@@ -99,7 +99,9 @@ const onSearch = async () => {
         @search="onSearch"
         @custom="onSearch"
       ></uv-search>
+    </view>
 
+    <view v-show="history.length > 0" class="px-3 pb-3 rounded-3 bg-#fff">
       <uni-section title="搜索历史" type="line">
         <template #right>
           <uv-icon name="trash" :size="20" @click="clearSearchHistory"></uv-icon>

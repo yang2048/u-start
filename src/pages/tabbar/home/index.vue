@@ -142,7 +142,7 @@ const toPage = (page: string) => {
             placeholder="搜索"
             disabled
             :showAction="false"
-            @click="toPage('pages/film/index')"
+            @click="toPage('pages/search/index')"
             :customStyle="{ width: '80%' }"
           ></uv-search>
         </view>
@@ -198,19 +198,19 @@ const toPage = (page: string) => {
         </view>
 
         <view class="my-3 flex">
-          <view class="main-btn mr-2" @click="toPage('pages/film/index')">
+          <view class="main-btn mr-2" @click="toPage('pages/search/index')">
             <view class="i-iconoir-www text-20px"></view>
-            <view class="ml-1">页面</view>
+            <view class="ml-1">搜索记录</view>
           </view>
-          <view class="main-btn" @click="toPage('pages/film/index')">
+          <view class="main-btn" @click="toPage('pages/search/index')">
             <view class="i-iconoir-xray-view text-20px"></view>
-            <view class="ml-1">组件</view>
+            <view class="ml-1">观看记录</view>
           </view>
         </view>
 
         <view class="my-3 rounded-3 bg-#fff">
           <uni-section
-            title="上架中"
+            title="持续更新中"
             @click="toPage('pages/film/index')"
             type="line"
           ></uni-section>
