@@ -162,6 +162,7 @@ const switchFit = (e: any) => {
         picture-in-picture-show-progress
         show-screen-lock-button
         show-background-playback-button
+        custom-cache="{{false}}"
         :object-fit="screenFit"
         :src="video_url"
         :initial-time="0"

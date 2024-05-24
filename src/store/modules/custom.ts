@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import {uniq} from "lodash";
 
 const state = {
     history: [],
@@ -24,7 +25,8 @@ export const useCustomStore = defineStore('userCustom', {
   },
   actions: {
     updateHistory(payload: never) {
-      this.history.push(payload)
+      this.history.unshift(payload)
+      this.history = uniq(this.history);
     },
     updateSee(payload: never) {
       this.see.push(payload)

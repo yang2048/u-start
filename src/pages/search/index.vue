@@ -51,8 +51,8 @@ onLoad(() => {
   getFullHot();
 });
 
-const searchHot = async (e) => {
-  searchValue.value = e.epg;
+const searchHot = async (title) => {
+  searchValue.value = title;
   await onSearch();
 };
 
@@ -80,9 +80,13 @@ const getFullHot = async () => {
 // 搜索资源
 const onSearch = async () => {
   storeCustom.updateHistory(searchValue.value);
-  uni.$uv.route("/pages/film/index", {
-    level: "all",
-    wd: searchValue.value,
+  uni.$uv.route({
+    type: "redirect",
+    url: "/pages/film/index",
+    params: {
+      level: "all",
+      wd: searchValue.value,
+    },
   });
 };
 </script>
@@ -109,7 +113,7 @@ const onSearch = async () => {
       </uni-section>
       <view class="m-2 flex flex-wrap gap-2">
         <view v-for="(item, index) in history" :key="index">
-          <uv-tags :text="item" plain size="mini" type="warning"></uv-tags>
+          <uv-tags :text="item" plain size="mini" type="warning" @click="searchHot(item)"></uv-tags>
         </view>
       </view>
     </view>
@@ -125,7 +129,7 @@ const onSearch = async () => {
       </view>
       <view class="grid grid-cols-2 gap-4">
         <view v-for="(item, index) in hotList" :key="index">
-          <view class="text-3" @click="searchHot(item)">
+          <view class="text-3" @click="searchHot(item.epg)">
             <text :class="[item.rk <= 5 ? 'text-red' : '']"
               >{{ item.rk }} {{ item.epg }} {{ item.hot }}</text
             >
