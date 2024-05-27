@@ -202,9 +202,9 @@ const toPage = (page: string) => {
             <view class="i-iconoir-www text-20px"></view>
             <view class="ml-1">搜索记录</view>
           </view>
-          <view class="main-btn" @click="toPage('pages/search/index')">
+          <view class="main-btn" @click="toPage('pages/sites/index')">
             <view class="i-iconoir-xray-view text-20px"></view>
-            <view class="ml-1">观看记录</view>
+            <view class="ml-1">数据源</view>
           </view>
         </view>
 

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { tbl_site, tbl_iptv, tbl_analyze } from '@/constants/config0519.json'
+import _ from "lodash";
 
 const state = {
   type: 'film',
@@ -50,10 +51,10 @@ export const usePlayStore = defineStore('play', {
       return state.setting
     },
     getSearchGroup: (state) => {
-      return state.site.data.filter((item) => item['group'] == state.site.default.group)
+      return _.filter(state.site.data, (item) => item['group'] == state.site.default.group)
     },
     getSearchSite: (state) => {
-      return state.site.data.filter((item) => item['search'] === 1)
+      return _.filter(state.site.data, (item) => item['search'] === 1)
     },
   },
   actions: {

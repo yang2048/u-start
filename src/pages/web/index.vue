@@ -4,7 +4,7 @@ export default { name: 'WebViewPage' }
 <script setup lang="ts">
 const url = ref('')
 
-onLoad((options) => {
+onLoad((options:any) => {
   url.value = options.url
 })
 </script>

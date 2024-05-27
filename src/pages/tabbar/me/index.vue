@@ -18,6 +18,10 @@ const userInfo = computed(() => {
   return userStore.getUserInfo
 })
 
+const buildVersion = computed(() => {
+  return 20240524
+})
+
 onShow(() => {
   if (isLogin()) {
     getUserData()
@@ -170,6 +174,9 @@ const btnStyle = reactive({
           </uv-cell>
         </uv-cell-group>
       </view>
+      <div class="flex justify-center items-end text-sm text-coolgray">
+          版本: v0.0.{{ buildVersion }}
+        </div>
     </view>
     
     <uv-modal

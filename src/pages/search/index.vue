@@ -47,7 +47,7 @@ onLoad(() => {
     (yesterday.getMonth() + 1) +
     "/" +
     yesterday.getDate();
-  hotParam.value.date = "2024-05-20";
+  hotParam.value.date = "2024-05-23";
   getFullHot();
 });
 

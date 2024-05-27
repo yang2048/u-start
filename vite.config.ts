@@ -6,6 +6,7 @@ import viteCompression from 'vite-plugin-compression'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { uniuseAutoImports } from '@uni-helper/uni-use';
+import dayjs from "dayjs";
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }: ConfigEnv):Promise<UserConfig> => {
@@ -18,6 +19,9 @@ export default defineConfig(async ({ mode }: ConfigEnv):Promise<UserConfig> => {
 
   return {
     base: VITE_PUBLIC_PATH,
+    define: {
+      'process.env.VUE_APP_VERSION': dayjs().format("YYMMDDHHmm")
+    },
     plugins: [
       // 自动导入本地组件
       Components({

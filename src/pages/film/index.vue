@@ -291,7 +291,7 @@ const toPage = (page: string, item?: any) => {
 //浮动按钮
 const trigger = (e: any) => {
   if (e.item.text == "换源") {
-    uni.$uv.route({ url: "/pages/tabbar/post/index", type: "tab" });
+    uni.$uv.route({ url: "/pages/sites/index"});
   }
   if (e.item.text == "记录") {
     uni.$uv.route("/pages/search/index");
@@ -407,7 +407,7 @@ const trigger = (e: any) => {
               mode="list"
               icon="http://cdn.uviewui.com/uview/empty/list.png"
             ></uv-empty>
-            <navigator url="/pages/tabbar/post/index" open-type="switchTab">
+            <navigator url="/pages/sites/index">
               <button type="default">更换数据源</button>
             </navigator>
           </view>

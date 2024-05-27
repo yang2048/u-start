@@ -30,6 +30,13 @@
 			}
 		},
 		{
+			"path": "pages/sites/index",
+			"style": {
+				"navigationBarTitleText": "站群配置",
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/tabbar/post/index",
 			"style": {
 				"navigationBarTitleText": "动态",
